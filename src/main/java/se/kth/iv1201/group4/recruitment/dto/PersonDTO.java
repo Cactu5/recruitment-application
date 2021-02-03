@@ -10,11 +10,11 @@ public interface PersonDTO {
     public String getName();
 
     /**
-     * Returns the surename.
+     * Returns the surname.
      * 
-     * @return the surename.
+     * @return the surname.
      */
-    public String getSurename();
+    public String getSurname();
 
     /**
      * Returns the email.

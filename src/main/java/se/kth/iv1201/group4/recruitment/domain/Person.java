@@ -11,7 +11,7 @@ public class Person implements PersonDTO {
     }
 
     @Override
-    public String getSurename() {
+    public String getSurname() {
         // TODO Auto-generated method stub
         return null;
     }
