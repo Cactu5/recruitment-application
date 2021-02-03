@@ -10,15 +10,15 @@ import javax.validation.constraints.Size;
 public class LoginForm {
     
     @NotBlank(message = "{login.username.missing}")
-    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "{login.username.invalid-char}")
-    @Size(min = 2, max = 30, message = "{login.username.length}")
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "{login.fail}")
+    @Size(min = 2, max = 30, message = "{login.fail}")
     private String username;
 
     @NotBlank(message = "{login.password.missing}")
-    @Pattern(regexp = "^.*[A-Za-z].*$", message = "{login.password.missing-char}")
-    @Pattern(regexp = "^.*\\d.*$", message = "{login.password.missing-char}")
-    @Pattern(regexp = "^.*\\W.*$", message = "{login.password.missing-char}")
-    @Size(min = 7, max = 30, message = "{login.password.length}")
+    @Pattern(regexp = "^.*[A-Za-z].*$", message = "{login.fail}")
+    @Pattern(regexp = "^.*\\d.*$", message = "{login.fail}")
+    @Pattern(regexp = "^.*\\W.*$", message = "{login.fail}")
+    @Size(min = 7, max = 30, message = "{login.fail}")
     private String password;
 
     /**

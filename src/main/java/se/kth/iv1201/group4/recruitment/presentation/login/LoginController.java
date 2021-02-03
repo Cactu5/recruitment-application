@@ -16,9 +16,6 @@ public class LoginController  {
     private static final String APPLICANT_URL = "application";
     private static final String RECRUITER_URL = "applications";
 
-    private static final String LOGIN_FAIL_MSG = "Invalid username or password.";
-    private static final String ERROR_MSG = "Something went wrong. Please try again later.";
-
     /**
      * A get request for the login page
      * 
@@ -53,11 +50,11 @@ public class LoginController  {
         try {
             p = DAO.getPerson(form.getUsername(), form.getPassword());
         } catch(Exception e) {
-            model.addAttribute("error", ERROR_MSG);
+            model.addAttribute("error", "{error.generic}");
             return LOGIN_URL;
         }
         if (p == NULL) {
-            model.addAttribute("error", LOGIN_FAIL_MSG);
+            model.addAttribute("error", "{login.fail}");
             return LOGIN_URL;
         }
         if (p instanceof ApplicantDTO) {
@@ -67,7 +64,7 @@ public class LoginController  {
         } else {
             // Should never end up here as all Persons are
             // either applicants or recruiters
-            model.addAttribute("error", ERROR_MSG);
+            model.addAttribute("error", "{error.generic}");
         }
         */
         return LOGIN_URL;

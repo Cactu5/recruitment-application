@@ -15,9 +15,6 @@ public class RegisterController  {
     private static final String REGISTER_URL = "register";
     private static final String APPLICANT_URL = "application";
 
-    private static final String ALREADY_EXISTS_MSG = "An applicant with that username, email or SSN already exists.";
-    private static final String ERROR_MSG = "Something went wrong. Please try again later.";
-
     /**
      * A get request for the register page
      * 
@@ -57,10 +54,10 @@ public class RegisterController  {
         try {
             DAO.addApplicant(a);
         } catch(Finns redan exception e) {
-            model.addAttribute("error", ALREADY_EXISTS_MSG);
+            model.addAttribute("error", "{register.fail}");
             return REGISTER_URL;
         } catch(Exception e) {
-            model.addAttribute("error", ERROR_MSG);
+            model.addAttribute("error", "{error.gereric}");
             return REGISTER_URL;
         }
         */
