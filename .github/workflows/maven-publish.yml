@@ -1,6 +1,4 @@
-# This workflow will build a package using Maven and then publish it to Heroku
-
-name: Maven Package
+name: Deploy
 
 on:
   push:
@@ -15,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.9.9 # This is the action
+      - uses: akhileshns/heroku-deploy@v3.9.9
         with:
           heroku_api_key: ${{secrets.HEROKU_API_TOKEN}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
