@@ -55,7 +55,6 @@ class RecruitmentConfigTest implements TestExecutionListener {
     void testCorrectTemplateEngineIsUsed(@Autowired @Qualifier("recruitmentTemplateEngine") 
             SpringTemplateEngine templateEngine,
             @Autowired ThymeleafViewResolver viewResolver){
-        System.out.println("Test correct template engine is being used");
         assertEquals(
             templateEngine, viewResolver.getTemplateEngine(), 
             "configured template engine is not used..."
@@ -65,12 +64,6 @@ class RecruitmentConfigTest implements TestExecutionListener {
     @Test
     void testCorrectTemplateResolverIsUsed(@Autowired ThymeleafViewResolver viewResolver,
             @Autowired SpringResourceTemplateResolver templateResolver){
-        System.out.println("Test correct template resolver is being used");
-        System.out.println(templateResolver);
-        ((SpringTemplateEngine) viewResolver.getTemplateEngine())
-            .getTemplateResolvers()
-            .stream()
-            .forEach(System.out::println);
         assertTrue(
                 ((SpringTemplateEngine) viewResolver.getTemplateEngine())
                 .getTemplateResolvers()

@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -24,7 +23,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  */
 @EnableWebMvc
 @Configuration
-//@ComponentScan({"se.kth.iv1201.group4.recruitment"})
+@ComponentScan({"se.kth.iv1201.group4.recruitment"})
 public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAware {  
     public static final String TEMPLATE_FILE_LOCATION = "classpath:/templates/";
     public static final String STATIC_RESOURCES_LOCATION = "classpath:/web-root/";
