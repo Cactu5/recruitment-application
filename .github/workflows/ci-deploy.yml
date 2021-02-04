@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,5 +17,5 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_TOKEN}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-          heroku_email: "a@a.com"
+          heroku_email: "a@a.com" # Doesn't seem to be needed?
           remote_branch: "main"
