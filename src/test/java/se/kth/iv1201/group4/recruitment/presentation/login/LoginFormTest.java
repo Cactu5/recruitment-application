@@ -12,18 +12,27 @@ import static org.hamcrest.Matchers.empty;
 
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.TestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@SpringBootTest
-public class LoginFormTest {
+@SpringJUnitWebConfig(initializers = ConfigDataApplicationContextInitializer.class)
+@EnableAutoConfiguration
+@ComponentScan(basePackages = {"se.kth.iv1201.group4.recruitment"})
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, LoginFormTest.class  })
+public class LoginFormTest implements TestExecutionListener{
     @Autowired
     private Validator validator;
 
     @Test
     public void testBlankPass() {
-        testInvalidPassword("", "{login.fail}");
+        testInvalidPassword("", "{login.fail}", 5);
     }
 
     @Test
@@ -53,7 +62,7 @@ public class LoginFormTest {
 
     @Test
     public void testBlankUsername() {
-        testInvalidUsername("", "{login.fail}");
+        testInvalidUsername("", "{login.fail}", 3);
     }
 
     @Test
@@ -81,20 +90,28 @@ public class LoginFormTest {
     }
 
     private void testInvalidPassword(String invalidPass, String expectedMsg) {
+        testInvalidPassword(invalidPass, expectedMsg, 1);
+    }
+
+    private void testInvalidUsername(String invalidUser, String expectedMsg) {
+        testInvalidUsername(invalidUser, expectedMsg, 1);
+    }
+    private void testInvalidPassword(String invalidPass, String expectedMsg, int results) {
         LoginForm form = new LoginForm();
         form.setUsername("aaaaaa");
         form.setPassword(invalidPass);
         Set<ConstraintViolation<LoginForm>> result = validator.validate(form);
-        assertThat(result.size(), is(1));
+        result.stream().forEach(System.out::println);
+        assertThat(result.size(), is(results));
         assertThat(result, hasItem(hasProperty("messageTemplate", equalTo(expectedMsg))));
     }
 
-    private void testInvalidUsername(String invalidUser, String expectedMsg) {
+    private void testInvalidUsername(String invalidUser, String expectedMsg, int results) {
         LoginForm form = new LoginForm();
         form.setUsername(invalidUser);
         form.setPassword("abc123##");
         Set<ConstraintViolation<LoginForm>> result = validator.validate(form);
-        assertThat(result.size(), is(1));
+        assertThat(result.size(), is(results));
         assertThat(result, hasItem(hasProperty("messageTemplate", equalTo(expectedMsg))));
-    }
+    }   
 }
