@@ -7,7 +7,7 @@ public interface JobApplicationDTO {
      * 
      * @return an array with competences
      */
-    public CompetenceDTO[] getCompetences();
+    public CompetenceProfileDTO[] getCompetences();
 
     /**
      * Returns an array with availabilites.
@@ -15,4 +15,11 @@ public interface JobApplicationDTO {
      * @return an array with availabilites
      */
     public AvailabilityDTO[] getAvailabilities();
+
+    /**
+     * Returns the status of the job application.
+     * 
+     * @return the status
+     */
+    public JobStatusDTO getStatus();
 }
