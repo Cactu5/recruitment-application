@@ -26,4 +26,4 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Publish to Heroku
-      run: mvn heroku:deploy
+      run: mvn heroku:deploy -Dheroku.appName=Recruitment
