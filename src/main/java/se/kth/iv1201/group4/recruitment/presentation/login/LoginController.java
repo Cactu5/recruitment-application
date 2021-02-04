@@ -2,6 +2,9 @@ package se.kth.iv1201.group4.recruitment.presentation.login;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController  {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
     private static final String LOGIN_URL = "login";
-    private static final String APPLICANT_URL = "application";
-    private static final String RECRUITER_URL = "applications";
+    //private static final String APPLICANT_URL = "application";
+    //private static final String RECRUITER_URL = "applications";
 
     /**
      * A get request for the login page
@@ -23,6 +28,7 @@ public class LoginController  {
      */
     @GetMapping("/" + LOGIN_URL)
     public String showLoginView() {
+        LOGGER.trace("Get request for the login page.");
         return LOGIN_URL;
     }
 
@@ -40,10 +46,13 @@ public class LoginController  {
     @PostMapping("/" + LOGIN_URL)
     public String login(@Valid LoginForm form, 
         BindingResult result, Model model) {
+        LOGGER.trace("Login attempt.");
         //PersonDTO p;
         if (result.hasErrors()) {
-            for (FieldError err : result.getFieldErrors())
-                System.out.println(err + " ");
+            for (FieldError err : result.getFieldErrors()) {
+                LOGGER.debug(err.toString());
+                model.addAttribute(err.getField(), err.getDefaultMessage());
+            }
             return LOGIN_URL;
         }
         /*
@@ -51,6 +60,7 @@ public class LoginController  {
             p = DAO.getPerson(form.getUsername(), form.getPassword());
         } catch(Exception e) {
             model.addAttribute("error", "{error.generic}");
+            LOGGER.error("Could not retrieve person from database.", e);
             return LOGIN_URL;
         }
         if (p == NULL) {
@@ -58,12 +68,15 @@ public class LoginController  {
             return LOGIN_URL;
         }
         if (p instanceof ApplicantDTO) {
+            LOGGER.debug("Person logged in as an applicant.");
             return APPLICANT_URL;
         } else if (p instanceof RecruiterDTO) {
+            LOGGER.info("Person logged in as a recruiter.");
             return RECRUITER_URL;
         } else {
             // Should never end up here as all Persons are
             // either applicants or recruiters
+            LOGGER.error("Person logged in as neither an applicant nor recruiter.");
             model.addAttribute("error", "{error.generic}");
         }
         */
