@@ -27,5 +27,3 @@ jobs:
 
     - name: Publish to Heroku
       run: mvn heroku:deploy
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
