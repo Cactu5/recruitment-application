@@ -101,7 +101,6 @@ public class LoginFormTest implements TestExecutionListener{
         form.setUsername("aaaaaa");
         form.setPassword(invalidPass);
         Set<ConstraintViolation<LoginForm>> result = validator.validate(form);
-        result.stream().forEach(System.out::println);
         assertThat(result.size(), is(results));
         assertThat(result, hasItem(hasProperty("messageTemplate", equalTo(expectedMsg))));
     }
