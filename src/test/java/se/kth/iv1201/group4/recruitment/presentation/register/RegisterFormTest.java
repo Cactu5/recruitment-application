@@ -33,7 +33,7 @@ public class RegisterFormTest {
 
     @Test
     public void testLongEmail() {
-        testInvalidEmail("oifhjasdoifjsdoifnmoimawoifmoepm@oisadfjgsdpofsdfsdfsdfsfsdfqefqfqefnfmwdoicmwepocsdofjs.se", "{login.fail}");
+        testInvalidEmail("oifhjasdoifjasgdhrtmjrtnrdsdoifnmoimawoifmoepm@oisadfjgsdpofsdfsdfsdfsfsdfqefqfqefnfmwdoicmwepocsdofjs.se", "{register.email.length}");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class RegisterFormTest {
 
     @Test
     public void testLongName() {
-        testInvalidName("lasdjfdalfkjdpfafpjdpasjdpiqjf03fj4239rty29r834d9823j47jd23984u3294dju32942d983y2948327x89", "{register.name.length}");
+        testInvalidName("lasdjfdalfkkjhfkashfohfKUHIUHWdnfonfewopfqnflkanfqfacnfbwfbjkzbsdyhbfuiqhjnfckjncohqeohefhdjkfhiduhufiw", "{register.name.length}");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class RegisterFormTest {
 
     @Test
     public void testLongSurame() {
-        testInvalidSurname("lasdjfdalfkjdpfafpjdpasjdpiqjf03fj4239rty29r834d9823j47jd23984u3294dju32942d983y2948327x89", "{register.surname.length}");
+        testInvalidSurname("lasdjfdalfkkjhfkashfohfKUHIUHWdnfonfewopfqnflkanfqfacnfbwfbjkzbsdyhbfuiqhjnfckjncohqeohefhdjkfhiduhufiw", "{register.surname.length}");
     }
 
     @Test
