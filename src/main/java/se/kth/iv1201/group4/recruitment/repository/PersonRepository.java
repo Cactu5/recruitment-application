@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import se.kth.iv1201.group4.recruitment.domain.Person;
+import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
