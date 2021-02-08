@@ -42,6 +42,17 @@ public class Availability implements AvailabilityDTO {
     }
 
     /**
+     * Creates a new instance with the specified from date and to date
+     * 
+     * @param fromDate the from date.
+     * @param toDate   the to date.
+     */
+    public Availability(LocalDate fromDate, LocalDate toDate) {
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+    }
+
+    /**
      * Creates a new instance with the specified from date, to date and job
      * application.
      * 
