@@ -1,4 +1,4 @@
-package se.kth.iv1201.group4.recruitment.Repository;
+package se.kth.iv1201.group4.recruitment.repository;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -19,7 +19,6 @@ import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
 import se.kth.iv1201.group4.recruitment.domain.Person;
-import se.kth.iv1201.group4.recruitment.repository.JobApplicationRepository;
 
 @DataJpaTest
 public class jobApplicationRepositoryTest {

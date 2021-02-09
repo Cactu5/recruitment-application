@@ -1,4 +1,4 @@
-package se.kth.iv1201.group4.recruitment.Repository;
+package se.kth.iv1201.group4.recruitment.repository;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
-import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
 @DataJpaTest
 public class RecruiterRepositoryTest {
