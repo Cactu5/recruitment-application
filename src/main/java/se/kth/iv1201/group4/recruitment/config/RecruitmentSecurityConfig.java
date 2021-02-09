@@ -8,6 +8,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
@@ -23,6 +27,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String CSS_FILES_LOCATION = "/resources/style/*";
 
+    /**
+     * Currently used to configure in memeory test accounts
+     *
+     */
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
