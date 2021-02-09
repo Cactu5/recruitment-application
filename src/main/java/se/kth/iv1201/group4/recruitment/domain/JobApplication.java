@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.ToString;
@@ -55,10 +54,10 @@ public class JobApplication implements JobApplicationDTO {
      * Creates a new instance with the specified applicant, job status, competence
      * profiles and availabilites.
      * 
-     * @param applicant
-     * @param jobStatus
-     * @param competenceProfiles
-     * @param availabilites
+     * @param applicant          the applicant.
+     * @param jobStatus          the job status.
+     * @param competenceProfiles the competence profiles.
+     * @param availabilites      the availabilites.
      */
     public JobApplication(Applicant applicant, JobStatus jobStatus, List<CompetenceProfile> competenceProfiles,
             List<Availability> availabilites) {
