@@ -44,8 +44,8 @@ public class CompetenceProfile implements CompetenceProfileDTO {
     /**
      * Creates a new instance with the specified years of experience and competence.
      * 
-     * @param yearsOfExperience
-     * @param competence
+     * @param yearsOfExperience the years of experience.
+     * @param competence        the competence.
      */
     public CompetenceProfile(float yearsOfExperience, Competence competence) {
         this.yearsOfExperience = yearsOfExperience;
@@ -56,9 +56,9 @@ public class CompetenceProfile implements CompetenceProfileDTO {
      * Creates a new instance with the specified years of experience, competence and
      * job application.
      * 
-     * @param yearsOfExperience
-     * @param competence
-     * @param jobApplication
+     * @param yearsOfExperience the years of experience.
+     * @param competence        the competence.
+     * @param jobApplication    the job application.
      */
     public CompetenceProfile(float yearsOfExperience, Competence competence, JobApplication jobApplication) {
         this.yearsOfExperience = yearsOfExperience;
