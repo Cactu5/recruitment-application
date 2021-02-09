@@ -29,9 +29,6 @@ public class Competence implements CompetenceDTO {
     @Size(min = 2, max = 30, message = "{competence.name.length}")
     private String name;
 
-    @OneToMany(mappedBy = "competence")
-    private List<CompetenceProfile> competenceProfiles = new ArrayList<CompetenceProfile>();
-
     /**
      * Required by JPA
      */

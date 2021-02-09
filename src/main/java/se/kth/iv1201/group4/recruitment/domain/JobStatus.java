@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -30,9 +29,6 @@ public class JobStatus implements JobStatusDTO {
     @Size(min = 2, max = 30, message = "{jobStatus.name.length}")
     private String name;
 
-    @OneToMany(mappedBy = "jobStatus")
-    private List<JobApplication> jobApplications = new ArrayList<JobApplication>();
-
     /**
      * Required by JPA
      */
@@ -47,16 +43,6 @@ public class JobStatus implements JobStatusDTO {
      */
     public JobStatus(String name) {
         this.name = name;
-    }
-
-    /**
-     * Creates a new instance with the specified name and job applications.
-     * 
-     * @param name the name.
-     */
-    public JobStatus(String name, List<JobApplication> jobApplications) {
-        this.name = name;
-        this.jobApplications = jobApplications;
     }
 
     @Override

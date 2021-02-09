@@ -68,14 +68,6 @@ public class Person implements PersonDTO {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
-    @NotFound(action = NotFoundAction.IGNORE)
-    private Recruiter recruiter;
-
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
-    @NotFound(action = NotFoundAction.IGNORE)
-    private Applicant applicant;
-
     /**
      * Required by JPA
      */
