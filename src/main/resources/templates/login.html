@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    th:with="lang=${#locale.language}"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragments/layout}"
+    th:with="title=#{pages.login.name}"
     th:lang="${lang}">
 <head>
-    <title>Log in</title>
+    <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Log in | Recruitment application</h1>
-    <form th:action="@{/login}"  method="POST">
-        <div th:if="${param.error}" th:text="#{loginForm.error.invalidLogin}" style="color: red;">
-        </div>
-        <label for="username" th:text="#{loginForm.label.username}">Username:</label>
-        <input id="username" name="username" type="text"/><br>
-        <label for="password" th:text="#{loginForm.label.password}">Password:</label>
-        <input id="password" name="password" type="password"/><br>
-        <input type="submit" value="Log in"/>
-    </form>
-    <p th:text="#{loginForm.text.dontHaveAnAccount}">Please visit</p>
-    <a href="/register">Sign up</a>
+    <main layout:fragment="content">
+        <form th:action="@{/login}"  method="POST">
+            <div th:if="${param.error}" th:text="#{loginForm.error.invalidLogin}" style="color: red;"></div>
+            <label for="username" th:text="#{loginForm.label.username}">Username:</label>
+            <input id="username" name="username" type="text"/><br>
+            <label for="password" th:text="#{loginForm.label.password}">Password:</label>
+            <input id="password" name="password" type="password"/><br>
+            <input type="submit" value="Log in"/>
+        </form>
+        <p th:text="#{loginForm.text.dontHaveAnAccount}">Please visit</p>
+        <a href="/register">Sign up</a>
+    </main>
 </body>
 </html>
