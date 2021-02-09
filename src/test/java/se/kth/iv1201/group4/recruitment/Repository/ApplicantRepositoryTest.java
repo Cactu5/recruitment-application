@@ -5,18 +5,15 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 public class ApplicantRepositoryTest {
     @Autowired
