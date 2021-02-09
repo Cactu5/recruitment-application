@@ -1,5 +1,5 @@
 package se.kth.iv1201.group4.recruitment.dto;
 
-public interface RecruiterDTO {
+public interface RecruiterDTO extends PersonDTO {
 
 }

@@ -55,4 +55,29 @@ public class Recruiter implements RecruiterDTO {
         Recruiter other = (Recruiter) object;
         return this.id == other.id;
     }
+
+    @Override
+    public String getName() {
+        return person.getName();
+    }
+
+    @Override
+    public String getSurname() {
+        return person.getSurname();
+    }
+
+    @Override
+    public String getEmail() {
+        return person.getEmail();
+    }
+
+    @Override
+    public String getSSN() {
+        return person.getSSN();
+    }
+
+    @Override
+    public String getUsername() {
+        return person.getUsername();
+    }
 }
