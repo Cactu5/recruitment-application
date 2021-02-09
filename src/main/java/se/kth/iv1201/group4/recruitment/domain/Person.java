@@ -61,10 +61,6 @@ public class Person implements PersonDTO {
     public final static PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @JsonIgnore
-    @Pattern(regexp = "^.*[A-Za-z].*$", message = "{person.password.missing-char}")
-    @Pattern(regexp = "^.*\\d.*$", message = "{person.password.missing-char}")
-    @Pattern(regexp = "^.*\\W.*$", message = "{person.password.missing-char}")
-    @Size(min = 7, max = 30, message = "{person.password.length}")
     @Column(name = "password")
     private String password;
 
