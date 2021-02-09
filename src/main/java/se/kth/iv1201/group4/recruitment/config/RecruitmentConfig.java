@@ -5,6 +5,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,6 +34,8 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan({"se.kth.iv1201.group4.recruitment"})
 public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAware {  
     public static final String TEMPLATE_FILE_LOCATION = "classpath:/templates/";
+    public static final String I18N_MESSAGES_LOCATION = "classpath:/i18n/Messages";
+    public static final String I18N_VALIDATION_MESSAGES_LOCATION = "classpath:/i18n/ValidationMessages";
     public static final String STATIC_RESOURCES_LOCATION = "classpath:/web-root/";
     public static final int CHACHE_PERIOD_FOR_STATIC_FILES_SEC = 1;
 
@@ -99,5 +109,64 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
             .setCachePeriod(CHACHE_PERIOD_FOR_STATIC_FILES_SEC)
             .resourceChain(true)
             .addResolver(new PathResourceResolver());
+    }
+
+    /**
+     * Used to register a interceptor, in this case i18n
+     *
+     * @param registry  contains the interceptor settings configured
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());                
+    }
+
+    /**
+     * Creates obejct used for locale management. For this server
+     * {@link LocaleChangeInterceptor} is used.
+     *
+     * @return {@link LocaleChangeInterceptor}  returns containing configured 
+     *                                          settings.
+     */
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        String nameOfHttpParamForLangCode = "lang";
+        String[] allowedHttpMethodsForLocaleChange = { "GET", "POST"  };
+
+        LocaleChangeInterceptor i18nBean = new LocaleChangeInterceptor();
+        i18nBean.setParamName(nameOfHttpParamForLangCode);
+        i18nBean.setHttpMethods(allowedHttpMethodsForLocaleChange);
+        i18nBean.setIgnoreInvalidLocale(true);
+        return i18nBean;
+    }
+    
+    /**
+     * Loads {@link ReloadableResourceBundleMessageSource} 
+     * resource bundles for configured locale solution.
+     *
+     * @return {@link ReloadableResourceBundleMessageSource}    returns
+     *                                                          configures settings
+     */
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource resource 
+            = new ReloadableResourceBundleMessageSource();
+        resource.addBasenames(I18N_MESSAGES_LOCATION, 
+                I18N_VALIDATION_MESSAGES_LOCATION);
+        resource.setDefaultEncoding("UTF-8");
+        resource.setFallbackToSystemLocale(false);
+        return resource;
+    }
+
+    /**
+     * Configures validator used by server. Sets what 
+     * {@link ReloadableResourceBundleMessageSource} to use by calling
+     * {@link #messageSource()}
+     */
+    @Override
+    public Validator getValidator() {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        validator.setValidationMessageSource(messageSource());
+        return validator;
     }
 }
