@@ -77,7 +77,7 @@ public class RegisterForm {
      * Getter for the surname
      * @return The surname
      */
-    public String getSuname() {
+    public String getSurname() {
         return surname;
     }
 
