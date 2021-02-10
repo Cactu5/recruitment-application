@@ -6,6 +6,8 @@ import javax.validation.constraints.Size;
 
 /**
  * A bean representing an HTML login form
+ * 
+ * @author William Stackenäs
  */
 public class LoginForm {
     

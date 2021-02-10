@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,14 +12,27 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import se.kth.iv1201.group4.recruitment.application.PersonService;
+import se.kth.iv1201.group4.recruitment.domain.Applicant;
+import se.kth.iv1201.group4.recruitment.domain.Recruiter;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
+
+/**
+ * A controller for accessing the login page
+ * 
+ * @author William Stackenäs
+ */
 @Controller
 public class LoginController  {
+
+    @Autowired
+    PersonService service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     private static final String LOGIN_URL = "login";
-    //private static final String APPLICANT_URL = "application";
-    //private static final String RECRUITER_URL = "applications";
+    private static final String APPLICANT_URL = "application";
+    private static final String RECRUITER_URL = "applications";
 
     /**
      * A get request for the login page
@@ -44,10 +57,9 @@ public class LoginController  {
      *          
      */
     @PostMapping("/" + LOGIN_URL)
-    public String login(@Valid LoginForm form, 
-        BindingResult result, Model model) {
+    public String login(@Valid LoginForm form, BindingResult result, Model model) {
         LOGGER.trace("Login attempt.");
-        //PersonDTO p;
+        PersonDTO p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
                 LOGGER.debug(err.toString());
@@ -55,22 +67,22 @@ public class LoginController  {
             }
             return LOGIN_URL;
         }
-        /*
+        
         try {
-            p = DAO.getPerson(form.getUsername(), form.getPassword());
+            p = service.getPerson(form.getUsername(), form.getPassword());
         } catch(Exception e) {
             model.addAttribute("error", "{error.generic}");
             LOGGER.error("Could not retrieve person from database.", e);
             return LOGIN_URL;
         }
-        if (p == NULL) {
+        if (p == null) {
             model.addAttribute("error", "{login.fail}");
             return LOGIN_URL;
         }
-        if (p instanceof ApplicantDTO) {
+        if (p instanceof Applicant) {
             LOGGER.debug("Person logged in as an applicant.");
             return APPLICANT_URL;
-        } else if (p instanceof RecruiterDTO) {
+        } else if (p instanceof Recruiter) {
             LOGGER.info("Person logged in as a recruiter.");
             return RECRUITER_URL;
         } else {
@@ -79,7 +91,6 @@ public class LoginController  {
             LOGGER.error("Person logged in as neither an applicant nor recruiter.");
             model.addAttribute("error", "{error.generic}");
         }
-        */
         return LOGIN_URL;
     }
 }

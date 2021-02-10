@@ -22,11 +22,16 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+/**
+ * Test class that attempts to validate both valid and invalid login forms
+ * 
+ * @author William Stackenäs
+ */
 @SpringJUnitWebConfig(initializers = ConfigDataApplicationContextInitializer.class)
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"se.kth.iv1201.group4.recruitment"})
 @TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, LoginFormTest.class  })
-public class LoginFormTest implements TestExecutionListener{
+public class LoginFormTest implements TestExecutionListener {
     @Autowired
     private Validator validator;
 

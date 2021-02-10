@@ -14,16 +14,30 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.TestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@SpringBootTest
-public class RegisterFormTest {
+/**
+ * Test class that attempts to validate both valid and invalid login forms
+ * 
+ * @author William Stackenäs
+ */
+@SpringJUnitWebConfig(initializers = ConfigDataApplicationContextInitializer.class)
+@EnableAutoConfiguration
+@ComponentScan(basePackages = {"se.kth.iv1201.group4.recruitment"})
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, RegisterFormTest.class  })
+public class RegisterFormTest implements TestExecutionListener {
     @Autowired
     private Validator validator;
 
     @Test
     public void testBlankEmail() {
-        testInvalidEmail("", "{register.email.missing}");
+        testInvalidEmail("", "{register.email.missing}", 2);
     }
 
     @Test
@@ -63,7 +77,7 @@ public class RegisterFormTest {
 
     @Test
     public void testBlankName() {
-        testInvalidName("", "{register.name.missing}");
+        testInvalidName("", "{register.name.missing}", 2);
     }
 
     @Test
@@ -83,7 +97,7 @@ public class RegisterFormTest {
 
     @Test
     public void testBlankUsername() {
-        testInvalidUsername("", "{register.username.missing}");
+        testInvalidUsername("", "{register.username.missing}", 2);
     }
 
     @Test
@@ -103,7 +117,7 @@ public class RegisterFormTest {
 
     @Test
     public void testBlankSurname() {
-        testInvalidSurname("", "{register.surname.missing}");
+        testInvalidSurname("", "{register.surname.missing}", 2);
     }
 
     @Test
@@ -123,7 +137,7 @@ public class RegisterFormTest {
 
     @Test 
     public void testBlankSsn() {
-        testInvalidSsn("", "{register.ssn.blank}");
+        testInvalidSsn("", "{register.ssn.blank}", 2);
     }
 
     @Test
@@ -156,6 +170,30 @@ public class RegisterFormTest {
     }
 
     private void testInvalidEmail(String invalidEmail, String expectedMsg) {
+        testInvalidEmail(invalidEmail, expectedMsg, 1);
+    }
+
+    private void testInvalidUsername(String invalidUser, String expectedMsg) {
+        testInvalidUsername(invalidUser, expectedMsg, 1);
+    }
+
+    private void testInvalidPassword(String invalidPass, String expectedMsg) {
+        testInvalidPassword(invalidPass, expectedMsg, 1);
+    }
+
+    private void testInvalidName(String invalidName, String expectedMsg) {
+        testInvalidName(invalidName, expectedMsg, 1);
+    }
+
+    private void testInvalidSurname(String invalidSurname, String expectedMsg) {
+        testInvalidSurname(invalidSurname, expectedMsg, 1);
+    }
+
+    private void testInvalidSsn(String invalidSsn, String expectedMsg) {
+        testInvalidSsn(invalidSsn, expectedMsg, 1);
+    }
+
+    private void testInvalidEmail(String invalidEmail, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail(invalidEmail);
         form.setUsername("aaaaaa");
@@ -163,10 +201,10 @@ public class RegisterFormTest {
         form.setName("name");
         form.setSurname("surname");
         form.setSsn("012345678910");
-        testInvalidForm(form, expectedMsg);
+        testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidUsername(String invalidUser, String expectedMsg) {
+    private void testInvalidUsername(String invalidUser, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail("a@a.com");
         form.setUsername(invalidUser);
@@ -174,10 +212,10 @@ public class RegisterFormTest {
         form.setName("name");
         form.setSurname("surname");
         form.setSsn("012345678910");
-        testInvalidForm(form, expectedMsg);
+        testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidPassword(String invalidPass, String expectedMsg) {
+    private void testInvalidPassword(String invalidPass, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail("a@a.com");
         form.setUsername("aaaaaa");
@@ -185,10 +223,10 @@ public class RegisterFormTest {
         form.setName("name");
         form.setSurname("surname");
         form.setSsn("012345678910");
-        testInvalidForm(form, expectedMsg);
+        testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidName(String invalidName, String expectedMsg) {
+    private void testInvalidName(String invalidName, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail("a@a.com");
         form.setUsername("aaaaaa");
@@ -196,10 +234,10 @@ public class RegisterFormTest {
         form.setName(invalidName);
         form.setSurname("surname");
         form.setSsn("012345678910");
-        testInvalidForm(form, expectedMsg);
+        testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidSurname(String invalidSurname, String expectedMsg) {
+    private void testInvalidSurname(String invalidSurname, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail("a@a.com");
         form.setUsername("aaaaaa");
@@ -207,10 +245,10 @@ public class RegisterFormTest {
         form.setName("name");
         form.setSurname(invalidSurname);
         form.setSsn("012345678910");
-        testInvalidForm(form, expectedMsg);
+        testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidSsn(String invalidSsn, String expectedMsg) {
+    private void testInvalidSsn(String invalidSsn, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail("a@a.com");
         form.setUsername("aaaaaa");
@@ -218,12 +256,12 @@ public class RegisterFormTest {
         form.setName("name");
         form.setSurname("surname");
         form.setSsn(invalidSsn);
-        testInvalidForm(form, expectedMsg);
+        testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidForm(RegisterForm form, String expectedMsg) {
+    private void testInvalidForm(RegisterForm form, String expectedMsg, int results) {
         Set<ConstraintViolation<RegisterForm>> result = validator.validate(form);
-        assertThat(result.size(), is(1));
+        assertThat(result.size(), is(results));
         assertThat(result, hasItem(hasProperty("messageTemplate", equalTo(expectedMsg))));
     }
 }

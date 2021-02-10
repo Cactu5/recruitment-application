@@ -86,13 +86,18 @@ public class Applicant implements ApplicantDTO {
     }
 
     @Override
-    public String getSSN() {
-        return person.getSSN();
+    public String getSsn() {
+        return person.getSsn();
     }
 
     @Override
     public String getUsername() {
         return person.getUsername();
+    }
+
+    @Override
+    public String getPassword() {
+        return person.getPassword();
     }
 
 }

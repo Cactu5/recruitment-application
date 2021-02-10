@@ -28,7 +28,7 @@ public interface PersonDTO {
      * 
      * @return the social security number
      */
-    public String getSSN();
+    public String getSsn();
 
     /**
      * Returns the username.
@@ -36,4 +36,11 @@ public interface PersonDTO {
      * @return the username
      */
     public String getUsername();
+
+    /**
+     * Returns the password.
+     * 
+     * @return the password
+     */
+    public String getPassword();
 }

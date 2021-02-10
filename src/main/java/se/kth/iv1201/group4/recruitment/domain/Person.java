@@ -111,13 +111,18 @@ public class Person implements PersonDTO {
     }
 
     @Override
-    public String getSSN() {
+    public String getSsn() {
         return ssn;
     }
 
     @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override

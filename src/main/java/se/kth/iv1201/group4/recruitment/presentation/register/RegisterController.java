@@ -4,7 +4,8 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,8 +13,20 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import se.kth.iv1201.group4.recruitment.application.PersonService;
+import se.kth.iv1201.group4.recruitment.domain.Applicant;
+import se.kth.iv1201.group4.recruitment.domain.Person;
+
+/**
+ * A controller for accessing the register page
+ * 
+ * @author William Stackenäs
+ */
 @Controller
 public class RegisterController  {
+
+    @Autowired
+    PersonService service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
@@ -46,7 +59,7 @@ public class RegisterController  {
     public String register(@Valid RegisterForm form, 
         BindingResult result, Model model) {
         LOGGER.trace("Registration attempt.");
-        //Applicant a;
+        Person p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
                 LOGGER.debug(err.toString());
@@ -54,16 +67,15 @@ public class RegisterController  {
             }
             return REGISTER_URL;
         }
-        /*
-        a = new Applicant(form.getEmail()
-                          form.getUsername()
-                          form.getPassword()
-                          form.getName()
-                          form.getSurname()
-                          form.getSsn());
+        p = new Person(form.getName(),
+                       form.getSurname(),
+                       form.getEmail(),
+                       form.getSsn(),
+                       form.getUsername(),
+                       form.getPassword());
         try {
-            DAO.addApplicant(a);
-        } catch(Finns redan exception e) {
+            service.addApplicant(new Applicant(p));
+        } catch(DataAccessException ex) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
             return REGISTER_URL;
@@ -72,7 +84,6 @@ public class RegisterController  {
             model.addAttribute("error", "{error.gereric}");
             return REGISTER_URL;
         }
-        */
         return APPLICANT_URL;
     }
 }

@@ -4,6 +4,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * A bean representing an HTML register form
+ * 
+ * @author William Stackenäs
+ */
 public class RegisterForm {
 
     @NotBlank(message = "{register.email.missing}")
