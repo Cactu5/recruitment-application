@@ -40,6 +40,6 @@ public class LoginController  {
     @GetMapping("/login")
     public String showLoginView() {
         LOGGER.trace("Get request for the login page.");
-        return "/login";
+        return "login";
     }
 }
