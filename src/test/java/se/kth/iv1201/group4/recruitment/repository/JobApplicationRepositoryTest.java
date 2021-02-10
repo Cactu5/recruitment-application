@@ -55,6 +55,9 @@ public class JobApplicationRepositoryTest {
 
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, competence);
         CompetenceProfile competenceProfile2 = new CompetenceProfile(2.5f, competence2);
+        entityManager.persist(competenceProfile);
+        entityManager.persist(competenceProfile2);
+
         List<CompetenceProfile> competenceProfiles = new ArrayList<CompetenceProfile>();
         competenceProfiles.add(competenceProfile);
         competenceProfiles.add(competenceProfile2);
