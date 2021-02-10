@@ -21,7 +21,7 @@ import se.kth.iv1201.group4.recruitment.domain.JobStatus;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 
 @DataJpaTest
-public class jobApplicationRepositoryTest {
+public class JobApplicationRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
