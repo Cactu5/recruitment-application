@@ -44,7 +44,7 @@ class RegisterViewTest implements TestExecutionListener{
         .andExpect(content().string(containsString("name=\"surname\"")))
         .andExpect(content().string(containsString("name=\"username\"")))
         .andExpect(content().string(containsString("name=\"password\"")))
-        .andExpect(content().string(containsString("name=\"ssn\"")))
+        .andExpect(content().string(containsString("name=\"SSN\"")))
         .andExpect(content().string(containsString("type=\"submit\"")));
     }
     @Test

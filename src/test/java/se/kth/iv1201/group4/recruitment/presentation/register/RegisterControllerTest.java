@@ -46,7 +46,7 @@ public class RegisterControllerTest implements TestExecutionListener {
     @Test
     public void canRegisterAndLogin() throws Exception {
         sendPostRequest(mockMvc, "/register", addParam(addParam(addParam(addParam(addParam(addParam("username", "KarlJohan"),
-                "name", "Ben"), "surname", "Johnsson"), "email", "ben.johnsson@gmail.com"), "ssn", "190607071234"), "password", "abc123##"))
+                "name", "Ben"), "surname", "Johnsson"), "email", "ben.johnsson@gmail.com"), "SSN", "190607071234"), "password", "abc123##"))
                 .andExpect(status().isOk()).andExpect(gotSuccessPage());
         sendGetRequest(mockMvc, "/logout").andExpect(status().is3xxRedirection());
         sendPostRequest(mockMvc, "/login", addParam(addParam("username", "KarlJohan"), "password", "abc123##"))
