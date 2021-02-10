@@ -84,6 +84,6 @@ public class RegisterController  {
             model.addAttribute("error", "{error.gereric}");
             return "/register";
         }
-        return "/login";
+        return "/success";
     }
 }
