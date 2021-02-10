@@ -41,7 +41,7 @@ public class RegisterController  {
     @GetMapping("/register")
     public String showRegisterView(RegisterForm registerForm) {
         LOGGER.trace("Get request for the register page.");
-        return "/register";
+        return "register";
     }
 
     /**
@@ -65,7 +65,7 @@ public class RegisterController  {
                 LOGGER.debug(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
-            return "/register";
+            return "register";
         }
         p = new Person(form.getName(),
                        form.getSurname(),
@@ -78,12 +78,12 @@ public class RegisterController  {
         } catch (DataAccessException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
-            return "/register";
+            return "register";
         } catch (Exception e) {
             LOGGER.error("Could not add applicant to database.", e);
             model.addAttribute("error", "{error.gereric}");
-            return "/register";
+            return "register";
         }
-        return "/success";
+        return "success";
     }
 }
