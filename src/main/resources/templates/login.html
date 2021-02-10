@@ -11,6 +11,7 @@
     <main layout:fragment="content">
         <form th:action="@{/login}"  method="POST">
             <div th:if="${param.error}" th:text="#{loginForm.error.invalidLogin}" style="color: red;"></div>
+            <div th:if="${param.logout}" th:text="#{loginForm.success.logout}" style="color: green;"></div>
             <label for="username" th:text="#{loginForm.label.username}">Username:</label>
             <input id="username" name="username" type="text"/><br>
             <label for="password" th:text="#{loginForm.label.password}">Password:</label>

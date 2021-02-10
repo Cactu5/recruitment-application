@@ -4,6 +4,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * A bean representing an HTML register form
+ * 
+ * @author William Stackenäs
+ */
 public class RegisterForm {
 
     @NotBlank(message = "{register.email.missing}")
@@ -85,7 +90,7 @@ public class RegisterForm {
      * Getter for the SSN
      * @return The SSN
      */
-    public String getSsn() {
+    public String getSSN() {
         return ssn;
     }
 
@@ -133,7 +138,7 @@ public class RegisterForm {
      * Setter for the SSN
      * @param ssn The new SSN
      */
-    public void setSsn(String ssn) {
+    public void setSSN(String ssn) {
         this.ssn = ssn;
     }
 }

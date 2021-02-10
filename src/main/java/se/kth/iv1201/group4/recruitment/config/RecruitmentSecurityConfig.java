@@ -1,6 +1,7 @@
 package se.kth.iv1201.group4.recruitment.config;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,11 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import se.kth.iv1201.group4.recruitment.application.PersonService;
+import se.kth.iv1201.group4.recruitment.domain.Person;
 
 
 /**
@@ -27,6 +27,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String CSS_FILES_LOCATION = "/resources/style/*";
 
+    @Autowired
+    private PersonService service;
+
     /**
      * Currently used to configure in memeory test accounts
      *
@@ -39,6 +42,7 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
         .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER")
         .and()
         .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
+        auth.userDetailsService(service).passwordEncoder(Person.PASSWORD_ENCODER);
     }
 
     @Bean
