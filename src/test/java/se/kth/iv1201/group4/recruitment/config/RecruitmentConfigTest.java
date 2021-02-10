@@ -62,11 +62,11 @@ class RecruitmentConfigTest implements TestExecutionListener {
             .equalsIgnoreCase("CONTENT TYPE ENTERED HERE");
     }
     @Test
-    void testCorrectTemplateEngineIsUsed(@Autowired @Qualifier("recruitmentTemplateEngine") 
+    void testCorrectTemplateEngineIsUsed(@Autowired @Qualifier("recruitmentTemplateEngine")
             SpringTemplateEngine templateEngine,
             @Autowired ThymeleafViewResolver viewResolver){
         assertEquals(
-            templateEngine, viewResolver.getTemplateEngine(), 
+            templateEngine, viewResolver.getTemplateEngine(),
             "configured template engine is not used..."
         );
     }

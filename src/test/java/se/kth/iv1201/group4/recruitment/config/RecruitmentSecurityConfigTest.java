@@ -1,7 +1,6 @@
 package se.kth.iv1201.group4.recruitment.config;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -41,21 +40,19 @@ class RecruitmentSecurityConfigTest implements TestExecutionListener{
         mockMvc.perform(MockMvcRequestBuilders.get("/nonexistingpage"))
             .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
     }
-    
-    @Disabled
+
     @Test
     void testLoginDoesNotRequireAuthentication() throws Exception{
         pageIsOk("/login");
     }
 
-    @Disabled
     @Test
     void testRegisterDoesNotRequireAuthentication() throws Exception{
         pageIsOk("/register");
     }
+
     private void pageIsOk(String page) throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get(page))
             .andExpect(MockMvcResultMatchers.status().isOk());
-
     }
 }

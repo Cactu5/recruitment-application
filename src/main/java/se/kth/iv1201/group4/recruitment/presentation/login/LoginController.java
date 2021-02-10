@@ -30,19 +30,15 @@ public class LoginController  {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    private static final String LOGIN_URL = "login";
-    private static final String APPLICANT_URL = "application";
-    private static final String RECRUITER_URL = "applications";
-
     /**
      * A get request for the login page
      * 
      * @return The URL to the login page
      */
-    @GetMapping("/" + LOGIN_URL)
+    @GetMapping("/login")
     public String showLoginView() {
         LOGGER.trace("Get request for the login page.");
-        return LOGIN_URL;
+        return "/login";
     }
 
     /**
@@ -55,8 +51,8 @@ public class LoginController  {
      *         Otherwise, the URL to the applicant or recruiter page
      *         depending on who the user was logged in as.
      *          
-     */
-    @PostMapping("/" + LOGIN_URL)
+     *//*
+    @PostMapping("/login")
     public String login(@Valid LoginForm form, BindingResult result, Model model) {
         LOGGER.trace("Login attempt.");
         PersonDTO p;
@@ -65,7 +61,7 @@ public class LoginController  {
                 LOGGER.debug(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
-            return LOGIN_URL;
+            return "/login";
         }
         
         try {
@@ -73,24 +69,24 @@ public class LoginController  {
         } catch(Exception e) {
             model.addAttribute("error", "{error.generic}");
             LOGGER.error("Could not retrieve person from database.", e);
-            return LOGIN_URL;
+            return "/login";
         }
         if (p == null) {
             model.addAttribute("error", "{login.fail}");
-            return LOGIN_URL;
+            return "/login";
         }
         if (p instanceof Applicant) {
             LOGGER.debug("Person logged in as an applicant.");
-            return APPLICANT_URL;
+            return "/application";
         } else if (p instanceof Recruiter) {
             LOGGER.info("Person logged in as a recruiter.");
-            return RECRUITER_URL;
+            return "/applications";
         } else {
             // Should never end up here as all Persons are
             // either applicants or recruiters
             LOGGER.error("Person logged in as neither an applicant nor recruiter.");
             model.addAttribute("error", "{error.generic}");
         }
-        return LOGIN_URL;
-    }
+        return "/login";
+    }*/
 }

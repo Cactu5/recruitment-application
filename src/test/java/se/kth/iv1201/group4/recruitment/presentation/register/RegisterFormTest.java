@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.empty;
 
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
@@ -77,7 +77,7 @@ public class RegisterFormTest implements TestExecutionListener {
 
     @Test
     public void testBlankName() {
-        testInvalidName("", "{register.name.missing}", 2);
+        testInvalidName("", "{register.name.missing}", 3);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class RegisterFormTest implements TestExecutionListener {
 
     @Test
     public void testBlankUsername() {
-        testInvalidUsername("", "{register.username.missing}", 2);
+        testInvalidUsername("", "{register.username.missing}", 3);
     }
 
     @Test
@@ -117,7 +117,7 @@ public class RegisterFormTest implements TestExecutionListener {
 
     @Test
     public void testBlankSurname() {
-        testInvalidSurname("", "{register.surname.missing}", 2);
+        testInvalidSurname("", "{register.surname.missing}", 3);
     }
 
     @Test
@@ -137,7 +137,7 @@ public class RegisterFormTest implements TestExecutionListener {
 
     @Test 
     public void testBlankSsn() {
-        testInvalidSsn("", "{register.ssn.blank}", 2);
+        testInvalidSsn("", "{register.ssn.missing}", 3);
     }
 
     @Test

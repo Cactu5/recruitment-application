@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,21 +28,20 @@ public class RegisterController  {
 
     @Autowired
     PersonService service;
+    @Autowired
+    private ServerProperties props;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
-
-    private static final String REGISTER_URL = "register";
-    private static final String APPLICANT_URL = "application";
 
     /**
      * A get request for the register page
      * 
      * @return The URL to the register page
      */
-    @GetMapping("/" + REGISTER_URL)
+    @GetMapping("/register")
     public String showRegisterView(RegisterForm registerForm) {
         LOGGER.trace("Get request for the register page.");
-        return REGISTER_URL;
+        return "/register";
     }
 
     /**
@@ -55,7 +55,7 @@ public class RegisterController  {
      *         Otherwise, the URL to the applicant page.
      *          
      */
-    @PostMapping("/" + REGISTER_URL)
+    @PostMapping("/register")
     public String register(@Valid RegisterForm form, 
         BindingResult result, Model model) {
         LOGGER.trace("Registration attempt.");
@@ -65,7 +65,7 @@ public class RegisterController  {
                 LOGGER.debug(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
-            return REGISTER_URL;
+            return "/register";
         }
         p = new Person(form.getName(),
                        form.getSurname(),
@@ -75,15 +75,15 @@ public class RegisterController  {
                        form.getPassword());
         try {
             service.addApplicant(new Applicant(p));
-        } catch(DataAccessException ex) {
+        } catch (DataAccessException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
-            return REGISTER_URL;
-        } catch(Exception e) {
+            return "/register";
+        } catch (Exception e) {
             LOGGER.error("Could not add applicant to database.", e);
             model.addAttribute("error", "{error.gereric}");
-            return REGISTER_URL;
+            return "/register";
         }
-        return APPLICANT_URL;
+        return "/login";
     }
 }
