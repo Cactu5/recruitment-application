@@ -29,7 +29,7 @@ public class LoginController  {
     @GetMapping("/")
     public String showRootView() {
         LOGGER.trace("Get request for the root page.");
-        return "/success";
+        return "success";
     }
 
     /**
