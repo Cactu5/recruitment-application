@@ -80,4 +80,9 @@ public class Recruiter implements RecruiterDTO {
     public String getUsername() {
         return person.getUsername();
     }
+
+    @Override
+    public String getPassword() {
+        return person.getPassword();
+    }
 }
