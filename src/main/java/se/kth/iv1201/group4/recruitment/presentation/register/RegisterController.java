@@ -4,7 +4,9 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,23 +14,34 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import se.kth.iv1201.group4.recruitment.application.PersonService;
+import se.kth.iv1201.group4.recruitment.domain.Applicant;
+import se.kth.iv1201.group4.recruitment.domain.Person;
+
+/**
+ * A controller for accessing the register page
+ * 
+ * @author William Stackenäs
+ */
 @Controller
 public class RegisterController  {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
+    @Autowired
+    PersonService service;
+    @Autowired
+    private ServerProperties props;
 
-    private static final String REGISTER_URL = "register";
-    private static final String APPLICANT_URL = "application";
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
     /**
      * A get request for the register page
      * 
      * @return The URL to the register page
      */
-    @GetMapping("/" + REGISTER_URL)
+    @GetMapping("/register")
     public String showRegisterView(RegisterForm registerForm) {
         LOGGER.trace("Get request for the register page.");
-        return REGISTER_URL;
+        return "/register";
     }
 
     /**
@@ -42,37 +55,35 @@ public class RegisterController  {
      *         Otherwise, the URL to the applicant page.
      *          
      */
-    @PostMapping("/" + REGISTER_URL)
+    @PostMapping("/register")
     public String register(@Valid RegisterForm form, 
         BindingResult result, Model model) {
         LOGGER.trace("Registration attempt.");
-        //Applicant a;
+        Person p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
                 LOGGER.debug(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
-            return REGISTER_URL;
+            return "/register";
         }
-        /*
-        a = new Applicant(form.getEmail()
-                          form.getUsername()
-                          form.getPassword()
-                          form.getName()
-                          form.getSurname()
-                          form.getSsn());
+        p = new Person(form.getName(),
+                       form.getSurname(),
+                       form.getEmail(),
+                       form.getSSN(),
+                       form.getUsername(),
+                       form.getPassword());
         try {
-            DAO.addApplicant(a);
-        } catch(Finns redan exception e) {
+            service.addApplicant(new Applicant(p));
+        } catch (DataAccessException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
-            return REGISTER_URL;
-        } catch(Exception e) {
+            return "/register";
+        } catch (Exception e) {
             LOGGER.error("Could not add applicant to database.", e);
             model.addAttribute("error", "{error.gereric}");
-            return REGISTER_URL;
+            return "/register";
         }
-        */
-        return APPLICANT_URL;
+        return "/success";
     }
 }

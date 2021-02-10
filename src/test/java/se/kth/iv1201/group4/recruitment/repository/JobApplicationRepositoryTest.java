@@ -21,7 +21,7 @@ import se.kth.iv1201.group4.recruitment.domain.JobStatus;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 
 @DataJpaTest
-public class jobApplicationRepositoryTest {
+public class JobApplicationRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
@@ -55,6 +55,9 @@ public class jobApplicationRepositoryTest {
 
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, competence);
         CompetenceProfile competenceProfile2 = new CompetenceProfile(2.5f, competence2);
+        entityManager.persist(competenceProfile);
+        entityManager.persist(competenceProfile2);
+
         List<CompetenceProfile> competenceProfiles = new ArrayList<CompetenceProfile>();
         competenceProfiles.add(competenceProfile);
         competenceProfiles.add(competenceProfile2);

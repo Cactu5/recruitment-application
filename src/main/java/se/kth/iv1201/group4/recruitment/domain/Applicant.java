@@ -95,4 +95,9 @@ public class Applicant implements ApplicantDTO {
         return person.getUsername();
     }
 
+    @Override
+    public String getPassword() {
+        return person.getPassword();
+    }
+
 }

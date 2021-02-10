@@ -49,6 +49,17 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
+
+
+     /**
+     * Returns the server-related properties from application.properties.
+     * 
+     * @return The server-related properties
+     */
+    @Bean
+    public ServerProperties serverProperties() {
+        return new ServerProperties();
+    }
     /** 
      * Makes sure that every view of the web server will be resolved by 
      * {@link ThymeleafViewResolver} also sets the meta data of the view resolver

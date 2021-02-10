@@ -121,6 +121,11 @@ public class Person implements PersonDTO {
     }
 
     @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public int hashCode() {
         return Long.valueOf(username).hashCode();
     }
