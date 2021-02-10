@@ -8,15 +8,15 @@
 <body>
     <h1>Log in | Recruitment application</h1>
     <form th:action="@{/login}"  method="POST">
-        <div th:if="${param.error}" th:text="#{error.loginForm.invalidLogin}" style="color: red;">
+        <div th:if="${param.error}" th:text="#{loginForm.error.invalidLogin}" style="color: red;">
         </div>
-        <label for="username" th:text="#{label.loginForm.username}">Username:</label>
+        <label for="username" th:text="#{loginForm.label.username}">Username:</label>
         <input id="username" name="username" type="text"/><br>
-        <label for="password" th:text="#{label.loginForm.password}">Password:</label>
+        <label for="password" th:text="#{loginForm.label.password}">Password:</label>
         <input id="password" name="password" type="password"/><br>
         <input type="submit" value="Log in"/>
     </form>
-    <p th:text="#{text.loginForm.dontHaveAnAccount}">Please visit</p>
+    <p th:text="#{loginForm.text.dontHaveAnAccount}">Please visit</p>
     <a href="/register">Sign up</a>
 </body>
 </html>
