@@ -136,23 +136,23 @@ public class RegisterFormTest implements TestExecutionListener {
     }
 
     @Test 
-    public void testBlankSsn() {
-        testInvalidSsn("", "{register.ssn.missing}", 3);
+    public void testBlankSSN() {
+        testInvalidSSN("", "{register.ssn.missing}", 3);
     }
 
     @Test
-    public void testInvalidSsn() {
-        testInvalidSsn("11111111111a", "{register.ssn.invalid-char}");
+    public void testInvalidSSN() {
+        testInvalidSSN("11111111111a", "{register.ssn.invalid-char}");
     }
 
     @Test
-    public void testShortSsn() {
-        testInvalidSsn("11111111111", "{register.ssn.length}");
+    public void testShortSSN() {
+        testInvalidSSN("11111111111", "{register.ssn.length}");
     }
 
     @Test
-    public void testLongSsn() {
-        testInvalidSsn("1111111111111", "{register.ssn.length}");
+    public void testLongSSN() {
+        testInvalidSSN("1111111111111", "{register.ssn.length}");
     }
 
 
@@ -164,7 +164,7 @@ public class RegisterFormTest implements TestExecutionListener {
         form.setPassword("abc123##");
         form.setName("name");
         form.setSurname("surname");
-        form.setSsn("012345678910");
+        form.setSSN("012345678910");
         Set<ConstraintViolation<RegisterForm>> result = validator.validate(form);
         assertThat(result, is(empty()));
     }
@@ -189,8 +189,8 @@ public class RegisterFormTest implements TestExecutionListener {
         testInvalidSurname(invalidSurname, expectedMsg, 1);
     }
 
-    private void testInvalidSsn(String invalidSsn, String expectedMsg) {
-        testInvalidSsn(invalidSsn, expectedMsg, 1);
+    private void testInvalidSSN(String invalidSSN, String expectedMsg) {
+        testInvalidSSN(invalidSSN, expectedMsg, 1);
     }
 
     private void testInvalidEmail(String invalidEmail, String expectedMsg, int results) {
@@ -200,7 +200,7 @@ public class RegisterFormTest implements TestExecutionListener {
         form.setPassword("abc123##");
         form.setName("name");
         form.setSurname("surname");
-        form.setSsn("012345678910");
+        form.setSSN("012345678910");
         testInvalidForm(form, expectedMsg, results);
     }
 
@@ -211,7 +211,7 @@ public class RegisterFormTest implements TestExecutionListener {
         form.setPassword("abc123##");
         form.setName("name");
         form.setSurname("surname");
-        form.setSsn("012345678910");
+        form.setSSN("012345678910");
         testInvalidForm(form, expectedMsg, results);
     }
 
@@ -222,7 +222,7 @@ public class RegisterFormTest implements TestExecutionListener {
         form.setPassword(invalidPass);
         form.setName("name");
         form.setSurname("surname");
-        form.setSsn("012345678910");
+        form.setSSN("012345678910");
         testInvalidForm(form, expectedMsg, results);
     }
 
@@ -233,7 +233,7 @@ public class RegisterFormTest implements TestExecutionListener {
         form.setPassword("abc123##");
         form.setName(invalidName);
         form.setSurname("surname");
-        form.setSsn("012345678910");
+        form.setSSN("012345678910");
         testInvalidForm(form, expectedMsg, results);
     }
 
@@ -244,18 +244,18 @@ public class RegisterFormTest implements TestExecutionListener {
         form.setPassword("abc123##");
         form.setName("name");
         form.setSurname(invalidSurname);
-        form.setSsn("012345678910");
+        form.setSSN("012345678910");
         testInvalidForm(form, expectedMsg, results);
     }
 
-    private void testInvalidSsn(String invalidSsn, String expectedMsg, int results) {
+    private void testInvalidSSN(String invalidSSN, String expectedMsg, int results) {
         RegisterForm form = new RegisterForm();
         form.setEmail("a@a.com");
         form.setUsername("aaaaaa");
         form.setPassword("abc123##");
         form.setName("name");
         form.setSurname("surname");
-        form.setSsn(invalidSsn);
+        form.setSSN(invalidSSN);
         testInvalidForm(form, expectedMsg, results);
     }
 

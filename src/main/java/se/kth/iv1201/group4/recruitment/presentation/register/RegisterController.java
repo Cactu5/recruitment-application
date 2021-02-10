@@ -70,7 +70,7 @@ public class RegisterController  {
         p = new Person(form.getName(),
                        form.getSurname(),
                        form.getEmail(),
-                       form.getSsn(),
+                       form.getSSN(),
                        form.getUsername(),
                        form.getPassword());
         try {

@@ -90,7 +90,7 @@ public class RegisterForm {
      * Getter for the SSN
      * @return The SSN
      */
-    public String getSsn() {
+    public String getSSN() {
         return ssn;
     }
 
@@ -138,7 +138,7 @@ public class RegisterForm {
      * Setter for the SSN
      * @param ssn The new SSN
      */
-    public void setSsn(String ssn) {
+    public void setSSN(String ssn) {
         this.ssn = ssn;
     }
 }

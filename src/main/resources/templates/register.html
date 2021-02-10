@@ -44,8 +44,8 @@
             </p>
 
             <label for="ssn" th:text="#{registerForm.label.ssn}">SSN:</label>
-            <input id="ssn" type="text" th:field="*{ssn}"/><br>
-            <p class="form-error" th:each="error : ${#fields.errors('ssn')}" th:text="${error}">
+            <input id="ssn" type="text" th:field="*{SSN}"/><br>
+            <p class="form-error" th:each="error : ${#fields.errors('SSN')}" th:text="${error}">
                 SSN validation error
             </p>
 

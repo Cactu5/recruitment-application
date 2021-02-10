@@ -111,7 +111,7 @@ public class Person implements PersonDTO {
     }
 
     @Override
-    public String getSsn() {
+    public String getSSN() {
         return ssn;
     }
 
