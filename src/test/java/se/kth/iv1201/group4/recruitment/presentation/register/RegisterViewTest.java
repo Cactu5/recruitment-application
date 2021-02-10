@@ -58,4 +58,12 @@ class RegisterViewTest implements TestExecutionListener{
         .andExpect(content().string(containsString("lösenord")))
         .andExpect(content().string(containsString("personnummer")));
     }
+    @Test
+    void testIfViewIsUsingThymeleafDecoration() throws Exception{
+        mockMvc.perform(get("/register"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("| Registrering")))
+        .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
+        .andExpect(content().string(containsString("<footer>")));
+    }
 }
