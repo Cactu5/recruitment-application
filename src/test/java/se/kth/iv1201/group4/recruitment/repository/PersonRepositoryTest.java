@@ -31,6 +31,11 @@ public class PersonRepositoryTest implements TestExecutionListener {
         List<Person> persons = personRepository.findAll();
         assertThat(persons.size(), is(1));
         assertThat(persons.get(0), is(ben));
+        assertThat(persons.get(0).getEmail(), is(ben.getEmail()));
+        assertThat(persons.get(0).getName(), is(ben.getName()));
+        assertThat(persons.get(0).getSSN(), is(ben.getSSN()));
+        assertThat(persons.get(0).getSurname(), is(ben.getSurname()));
+        assertThat(persons.get(0).getUsername(), is(ben.getUsername()));
     }
 
     @Test
