@@ -41,4 +41,21 @@ class LoginViewTest implements TestExecutionListener{
         .andExpect(content().string(containsString("<input id=\"username\" name=\"username\" type=\"text\"/>")))
         .andExpect(content().string(containsString("<input id=\"password\" name=\"password\" type=\"password\"/>")));
     }
+
+    @Test
+    void testIfViewRendersTextFromMessageProperties() throws Exception{
+        mockMvc.perform(get("/login"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("användarnamn")))
+        .andExpect(content().string(containsString("lösenord")));
+    }
+
+    @Test
+    void testIfViewIsUsingThymeleafDecoration() throws Exception{
+        mockMvc.perform(get("/login"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("| Login")))
+        .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
+        .andExpect(content().string(containsString("<footer>")));
+    }
 }
