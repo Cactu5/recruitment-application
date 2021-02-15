@@ -35,7 +35,7 @@ The following is a list of the frameworks and technologies used throughout the p
  - **Junit**
  - **GitHub Actions**
 
-### 3 Dependencies
+## 3 Dependencies
 The following _must_ be installed:
  - **JDK 11**: Needed to compile the project.
 
@@ -53,5 +53,5 @@ below are suggestions.
  2. Open [`RecruitmentApplication.java`](src/main/java/se/kth/iv1201/group4/recruitment/RecruitmentApplication.java).
  3. Click "Run" above the `main` method.
 
-The tests can be run by opening a test source file under [`src/main`](src/test/java/se/kth/iv1201/group4/recruitment)
+The tests can be run by opening a test source file under [`src/test`](src/test/java/se/kth/iv1201/group4/recruitment)
 and clicking "Run Test" above the class name.
