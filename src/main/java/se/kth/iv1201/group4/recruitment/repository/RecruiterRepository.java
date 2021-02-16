@@ -9,8 +9,9 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 
 /**
- * Repository for Recruiter. Contains all methods for accessing data in the
- * database concerning Recruiter.
+ * Repository for {@link se.kth.iv1201.group4.recruitment.domain.Recruiter}.
+ * Contains all methods for accessing data in the database concerning
+ * {@link se.kth.iv1201.group4.recruitment.domain.Recruiter}.
  * 
  * @author Cactu5
  */

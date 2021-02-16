@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Propagation;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 
 /**
- * Repository for CompetenceProfile. Contains all methods for accessing data in
- * the database concerning CompetenceProfile.
+ * Repository for
+ * {@link se.kth.iv1201.group4.recruitment.domain.CompetenceProfile}. Contains
+ * all methods for accessing data in the database concerning
+ * {@link se.kth.iv1201.group4.recruitment.domain.CompetenceProfile}.
  * 
  * @author Cactu5
  */
