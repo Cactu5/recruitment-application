@@ -7,6 +7,12 @@ import org.springframework.transaction.annotation.Propagation;
 
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 
+/**
+ * Repository for CompetenceProfile. Contains all methods for accessing data in
+ * the database concerning CompetenceProfile.
+ * 
+ * @author Cactu5
+ */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface CompetenceProfileRepository extends JpaRepository<CompetenceProfile, Long> {

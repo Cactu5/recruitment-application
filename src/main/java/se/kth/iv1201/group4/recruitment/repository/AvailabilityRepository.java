@@ -7,6 +7,12 @@ import org.springframework.transaction.annotation.Propagation;
 
 import se.kth.iv1201.group4.recruitment.domain.Availability;
 
+/**
+ * Repository for Availability. Contains all methods for accessing data in the
+ * database concerning Availability.
+ * 
+ * @author Cactu5
+ */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface AvailabilityRepository extends JpaRepository<Availability, Long> {
