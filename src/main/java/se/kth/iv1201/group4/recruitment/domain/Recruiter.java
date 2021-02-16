@@ -13,6 +13,12 @@ import javax.persistence.Table;
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.RecruiterDTO;
 
+/**
+ * An entity representing a recruiter.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString
 @Entity
 @Table(name = "recruiter")

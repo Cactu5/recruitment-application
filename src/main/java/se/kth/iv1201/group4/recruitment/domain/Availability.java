@@ -14,6 +14,12 @@ import javax.persistence.Table;
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
 
+/**
+ * An entity representing an availability.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString
 @Entity
 @Table(name = "availabilities")

@@ -18,6 +18,12 @@ import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.ApplicantDTO;
 import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
 
+/**
+ * An entity representing an applicant.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString
 @Entity
 @Table(name = "applicant")
