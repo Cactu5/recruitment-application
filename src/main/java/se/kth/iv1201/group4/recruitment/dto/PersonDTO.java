@@ -1,5 +1,15 @@
 package se.kth.iv1201.group4.recruitment.dto;
 
+/**
+ * This PersonDTO is a DTO. It contains all of the expected getters for this
+ * specific type.
+ * 
+ * The PersonDTO interface provides methods to get the necessary information of
+ * a person. Which consists of: name, surname, email, social security number,
+ * username and password.
+ * 
+ * @author Cactu5
+ */
 public interface PersonDTO {
 
     /**
