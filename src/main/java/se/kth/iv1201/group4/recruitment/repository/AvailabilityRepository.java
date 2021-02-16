@@ -13,6 +13,7 @@ import se.kth.iv1201.group4.recruitment.domain.Availability;
  * {@link se.kth.iv1201.group4.recruitment.domain.Availability}.
  * 
  * @author Cactu5
+ * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository

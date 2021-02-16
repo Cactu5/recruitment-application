@@ -8,6 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * status.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface JobStatusDTO {
 

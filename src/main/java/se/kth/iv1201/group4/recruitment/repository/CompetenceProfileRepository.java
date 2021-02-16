@@ -14,6 +14,7 @@ import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
  * {@link se.kth.iv1201.group4.recruitment.domain.CompetenceProfile}.
  * 
  * @author Cactu5
+ * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository

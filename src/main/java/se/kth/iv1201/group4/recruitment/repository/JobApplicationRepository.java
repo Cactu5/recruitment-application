@@ -14,6 +14,7 @@ import se.kth.iv1201.group4.recruitment.domain.JobApplication;
  * {@link se.kth.iv1201.group4.recruitment.domain.JobApplication}.
  * 
  * @author Cactu5
+ * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository

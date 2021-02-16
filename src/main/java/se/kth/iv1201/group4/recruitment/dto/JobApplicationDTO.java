@@ -8,6 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * availabilities and also the status of the job application.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface JobApplicationDTO {
 

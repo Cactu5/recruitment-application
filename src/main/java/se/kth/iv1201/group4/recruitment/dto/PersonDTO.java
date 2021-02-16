@@ -9,6 +9,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * username and password.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface PersonDTO {
 

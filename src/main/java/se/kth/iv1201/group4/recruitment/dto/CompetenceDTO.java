@@ -8,6 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * competence.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface CompetenceDTO {
     /**

@@ -8,6 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * the years of experience in that specific competence.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface CompetenceProfileDTO {
 

@@ -10,6 +10,7 @@ import java.time.LocalDate;
  * and end dates.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface AvailabilityDTO {
     /**

@@ -10,6 +10,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * recruiter.
  * 
  * @author Cactu5
+ * @version %I%
  */
 public interface ApplicantDTO extends PersonDTO {
 
