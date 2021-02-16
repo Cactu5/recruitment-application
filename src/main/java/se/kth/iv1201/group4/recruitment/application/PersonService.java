@@ -23,8 +23,8 @@ import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
 /**
  * A service for accessing or adding persons from and to the preson
- * repositories. Rolls back on all exceptions and supports only transactional
- * methods.
+ * repositories. Rolls back on all exceptions and supports current transactions,
+ * or creates a new if none exist.
  * 
  * @author William Stackenäs
  */
