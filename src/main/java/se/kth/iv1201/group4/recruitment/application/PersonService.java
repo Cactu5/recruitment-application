@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Person;
@@ -20,10 +22,13 @@ import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
 /**
- * A service for accessing or adding persons from and to the preson repositories
+ * A service for accessing or adding persons from and to the preson
+ * repositories. Rolls back on all exceptions and supports only transactional
+ * methods.
  * 
  * @author William Stackenäs
  */
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @Service
 public class PersonService implements UserDetailsService {
     @Autowired
@@ -77,7 +82,7 @@ public class PersonService implements UserDetailsService {
         String role = null;
         try {
             p = personRepo.findPersonByUsername(username);
-            
+
             if (applicantRepo.findApplicantByPerson(p) != null) {
                 LOGGER.debug("Person logged in as an applicant.");
                 role = ROLE_APPLICANT;
