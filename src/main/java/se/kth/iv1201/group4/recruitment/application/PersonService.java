@@ -3,7 +3,10 @@ package se.kth.iv1201.group4.recruitment.application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,14 +30,21 @@ import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
  * or creates a new if none exist.
  * 
  * @author William Stackenäs
+ * @author Cactu5
+ * @version %I%
  */
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @Service
 public class PersonService implements UserDetailsService {
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     PersonRepository personRepo;
+
     @Autowired
     ApplicantRepository applicantRepo;
+
     @Autowired
     RecruiterRepository recruiterRepo;
 
@@ -93,10 +103,25 @@ public class PersonService implements UserDetailsService {
                 // Should never end up here as all Persons are
                 // either applicants or recruiters
                 LOGGER.error("Person logged in as neither an applicant nor recruiter.");
+                throw new UsernameNotFoundException("user has no role");
             }
         } catch (Exception e) {
             throw new UsernameNotFoundException("database error");
         }
+
         return new User(username, p.getPassword(), AuthorityUtils.createAuthorityList(role));
+    }
+
+    public void autoLogin(String username, String password) {
+        UserDetails userDetails = loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, password, userDetails.getAuthorities());
+
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            LOGGER.debug("Auto login was successfull for user: " + username);
+        }
     }
 }

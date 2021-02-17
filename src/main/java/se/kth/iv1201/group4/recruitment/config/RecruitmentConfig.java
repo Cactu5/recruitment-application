@@ -13,10 +13,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -31,8 +29,8 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan({"se.kth.iv1201.group4.recruitment"})
-public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAware {  
+@ComponentScan({ "se.kth.iv1201.group4.recruitment" })
+public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAware {
     public static final String TEMPLATE_FILE_LOCATION = "classpath:/templates/";
     public static final String I18N_MESSAGES_LOCATION = "classpath:/i18n/Messages";
     public static final String I18N_VALIDATION_MESSAGES_LOCATION = "classpath:/i18n/ValidationMessages";
@@ -42,16 +40,15 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     private ApplicationContext applicationContext;
 
     /**
-     * @param applicationContext    applicationContext used for the backend
-     *                              of the webserver.
+     * @param applicationContext applicationContext used for the backend of the
+     *                           webserver.
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-
-     /**
+    /**
      * Returns the server-related properties from application.properties.
      * 
      * @return The server-related properties
@@ -60,13 +57,14 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     public ServerProperties serverProperties() {
         return new ServerProperties();
     }
-    /** 
-     * Makes sure that every view of the web server will be resolved by 
+
+    /**
+     * Makes sure that every view of the web server will be resolved by
      * {@link ThymeleafViewResolver} also sets the meta data of the view resolver
      * 
-     * @return {@link ThymeleafViewResolver}    contains the settins set
-     */ 
-    @Bean 
+     * @return {@link ThymeleafViewResolver} contains the settins set
+     */
+    @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setCharacterEncoding("UTF-8");
@@ -78,28 +76,28 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     /**
      * Configuration for Thymeleaf's template engine integration with spring.
      *
-     * @return {@link SpringTemplateEngine}    used for all template resolutions.
+     * @return {@link SpringTemplateEngine} used for all template resolutions.
      */
     @Bean(name = "recruitmentTemplateEngine")
-    public SpringTemplateEngine templateEngine(){
+    public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
         templateEngine.addDialect(new LayoutDialect());
+        templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
     }
 
     /**
      * Configurations to intergrate Thymeleaf with Spring
      *
-     * @return {@link SpringResourceTemplateResolver}   Only template resolver to 
-     *                                                  be used by the web server
+     * @return {@link SpringResourceTemplateResolver} Only template resolver to be
+     *         used by the web server
      */
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver templateResolver = 
-            new SpringResourceTemplateResolver();
-        templateResolver.setApplicationContext(applicationContext);        
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix(TEMPLATE_FILE_LOCATION);
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -107,42 +105,40 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
 
         return templateResolver;
     }
-    
+
     /**
      * Configure static resources to be accessed by web clients.
      *
-     * @param registry    used to configure static resources
+     * @param registry used to configure static resources
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-            .addResourceLocations(STATIC_RESOURCES_LOCATION)
-            .setCachePeriod(CHACHE_PERIOD_FOR_STATIC_FILES_SEC)
-            .resourceChain(true)
-            .addResolver(new PathResourceResolver());
+        registry.addResourceHandler("/**").addResourceLocations(STATIC_RESOURCES_LOCATION)
+                .setCachePeriod(CHACHE_PERIOD_FOR_STATIC_FILES_SEC).resourceChain(true)
+                .addResolver(new PathResourceResolver());
     }
 
     /**
      * Used to register a interceptor, in this case i18n
      *
-     * @param registry  contains the interceptor settings configured
+     * @param registry contains the interceptor settings configured
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());                
+        registry.addInterceptor(localeChangeInterceptor());
     }
 
     /**
      * Creates obejct used for locale management. For this server
      * {@link LocaleChangeInterceptor} is used.
      *
-     * @return {@link LocaleChangeInterceptor}  returns containing configured 
-     *                                          settings.
+     * @return {@link LocaleChangeInterceptor} returns containing configured
+     *         settings.
      */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         String nameOfHttpParamForLangCode = "lang";
-        String[] allowedHttpMethodsForLocaleChange = { "GET", "POST"  };
+        String[] allowedHttpMethodsForLocaleChange = { "GET", "POST" };
 
         LocaleChangeInterceptor i18nBean = new LocaleChangeInterceptor();
         i18nBean.setParamName(nameOfHttpParamForLangCode);
@@ -150,27 +146,25 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
         i18nBean.setIgnoreInvalidLocale(true);
         return i18nBean;
     }
-    
+
     /**
-     * Loads {@link ReloadableResourceBundleMessageSource} 
-     * resource bundles for configured locale solution.
+     * Loads {@link ReloadableResourceBundleMessageSource} resource bundles for
+     * configured locale solution.
      *
-     * @return {@link ReloadableResourceBundleMessageSource}    returns
-     *                                                          configures settings
+     * @return {@link ReloadableResourceBundleMessageSource} returns configures
+     *         settings
      */
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource resource 
-            = new ReloadableResourceBundleMessageSource();
-        resource.addBasenames(I18N_MESSAGES_LOCATION, 
-                I18N_VALIDATION_MESSAGES_LOCATION);
+        ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
+        resource.addBasenames(I18N_MESSAGES_LOCATION, I18N_VALIDATION_MESSAGES_LOCATION);
         resource.setDefaultEncoding("UTF-8");
         resource.setFallbackToSystemLocale(false);
         return resource;
     }
 
     /**
-     * Configures validator used by server. Sets what 
+     * Configures validator used by server. Sets what
      * {@link ReloadableResourceBundleMessageSource} to use by calling
      * {@link #messageSource()}
      */

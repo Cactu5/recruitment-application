@@ -24,12 +24,10 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
  * @author William Stackenäs
  */
 @Controller
-public class RegisterController  {
+public class RegisterController {
 
     @Autowired
     PersonService service;
-    @Autowired
-    private ServerProperties props;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
@@ -45,19 +43,18 @@ public class RegisterController  {
     }
 
     /**
-     * A post request on the register page, or a registration attempt.
-     * Only applicants can register using this method.
+     * A post request on the register page, or a registration attempt. Only
+     * applicants can register using this method.
      * 
-     * @param form    The registration form that was sent in the post request
-     * @param result  The result when validating the form
-     * @param model   The model objects used in the register page
+     * @param form   The registration form that was sent in the post request
+     * @param result The result when validating the form
+     * @param model  The model objects used in the register page
      * @return The URL to the register page if the registration attempt failed.
      *         Otherwise, the URL to the applicant page.
-     *          
+     * 
      */
     @PostMapping("/register")
-    public String register(@Valid RegisterForm form, 
-        BindingResult result, Model model) {
+    public String register(@Valid RegisterForm form, BindingResult result, Model model) {
         LOGGER.trace("Registration attempt.");
         Person p;
         if (result.hasErrors()) {
@@ -67,14 +64,11 @@ public class RegisterController  {
             }
             return "/register";
         }
-        p = new Person(form.getName(),
-                       form.getSurname(),
-                       form.getEmail(),
-                       form.getSSN(),
-                       form.getUsername(),
-                       form.getPassword());
+        p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
+                form.getPassword());
         try {
             service.addApplicant(new Applicant(p));
+            service.autoLogin(form.getUsername(), form.getPassword());
         } catch (DataAccessException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
