@@ -22,6 +22,8 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
  * A controller for accessing the register page
  * 
  * @author William Stackenäs
+ * @author Cactu5
+ * @version %I%
  */
 @Controller
 public class RegisterController {

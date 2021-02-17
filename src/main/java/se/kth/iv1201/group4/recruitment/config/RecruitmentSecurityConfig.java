@@ -20,6 +20,8 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
  * Security settings.
  *
  * @author Filip Garamvölgyi
+ * @author Cactu5
+ * @version %I%
  */
 @Configuration
 @EnableWebMvc

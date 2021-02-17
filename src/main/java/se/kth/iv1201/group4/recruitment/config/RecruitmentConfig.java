@@ -26,6 +26,8 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  * Contains configurations for SpringMVC settings.
  *
  * @author Filip Garamvölgyi
+ * @author Cactu5
+ * @version %I%
  */
 @EnableWebMvc
 @Configuration
