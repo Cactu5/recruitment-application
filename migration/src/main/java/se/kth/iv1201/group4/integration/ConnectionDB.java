@@ -23,7 +23,10 @@ class ConncectionDB {
     private static final String PASSWORD = "password";
 
 
-    public ConncectionDB(){}
+    /**
+     * Creates instance of ConnectionDB. 
+     */
+    ConncectionDB(){}
 
 
     private Connection createConnection(){
@@ -38,6 +41,14 @@ class ConncectionDB {
         }
     }
 
+    /**
+     * Creates a connection to the database and runs a query. 
+     *
+     * @param query     the SQL query to run
+     * @param cols      an array containing the names of the SQL table
+     * @return          the key of the hashmap is the table column and the value
+     *                  is a list of all the rows in the columns.
+     */
     HashMap<String,List<String>> getAllRows(final String query, String...cols){
         HashMap<String,List<String>> rows = new HashMap<String,List<String>>(cols.length);
         try(Connection con = createConnection()){

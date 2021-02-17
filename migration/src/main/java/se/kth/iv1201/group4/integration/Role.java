@@ -1,7 +1,7 @@
 package se.kth.iv1201.group4.integration;
 
 /**
- * Represents table in database.
+ * Represents role table in database.
  *
  * @author Filip Garamvölgyi
  */
