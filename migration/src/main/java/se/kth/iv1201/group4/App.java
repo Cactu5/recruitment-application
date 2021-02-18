@@ -1,26 +1,22 @@
 package se.kth.iv1201.group4;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
-import se.kth.iv1201.group4.integration.PersonDB;
-import se.kth.iv1201.group4.integration.Person;
-
-import se.kth.iv1201.group4.integration.CompetenceProfileDB;
-import se.kth.iv1201.group4.integration.CompetenceProfile;
-
-import se.kth.iv1201.group4.integration.CompetenceDB;
-import se.kth.iv1201.group4.integration.Competence;
-
-import se.kth.iv1201.group4.integration.AvailabilityDB;
-import se.kth.iv1201.group4.integration.Availability;
+import se.kth.iv1201.group4.integration.*;
 
 /**
  * Hello world!
  *
  */
 public class App {
+    private static final String FOLDER = "data/";
     public static void main( String[] args ){
         System.out.println( "Hello World!" );
         List<Person>[] persons =  PersonDB.getSingleton().getAllPersons();
@@ -28,21 +24,42 @@ public class App {
         List<Competence> competencies = CompetenceDB.getSingleton().getAllCompetencies();
         List<Availability> availabilities = AvailabilityDB.getSingleton().getAllAvailabilities();
         try {
-            ObjectMapper pretty = new ObjectMapper();
+            ObjectWriter pretty = new ObjectMapper().writerWithDefaultPrettyPrinter();
+            ObjectMapper compact = new ObjectMapper();
+            
             System.out.println("Recruiters:");
-            System.out.println( pretty.writerWithDefaultPrettyPrinter().writeValueAsString(persons[0]) );            
+            writeDataToJSON("recruiters.json", compact.writeValueAsString(persons[0]));
+            System.out.println( pretty.writeValueAsString(persons[0]) );            
+            
             System.out.println("Applicants:");
-            System.out.println( pretty.writerWithDefaultPrettyPrinter().writeValueAsString(persons[1]) );            
+            writeDataToJSON("applicants.json", compact.writeValueAsString(persons[1]));
+            System.out.println( pretty.writeValueAsString(persons[1]) );            
+            
             System.out.println("Competence profiles:");
-            System.out.println( pretty.writerWithDefaultPrettyPrinter().writeValueAsString(competenceProfiles) );     
+            writeDataToJSON("competenceProfiles.json", compact.writeValueAsString(competenceProfiles));
+            System.out.println( pretty.writeValueAsString(competenceProfiles) );     
+            
             System.out.println("Competencies:");
-            System.out.println( pretty.writerWithDefaultPrettyPrinter().writeValueAsString(competencies) ); 
+            writeDataToJSON("competencies.json", compact.writeValueAsString(competencies));
+            System.out.println( pretty.writeValueAsString(competencies) ); 
+            
             System.out.println("Availabilties:");
-            System.out.println( pretty.writerWithDefaultPrettyPrinter().writeValueAsString(availabilities) ); 
+            writeDataToJSON("availabilities.json", compact.writeValueAsString(availabilities));
+            System.out.println( pretty.writeValueAsString(availabilities) ); 
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return;
+    }
+    private static void writeDataToJSON(String fileName, String data){
+        try {
+            FileWriter fw = new FileWriter(FOLDER + fileName);
+            PrintWriter pw = new PrintWriter(fw);
+            pw.print(data);
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
