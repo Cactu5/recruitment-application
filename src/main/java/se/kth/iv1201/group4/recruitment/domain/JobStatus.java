@@ -15,6 +15,12 @@ import javax.validation.constraints.Size;
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.JobStatusDTO;
 
+/**
+ * An entity representing a job status.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString
 @Entity
 @Table(name = "job_status")

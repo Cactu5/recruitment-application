@@ -20,6 +20,12 @@ import se.kth.iv1201.group4.recruitment.dto.CompetenceProfileDTO;
 import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
 import se.kth.iv1201.group4.recruitment.dto.JobStatusDTO;
 
+/**
+ * An entity representing a job application.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString
 @Entity
 @Table(name = "job_application")

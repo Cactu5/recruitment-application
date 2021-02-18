@@ -1,5 +1,15 @@
 package se.kth.iv1201.group4.recruitment.dto;
 
+/**
+ * This JobApplicationDTO is a DTO. It contains all of the expected getters for
+ * this specific type.
+ * 
+ * The JobApplicationDTO interface provides a way to get all of the competences,
+ * availabilities and also the status of the job application.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 public interface JobApplicationDTO {
 
     /**
