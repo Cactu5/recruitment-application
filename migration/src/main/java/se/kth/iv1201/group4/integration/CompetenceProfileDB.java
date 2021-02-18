@@ -15,10 +15,10 @@ import java.util.List;
 public class CompetenceProfileDB {
     private static final String QUERY = "SELECT * FROM competence_profile";
     private static final CompetenceProfileDB singleton = new CompetenceProfileDB();
-    private final ConncectionDB conDB;
+    private final ConnectionDB conDB;
     
     private CompetenceProfileDB(){
-        conDB = new ConncectionDB();
+        conDB = new ConnectionDB();
     }
 
     /**

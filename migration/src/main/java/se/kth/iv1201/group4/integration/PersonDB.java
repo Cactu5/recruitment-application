@@ -15,14 +15,14 @@ import java.util.List;
 public class PersonDB {
     private static final String QUERY = "SELECT * FROM person";
     private static final PersonDB singleton = new PersonDB();
-    private final ConncectionDB conDB;
+    private final ConnectionDB conDB;
     
     private int missingEmails;
     private int missingUsernames;
     private int missingSsns;
     
     private PersonDB(){
-        conDB = new ConncectionDB();
+        conDB = new ConnectionDB();
         missingEmails = 0;
         missingUsernames = 0;
         missingSsns = 0;

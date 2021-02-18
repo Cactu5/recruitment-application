@@ -9,7 +9,7 @@ public class Person{
     private final String name;
     private final String surname;
     private final String email;
-    private final String ssn;
+    private final String SSN;
     private final String username;
     private final String password;
 
@@ -19,7 +19,7 @@ public class Person{
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.ssn = ssn;
+        this.SSN = ssn;
         this.username = username;
         this.password = password;
     }
@@ -28,7 +28,7 @@ public class Person{
     public String getName(){ return name; }
     public String getSurname(){ return surname; }
     public String getEmail(){ return email; }
-    public String getSsn() { return ssn; }
+    public String getSSN() { return SSN; }
     public String getUsername() { return username; }
     public String getPassword() { return password; }
 }

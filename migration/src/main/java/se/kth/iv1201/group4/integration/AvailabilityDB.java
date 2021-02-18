@@ -15,10 +15,10 @@ import java.util.List;
 public class AvailabilityDB {
     private static final String QUERY = "SELECT * FROM availability";
     private static final AvailabilityDB singleton = new AvailabilityDB();
-    private final ConncectionDB conDB;
+    private final ConnectionDB conDB;
     
     private AvailabilityDB(){
-        conDB = new ConncectionDB();
+        conDB = new ConnectionDB();
     }
 
     /**

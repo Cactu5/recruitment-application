@@ -15,10 +15,10 @@ import java.util.List;
 class RoleDB {
     private static final String QUERY = "SELECT * FROM role";
     private static final RoleDB singleton = new RoleDB();
-    private final ConncectionDB conDB;
+    private final ConnectionDB conDB;
     
     private RoleDB(){
-        conDB = new ConncectionDB();
+        conDB = new ConnectionDB();
     }
     
     /**

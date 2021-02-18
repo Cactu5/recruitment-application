@@ -7,7 +7,7 @@ This code is only meant to connect to an old database take the information and g
 ### Insert data
 `cat ./db/dump.sql | mysql -u <username> -p`
 ### Used databse
-This script was created to use MariaDB/MySQL db connectors woyúld have to be changed if another DB is to be used.
+This script was created to use MariaDB/MySQL db connectors would have to be changed if another DB is to be used.
 
 ## Running the script
 Run this script using the following command: `mvn clean compile exec:java -Dexec.cleanupDaemonThreads=false`

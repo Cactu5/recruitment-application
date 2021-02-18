@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author Filip Garamvölgyi
  */
-class ConncectionDB {
+class ConnectionDB {
     private static final String HOST = "jdbc:mysql://localhost:3306/olddb";
     private static final String USER = "admin";
     private static final String PASSWORD = "password";
@@ -26,7 +26,7 @@ class ConncectionDB {
     /**
      * Creates instance of ConnectionDB. 
      */
-    ConncectionDB(){}
+    ConnectionDB(){}
 
 
     private Connection createConnection(){
