@@ -8,6 +8,14 @@ import org.springframework.transaction.annotation.Propagation;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 
+/**
+ * Repository for {@link se.kth.iv1201.group4.recruitment.domain.Recruiter}.
+ * Contains all methods for accessing data in the database concerning
+ * {@link se.kth.iv1201.group4.recruitment.domain.Recruiter}.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface RecruiterRepository extends JpaRepository<Recruiter, Long> {

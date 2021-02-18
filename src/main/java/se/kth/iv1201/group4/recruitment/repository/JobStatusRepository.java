@@ -7,6 +7,14 @@ import org.springframework.transaction.annotation.Propagation;
 
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
 
+/**
+ * Repository for {@link se.kth.iv1201.group4.recruitment.domain.JobStatus}.
+ * Contains all methods for accessing data in the database concerning
+ * {@link se.kth.iv1201.group4.recruitment.domain.JobStatus}.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface JobStatusRepository extends JpaRepository<JobStatus, Long> {

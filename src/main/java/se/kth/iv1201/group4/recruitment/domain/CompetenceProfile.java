@@ -13,6 +13,12 @@ import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceProfileDTO;
 
+/**
+ * An entity representing a competence profile.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString
 @Entity
 @Table(name = "competence_profile")

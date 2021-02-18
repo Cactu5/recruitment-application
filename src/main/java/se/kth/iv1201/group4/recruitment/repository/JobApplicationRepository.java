@@ -7,6 +7,15 @@ import org.springframework.transaction.annotation.Propagation;
 
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 
+/**
+ * Repository for
+ * {@link se.kth.iv1201.group4.recruitment.domain.JobApplication}. Contains all
+ * methods for accessing data in the database concerning
+ * {@link se.kth.iv1201.group4.recruitment.domain.JobApplication}.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
