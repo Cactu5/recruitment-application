@@ -2,6 +2,7 @@ package se.kth.iv1201.group4.recruitment.presentation.register;
 
 import javax.validation.Valid;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class RegisterController  {
      * @return The URL to the register page
      */
     @GetMapping("/register")
-    public String showRegisterView(RegisterForm registerForm) {
+    public String showRegisterView(Model model) {
         LOGGER.trace("Get request for the register page.");
         return "/register";
     }
@@ -75,7 +76,7 @@ public class RegisterController  {
                        form.getPassword());
         try {
             service.addApplicant(new Applicant(p));
-        } catch (DataAccessException e) {
+        } catch (ConstraintViolationException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
             return "/register";
