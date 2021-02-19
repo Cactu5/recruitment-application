@@ -80,10 +80,6 @@ public class RegisterController  {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
             return "/register";
-        } catch (Exception e) {
-            LOGGER.error("Could not add applicant to database.", e);
-            model.addAttribute("error", "{error.gereric}");
-            return "/register";
         }
         return "/success";
     }
