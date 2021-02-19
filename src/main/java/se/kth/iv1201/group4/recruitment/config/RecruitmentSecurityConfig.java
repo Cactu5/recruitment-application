@@ -72,6 +72,8 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().antMatchers("/register*", "/login*", CSS_FILES_LOCATION).permitAll()
-                .anyRequest().authenticated().and().formLogin().loginPage("/login").loginProcessingUrl("/login");
+                .antMatchers("/success").authenticated().antMatchers("/success-applicant").hasRole("APPLICANT")
+                .antMatchers("/success-recruiter").hasRole("RECRUITER").and().formLogin().loginPage("/login")
+                .loginProcessingUrl("/login").defaultSuccessUrl("/success", true);
     }
 }

@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +40,13 @@ public class RegisterController {
     @GetMapping("/register")
     public String showRegisterView(RegisterForm registerForm) {
         LOGGER.trace("Get request for the register page.");
-        return "/register";
+
+        if (service.getLoggedInUser() != null) {
+            LOGGER.trace("An authenticated user tried to use the register page.");
+            return "redirect:success";
+        }
+
+        return "register";
     }
 
     /**
@@ -58,13 +63,14 @@ public class RegisterController {
     @PostMapping("/register")
     public String register(@Valid RegisterForm form, BindingResult result, Model model) {
         LOGGER.trace("Registration attempt.");
+
         Person p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
                 LOGGER.debug(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
-            return "/register";
+            return "register";
         }
         p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
                 form.getPassword());
@@ -74,12 +80,12 @@ public class RegisterController {
         } catch (DataAccessException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
-            return "/register";
+            return "register";
         } catch (Exception e) {
             LOGGER.error("Could not add applicant to database.", e);
             model.addAttribute("error", "{error.gereric}");
-            return "/register";
+            return "register";
         }
-        return "/success";
+        return "redirect:success";
     }
 }
