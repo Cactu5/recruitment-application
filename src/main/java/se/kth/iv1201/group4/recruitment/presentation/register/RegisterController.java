@@ -39,7 +39,7 @@ public class RegisterController  {
      * @return The URL to the register page
      */
     @GetMapping("/register")
-    public String showRegisterView() {
+    public String showRegisterView(RegisterForm registerForm) {
         LOGGER.trace("Get request for the register page.");
         return "register";
     }
