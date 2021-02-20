@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author William Stackenäs
  */
 @Controller
+@ControllerAdvice
 public class ErrorHandler implements ErrorController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
@@ -37,7 +39,7 @@ public class ErrorHandler implements ErrorController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleDatabaseException(DataAccessException e, Model model) {
         LOGGER.error(e.getMessage(), e);
-        model.addAttribute("error", "{error.db}");
+        model.addAttribute("error", "error.db");
         return getErrorPath();
     }
 
@@ -53,7 +55,7 @@ public class ErrorHandler implements ErrorController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(Exception e, Model model) {
         LOGGER.error(e.getMessage(), e);
-        model.addAttribute("error", "{error.gereric}");
+        model.addAttribute("error", "error.gereric");
         return getErrorPath();
     }
 
@@ -70,7 +72,7 @@ public class ErrorHandler implements ErrorController {
     public String showErrorView(HttpServletRequest request, HttpServletResponse response, Model model) {
         String status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString();
         LOGGER.debug("Showing error view with status " + status + ".");
-        model.addAttribute("error", status);
+        model.addAttribute("error", "error." + status);
         response.setStatus(Integer.parseInt(status));
         return getErrorPath();
     }

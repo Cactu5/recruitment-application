@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+  <meta charset="UTF-8">
+  <title>Error</title>
+</head>
+<body>
+  <main layout:fragment="content">
+      <h1>Error page</h1>
+      <p th:if="${#messages.msgOrNull('__${error}__') != null}" th:text="#{'__${error}__'}">message</p>
+      <p th:if="${#messages.msgOrNull('__${error}__') == null}" th:text="#{error.generic}">generic message</p>
+  </main>
+</body>
+</html>

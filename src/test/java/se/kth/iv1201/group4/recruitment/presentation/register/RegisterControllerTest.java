@@ -18,10 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.addParam;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.containsElements;
-import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.doesNotContainElements;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendGetRequest;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendPostRequest;
 
@@ -54,6 +52,6 @@ public class RegisterControllerTest implements TestExecutionListener {
     }
 
     private ResultMatcher gotSuccessPage() {
-        return containsElements("main p:contains(pleaselogoutgoodsir)", "main p:contains(pleaselogoutgoodsir)");
+        return containsElements("main p:contains(pleaselogoutgoodsir)");
     }
 }
