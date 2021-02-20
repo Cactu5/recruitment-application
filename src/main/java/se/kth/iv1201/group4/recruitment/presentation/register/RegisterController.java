@@ -42,7 +42,7 @@ public class RegisterController  {
     @GetMapping("/register")
     public String showRegisterView(Model model) {
         LOGGER.trace("Get request for the register page.");
-        return "/register";
+        return "register";
     }
 
     /**
@@ -66,7 +66,7 @@ public class RegisterController  {
                 LOGGER.debug(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
-            return "/register";
+            return "register";
         }
         p = new Person(form.getName(),
                        form.getSurname(),
@@ -79,8 +79,8 @@ public class RegisterController  {
         } catch (ConstraintViolationException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
-            return "/register";
+            return "register";
         }
-        return "/success";
+        return "success";
     }
 }
