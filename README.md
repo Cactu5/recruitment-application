@@ -22,7 +22,7 @@ following repository structure.
                       domain-driven design.
  - **src/main/resources**: Contains resources such as thymeleaf templates and
                            properties for loggers, internationalization, etc.
- - **src/test**: Contains Junit tests spring's mockMVC to simulate HTTP
+ - **src/test**: Contains Junit tests using spring's mockMVC to simulate HTTP
                  transactions.
 
 ## 2. Frameworks Used
