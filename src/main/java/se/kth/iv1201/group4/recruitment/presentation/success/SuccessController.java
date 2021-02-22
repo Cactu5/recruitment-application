@@ -63,7 +63,7 @@ public class SuccessController {
             } else if (PersonService.authoritiesContains(user.getAuthorities(), PersonService.ROLE_RECRUITER)) {
                 return "redirect:success-recruiter";
             } else {
-                LOGGER.debug("Authenticated user with no role tried logging in.");
+                LOGGER.error("Authenticated user with no role tried logging in.");
             }
         }
 
