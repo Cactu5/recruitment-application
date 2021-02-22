@@ -13,6 +13,7 @@ writing any code.
  - [3. Dependencies](#3-dependencies)
  - [4. Build Instructions](#4-build-instructions)
    - [4.1. Using VS Code](#41-using-vs-code)
+   - [4.2. Using Maven](#41-using-maven)
 
 ## 1. Repository Structure
 The recruitment application is a maven project and thus uses the
@@ -42,7 +43,7 @@ The following _must_ be installed:
 _Either_ of the following _must_ be installed:
  - **Visual Studio Code**: Can be used to compile and run tests using
                            its [java extension](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack).
- - **maven**: ?
+ - **maven**
 
 ## 4. Build Instructions
 There a multiple approaches to build the project, the ways described
@@ -55,3 +56,9 @@ below are suggestions.
 
 The tests can be run by opening a test source file under [`src/test`](src/test/java/se/kth/iv1201/group4/recruitment)
 and clicking "Run Test" above the class name.
+
+### 4.2 Using Maven
+ 1. Navigate to the root of the repository.
+ 2. Run `mvn spring-boot:run`
+
+The tests can be run using `mvn test`.
