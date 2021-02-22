@@ -70,6 +70,6 @@ the coding conventions are irrelevant or outdated.
 - Tab size is 4 spaces.
 
 ## 5. Testing
-A feature branches must be properly tested before their PRs can be merged. In general, there
-must be a test source file for each source file, and it should test both invalid and valid inputs
+A feature branches must be properly tested before their PRs can be merged. In general, there must be a test
+for each public method, excpet for simple getters and setters, and it should test both invalid and valid inputs
 to all methods in the source file. Spring MockMVC may be used to simulate HTTP transactions.
