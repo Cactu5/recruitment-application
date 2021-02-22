@@ -25,7 +25,10 @@ jobs:
         java-version: 11
 
     - name: Checkout to active branch
-      run: git checkout ${{ github.head_ref }}
+      run: |
+        git fetch origin
+        git checkout ${{ github.head_ref }}
+        git pull origin ${{ github.head_ref }}
 
     - name: Build with Maven
       run: mvn -B test
