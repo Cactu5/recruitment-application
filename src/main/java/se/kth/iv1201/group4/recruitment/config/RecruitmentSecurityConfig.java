@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,12 +15,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import se.kth.iv1201.group4.recruitment.application.PersonService;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 
-
 /**
- * This class makes it possible to use custom security settings
- * for Spring MVC Security settings.
+ * This class makes it possible to use custom security settings for Spring MVC
+ * Security settings.
  *
  * @author Filip Garamvölgyi
+ * @author Cactu5
+ * @version %I%
  */
 @Configuration
 @EnableWebMvc
@@ -36,13 +38,11 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-        .withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
-        .and()
-        .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER")
-        .and()
-        .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");
         auth.userDetailsService(service).passwordEncoder(Person.PASSWORD_ENCODER);
+        auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass"))
+                .roles("APPLICANT").and().withUser("user2").password(passwordEncoder().encode("user2Pass"))
+                .roles("APPLICANT").and().withUser("admin").password(passwordEncoder().encode("adminPass"))
+                .roles("RECRUITER");
     }
 
     @Bean
@@ -50,28 +50,30 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-    * Usees default {@link WebSecurityConfigurerAdapter} settings for the
-    * constructor.
-    */
-    public RecruitmentSecurityConfig(){ super(); }
+    @Bean
+    public AuthenticationManager customAuthenticationManager() throws Exception {
+        return authenticationManager();
+    }
 
     /**
-    * Configure what content can be accessed based on authentication,
-    * authoriazation as well as other HTTP security settings
-    *
-    * @param http  used to set scurity settings for spring webserver
-    */
+     * Usees default {@link WebSecurityConfigurerAdapter} settings for the
+     * constructor.
+     */
+    public RecruitmentSecurityConfig() {
+        super();
+    }
+
+    /**
+     * Configure what content can be accessed based on authentication,
+     * authoriazation as well as other HTTP security settings
+     *
+     * @param http used to set scurity settings for spring webserver
+     */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http
-          .csrf().disable()
-          .authorizeRequests()
-          .antMatchers("/register*","/login*", CSS_FILES_LOCATION).permitAll()
-          .anyRequest().authenticated()
-          .and()
-          .formLogin()
-          .loginPage("/login")
-          .loginProcessingUrl("/login");
+        http.csrf().disable().authorizeRequests().antMatchers("/register*", "/login*", CSS_FILES_LOCATION).permitAll()
+                .antMatchers("/success").authenticated().antMatchers("/success-applicant").hasRole("APPLICANT")
+                .antMatchers("/success-recruiter").hasRole("RECRUITER").and().formLogin().loginPage("/login")
+                .loginProcessingUrl("/login").defaultSuccessUrl("/success", true);
     }
 }
