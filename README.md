@@ -1,4 +1,6 @@
 # Recruitment Application
+<img src=".github/badges/branches.svg" alt="Branch coverage"/>
+<img src=".github/badges/jacoco.svg" alt="Jacoco results"/>
 An amusement park recruitment application where recruiters can hire
 applicants for various jobs. It is hosted on [Heroku](https://dashboard.heroku.com/)
 and is supported by at least the Google Chrome, Microsoft Edge, Safari, and Firefox
