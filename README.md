@@ -13,7 +13,7 @@ writing any code.
  - [3. Dependencies](#3-dependencies)
  - [4. Build Instructions](#4-build-instructions)
    - [4.1. Using VS Code](#41-using-vs-code)
-   - [4.2. Using Maven](#41-using-maven)
+   - [4.2. Using Maven](#42-using-maven)
 
 ## 1. Repository Structure
 The recruitment application is a maven project and thus uses the
