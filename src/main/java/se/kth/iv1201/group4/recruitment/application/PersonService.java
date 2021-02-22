@@ -154,8 +154,8 @@ public class PersonService implements UserDetailsService {
     /**
      * Returns whether the <code>Collection</code> contains the authority.
      * 
-     * @param collection
-     * @param authority
+     * @param collection the collection
+     * @param authority  the authority
      * @return <code>true</code> if the authority exists in the list, else
      *         <code>false</code>
      */
