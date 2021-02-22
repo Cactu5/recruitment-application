@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Person;
+import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.dto.ApplicantDTO;
 import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.dto.RecruiterDTO;
@@ -27,6 +28,7 @@ import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
  * or creates a new if none exist.
  * 
  * @author William Stackenäs
+ * @author Filip Garamvölgyi
  */
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 @Service
@@ -50,6 +52,17 @@ public class PersonService implements UserDetailsService {
     public void addApplicant(Applicant a) {
         if (a != null) {
             applicantRepo.save(a);
+        }
+    }
+
+    /**
+     * Adds a recruiter to the recruiter repository
+     * 
+     * @param a The recruiter to add
+     */
+    public void addRecruiter(Recruiter r) {
+        if (r != null) {
+            recruiterRepo.save(r);
         }
     }
 
