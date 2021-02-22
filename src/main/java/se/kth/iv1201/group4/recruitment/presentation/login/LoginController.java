@@ -12,9 +12,11 @@ import se.kth.iv1201.group4.recruitment.application.PersonService;
  * A controller for accessing the login page
  * 
  * @author William Stackenäs
+ * @author Cactu5
+ * @version %I%
  */
 @Controller
-public class LoginController  {
+public class LoginController {
 
     @Autowired
     PersonService service;
@@ -29,7 +31,14 @@ public class LoginController  {
     @GetMapping("/")
     public String showRootView() {
         LOGGER.trace("Get request for the root page.");
-        return "/success";
+
+        if (service.getLoggedInUser() != null) {
+            return "redirect:success";
+        }
+
+        LOGGER.trace("An unauthenticated user tried to use / .");
+
+        return "redirect:login";
     }
 
     /**
@@ -40,6 +49,12 @@ public class LoginController  {
     @GetMapping("/login")
     public String showLoginView() {
         LOGGER.trace("Get request for the login page.");
-        return "/login";
+
+        if (service.getLoggedInUser() != null) {
+            LOGGER.trace("An authenticated user tried to use the login page.");
+            return "redirect:success";
+        }
+
+        return "login";
     }
 }
