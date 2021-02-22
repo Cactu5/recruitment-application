@@ -71,5 +71,5 @@ the coding conventions are irrelevant or outdated.
 
 ## 5. Testing
 A feature branches must be properly tested before their PRs can be merged. In general, there must be a test
-for each public method, excpet for simple getters and setters, and it should test both invalid and valid inputs
+for each public method, except for simple getters and setters, and it should test both invalid and valid inputs
 to all methods in the source file. Spring MockMVC may be used to simulate HTTP transactions.
