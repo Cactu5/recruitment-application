@@ -147,9 +147,6 @@ public class PersonService implements UserDetailsService {
             return (UserDetails) auth.getPrincipal();
         } else {
             LOGGER.debug("Tried getting a logged in user, but none was available.");
-            LOGGER.info("Logs info.");
-            LOGGER.debug("Logs debug.");
-            LOGGER.trace("Logs trace.");
             return null;
         }
     }
