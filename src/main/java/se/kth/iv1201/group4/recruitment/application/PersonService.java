@@ -146,7 +146,7 @@ public class PersonService implements UserDetailsService {
                 && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             return (UserDetails) auth.getPrincipal();
         } else {
-            LOGGER.debug("Tried getting a logged in user, but none was available.");
+            LOGGER.info("Tried getting a logged in user, but none was available.");
             return null;
         }
     }
