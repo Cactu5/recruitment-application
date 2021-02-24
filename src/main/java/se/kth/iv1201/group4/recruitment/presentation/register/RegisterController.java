@@ -28,7 +28,7 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
 public class RegisterController {
 
     @Autowired
-    PersonService service;
+    private PersonService service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 

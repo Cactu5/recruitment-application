@@ -2,7 +2,6 @@ package se.kth.iv1201.group4.recruitment.application;
 
 import java.util.Collection;
 
-import org.aspectj.apache.bcel.generic.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +42,13 @@ public class PersonService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    PersonRepository personRepo;
+    private PersonRepository personRepo;
 
     @Autowired
-    ApplicantRepository applicantRepo;
+    private ApplicantRepository applicantRepo;
 
     @Autowired
-    RecruiterRepository recruiterRepo;
+    private RecruiterRepository recruiterRepo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";

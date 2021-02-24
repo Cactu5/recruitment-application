@@ -19,7 +19,7 @@ import se.kth.iv1201.group4.recruitment.application.PersonService;
 public class SuccessController {
 
     @Autowired
-    PersonService service;
+    private PersonService service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SuccessController.class);
 
