@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragments/layout}" th:with="title=#{pages.login.name}" th:lang="${lang}">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <main layout:fragment="content">
+        This is the success page for recruiters.
+        <div sec:authorize="isAuthenticated()">
+            This content is only shown to authenticated users.
+            <div sec:authorize="hasRole('ROLE_RECRUITER')">
+                This content is only shown to recruiters.
+            </div>
+            <div sec:authentication="name">
+                The value of the "name" property of the authentication object should appear here.
+            </div>
+            <p sec:authentication='principal.authorities'></p>
+        </div>
+        <p th:text="#{loginForm.text.pleaselogoutgoodsir}">Please visit</p>
+        <a href="/logout">Log out</a>
+    </main>
+</body>
+
+</html>

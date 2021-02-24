@@ -22,6 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 
+/**
+ * An entity representing a person.
+ * 
+ * @author Cactu5
+ * @version %I%
+ */
 @ToString(exclude = "password")
 @Entity
 @Table(name = "person")
