@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.addParam;
+import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.containsElements;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendGetRequest;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendPostRequest;
 

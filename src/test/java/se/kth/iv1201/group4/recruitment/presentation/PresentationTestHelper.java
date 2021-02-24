@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,10 @@ public class PresentationTestHelper {
      */
     public static ResultActions sendGetRequest(MockMvc mockMvc, String Url) throws Exception {
         return sendGetRequest(mockMvc, Url, null);
+    }
+
+    public static ResultActions sendGetRequestWithStatusCode(MockMvc mockMvc, String Url, int statusCode) throws Exception {
+        return mockMvc.perform(get("/" + Url).requestAttr(RequestDispatcher.ERROR_STATUS_CODE, statusCode));
     }
 
     /**
