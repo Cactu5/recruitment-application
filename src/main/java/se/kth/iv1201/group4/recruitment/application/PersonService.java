@@ -21,9 +21,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
+import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
+import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
@@ -52,6 +54,9 @@ public class PersonService implements UserDetailsService {
     @Autowired
     RecruiterRepository recruiterRepo;
 
+    @Autowired
+    private LegacyUserRepository legacyUserRepo;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
     static public final String ROLE_RECRUITER = "ROLE_RECRUITER";
@@ -70,11 +75,22 @@ public class PersonService implements UserDetailsService {
     /**
      * Adds a recruiter to the recruiter repository
      * 
-     * @param a The recruiter to add
+     * @param r The recruiter to add
      */
     public void addRecruiter(Recruiter r) {
         if (r != null) {
             recruiterRepo.save(r);
+        }
+    }
+
+    /**
+     * Adds a legacy user to the legacy user repository
+     * 
+     * @param lu The legacy user to add
+     */
+    public void addRecruiter(LegacyUser lu) {
+        if (lu != null) {
+            legacyUserRepo.save(lu);
         }
     }
 

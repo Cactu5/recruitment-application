@@ -22,13 +22,13 @@ import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
-import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.repository.AvailabilityRepository;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceProfileRepository;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
 import se.kth.iv1201.group4.recruitment.repository.JobApplicationRepository;
 import se.kth.iv1201.group4.recruitment.repository.JobStatusRepository;
+import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
@@ -58,6 +58,9 @@ class MigrationTest {
     @Autowired
     private JobStatusRepository jobStatusRepo;
 
+    @Autowired
+    private LegacyUserRepository legacyUserRepo;
+
     private List<Map<String, Object>> applicants, recruiters, availabilities, 
             competencies, competenceProfiles; 
 
@@ -80,6 +83,9 @@ class MigrationTest {
 
         applicantRepo.saveAll(mig.getApplicants());
         applicantRepo.flush();
+
+        legacyUserRepo.saveAll(mig.getLegacyUsers());
+        legacyUserRepo.flush();
 
         jobApplicationRepo.saveAll(mig.getJobApplications());
         jobApplicationRepo.flush();
@@ -137,6 +143,12 @@ class MigrationTest {
             assertEquals(map.get("name"), c.getName());
         }
         assertEquals(competencies.size(), competenceRepo.findAll().size());
+    }
+
+    @Test
+    void testIfUsersMigratedHaveBeenRegisteredAsLegacyUsers(){
+        assertEquals(applicants.size() + recruiters.size(), 
+                legacyUserRepo.findAll().size());
     }
    
     // More extensive testing is done in testIfJobApplicationsMigrated

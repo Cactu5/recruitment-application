@@ -13,6 +13,7 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
+import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 
@@ -23,6 +24,7 @@ import se.kth.iv1201.group4.recruitment.domain.Recruiter;
  * @author Filip Garamvölgyi
  */
 public class Migration {
+    private List<LegacyUser> lus;
     private List<Competence> cs;
     private List<Recruiter> rs;
     private List<Applicant> appls;
@@ -54,6 +56,7 @@ public class Migration {
      * Performs the convertion of old data to new data.
      */
     public void Migrate(){
+        lus = new ArrayList<LegacyUser>();
         readData();
         migrateCompetencies();
         migrateRecruiters();
@@ -61,6 +64,7 @@ public class Migration {
         migrateJobStatuses();
         migrateJobApplications();
     }
+    public List<LegacyUser> getLegacyUsers(){return lus;}
     public List<Competence> getCompetencies(){return cs;}
     public List<Recruiter> getRecruiters(){return rs;}
     public List<Applicant> getApplicants(){return appls;}
@@ -89,6 +93,7 @@ public class Migration {
                     );
             Applicant a = new Applicant(p);
             appls.add(a);
+            lus.add(new LegacyUser(p));
             oldPersonToNewPerson.put((Integer)map.get("personId"), a);
         }
     }
@@ -105,6 +110,7 @@ public class Migration {
                     );
 
             rs.add(new Recruiter(p));
+            lus.add(new LegacyUser(p));
         }
     }
     private void migrateCompetencies(){
