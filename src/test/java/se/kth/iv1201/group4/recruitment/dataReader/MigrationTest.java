@@ -70,7 +70,7 @@ class MigrationTest {
     void mirgrateData(){
         JsonToMapReader reader = new JsonToMapReader();
         mig = new Migration();
-        mig.Migrate();
+        mig.migrate();
 
         competenceRepo.saveAll(mig.getCompetencies());
         competenceRepo.flush();

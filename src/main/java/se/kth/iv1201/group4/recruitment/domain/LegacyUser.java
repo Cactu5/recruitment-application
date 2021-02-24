@@ -28,7 +28,7 @@ public class LegacyUser implements LegacyUserDTO {
     @Column(name = "id")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "person", referencedColumnName = "id")
     private Person person;
 

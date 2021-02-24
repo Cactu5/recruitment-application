@@ -79,7 +79,7 @@ public class PersonService implements UserDetailsService {
      */
     public void addRecruiter(Recruiter r) {
         if (r != null) {
-            recruiterRepo.save(r);
+            recruiterRepo.saveAndFlush(r);
         }
     }
 
@@ -88,9 +88,10 @@ public class PersonService implements UserDetailsService {
      * 
      * @param lu The legacy user to add
      */
-    public void addRecruiter(LegacyUser lu) {
+    public void addLegacyUser(LegacyUser lu) {
         if (lu != null) {
-            legacyUserRepo.save(lu);
+            legacyUserRepo.saveAndFlush(lu);
+            LOGGER.info("Added legacy user");
         }
     }
 

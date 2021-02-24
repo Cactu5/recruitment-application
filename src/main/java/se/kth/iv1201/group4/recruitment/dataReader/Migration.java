@@ -55,7 +55,7 @@ public class Migration {
     /**
      * Performs the convertion of old data to new data.
      */
-    public void Migrate(){
+    public void migrate(){
         lus = new ArrayList<LegacyUser>();
         readData();
         migrateCompetencies();
