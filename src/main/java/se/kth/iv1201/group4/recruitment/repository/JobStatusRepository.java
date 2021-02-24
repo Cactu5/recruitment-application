@@ -13,11 +13,21 @@ import se.kth.iv1201.group4.recruitment.domain.JobStatus;
  * {@link se.kth.iv1201.group4.recruitment.domain.JobStatus}.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface JobStatusRepository extends JpaRepository<JobStatus, Long> {
+
+    /**
+     * find a job status by the given name.
+     *
+     * @param name  name used to find {@link JobStatus}.
+     * @return      {@link JobStatus} returned by the given name.
+     */
+    JobStatus findJobStatusByName(String name);
+
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
     JobStatus save(JobStatus jobStatus);

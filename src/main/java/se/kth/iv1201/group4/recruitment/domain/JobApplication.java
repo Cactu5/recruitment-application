@@ -24,6 +24,7 @@ import se.kth.iv1201.group4.recruitment.dto.JobStatusDTO;
  * An entity representing a job application.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @ToString
@@ -55,6 +56,16 @@ public class JobApplication implements JobApplicationDTO {
      */
     protected JobApplication() {
 
+    }
+    /**
+     * Creates a new instance with the specified applicant, job status
+     * 
+     * @param applicant     owner of the job application
+     * @param jobStatus     status of the job application
+     */
+    public JobApplication(Applicant applicant, JobStatus jobStatus) {
+        this.applicant = applicant;
+        this.jobStatus = jobStatus;
     }
 
     /**

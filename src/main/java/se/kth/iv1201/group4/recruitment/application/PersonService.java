@@ -98,6 +98,18 @@ public class PersonService implements UserDetailsService {
         return null;
     }
 
+    /**
+     * Fetches an applicant from the database with the given person.
+     *
+     * @param person    person used to identify applicant
+     * @return          {@link Applicant} identified by the person
+     */
+    public Applicant getApplicant(Person person){
+        if(person == null) return null;
+
+        return applicantRepo.findApplicantByPerson(person);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null)
