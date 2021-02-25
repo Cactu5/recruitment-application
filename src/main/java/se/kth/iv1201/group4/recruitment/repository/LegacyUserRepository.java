@@ -5,34 +5,34 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 
-import se.kth.iv1201.group4.recruitment.domain.JobStatus;
+import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
+import se.kth.iv1201.group4.recruitment.domain.Person;
 
 /**
- * Repository for {@link se.kth.iv1201.group4.recruitment.domain.JobStatus}.
+ * Repository for {@link LegacyUser}.
  * Contains all methods for accessing data in the database concerning
- * {@link se.kth.iv1201.group4.recruitment.domain.JobStatus}.
+ * {@link LegacyUser}.
  * 
- * @author Cactu5
  * @author Filip Garamvölgyi
  * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
-public interface JobStatusRepository extends JpaRepository<JobStatus, Long> {
+public interface LegacyUserRepository extends JpaRepository<LegacyUser, Long> {
 
     /**
-     * find a job status by the given name.
+     * find a legacy user by the given person.
      *
-     * @param name  name used to find {@link JobStatus}.
-     * @return      {@link JobStatus} returned by the given name.
+     * @param person  {@link Person} used to find {@link LegacyUser}.
+     * @return      {@link LegacyUser} returned by the given person.
      */
-    JobStatus findJobStatusByName(String name);
+    LegacyUser findLegacyUserByPerson(Person person);
 
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    JobStatus save(JobStatus jobStatus);
+    LegacyUser save(LegacyUser legacyUser);
 
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    void delete(JobStatus jobStatus);
+    void delete(LegacyUser legacyUser);
 }

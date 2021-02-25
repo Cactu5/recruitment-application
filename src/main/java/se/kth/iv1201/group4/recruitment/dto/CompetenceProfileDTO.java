@@ -8,6 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * the years of experience in that specific competence.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 public interface CompetenceProfileDTO {
@@ -25,4 +26,9 @@ public interface CompetenceProfileDTO {
      * @return the years of experience
      */
     public float getYearsOfExperience();
+
+    /**
+     * @return  returns the associated {@link JobApplicationDTO}.
+     */
+    public JobApplicationDTO getJobApplication();
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
  * and end dates.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 public interface AvailabilityDTO {
@@ -26,4 +27,9 @@ public interface AvailabilityDTO {
      * @return the ending time of the availability
      */
     public LocalDate getTo();
+
+    /**
+     * @return returns the associated {@link JobApplicationDTO}.
+     */
+    public JobApplicationDTO getJobApplication();
 }

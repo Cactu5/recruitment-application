@@ -21,8 +21,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
+import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
+import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
+import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
@@ -32,6 +35,7 @@ import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
  * or creates a new if none exist.
  * 
  * @author William Stackenäs
+ * @author Filip Garamvölgyi
  * @author Cactu5
  * @version %I%
  */
@@ -50,6 +54,9 @@ public class PersonService implements UserDetailsService {
     @Autowired
     private RecruiterRepository recruiterRepo;
 
+    @Autowired
+    private LegacyUserRepository legacyUserRepo;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
     static public final String ROLE_RECRUITER = "ROLE_RECRUITER";
@@ -62,6 +69,29 @@ public class PersonService implements UserDetailsService {
     public void addApplicant(Applicant a) {
         if (a != null) {
             applicantRepo.saveAndFlush(a);
+        }
+    }
+
+    /**
+     * Adds a recruiter to the recruiter repository
+     * 
+     * @param r The recruiter to add
+     */
+    public void addRecruiter(Recruiter r) {
+        if (r != null) {
+            recruiterRepo.saveAndFlush(r);
+        }
+    }
+
+    /**
+     * Adds a legacy user to the legacy user repository
+     * 
+     * @param lu The legacy user to add
+     */
+    public void addLegacyUser(LegacyUser lu) {
+        if (lu != null) {
+            legacyUserRepo.saveAndFlush(lu);
+            LOGGER.info("Added legacy user");
         }
     }
 
@@ -83,6 +113,18 @@ public class PersonService implements UserDetailsService {
             return p;
         }
         return null;
+    }
+
+    /**
+     * Fetches an applicant from the database with the given person.
+     *
+     * @param person    person used to identify applicant
+     * @return          {@link Applicant} identified by the person
+     */
+    public Applicant getApplicant(Person person){
+        if(person == null) return null;
+
+        return applicantRepo.findApplicantByPerson(person);
     }
 
     @Override

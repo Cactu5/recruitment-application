@@ -13,11 +13,13 @@ import javax.persistence.Table;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
+import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
 
 /**
  * An entity representing an availability.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @ToString
@@ -80,6 +82,11 @@ public class Availability implements AvailabilityDTO {
     @Override
     public LocalDate getTo() {
         return toDate;
+    }
+
+    @Override
+    public JobApplicationDTO getJobApplication() {
+        return jobApplication;
     }
 
     @Override

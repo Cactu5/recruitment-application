@@ -13,6 +13,7 @@ import javax.validation.constraints.Min;
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceProfileDTO;
+import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
 
 /**
  * An entity representing a competence profile.
@@ -82,6 +83,11 @@ public class CompetenceProfile implements CompetenceProfileDTO {
     @Override
     public float getYearsOfExperience() {
         return yearsOfExperience;
+    }
+
+    @Override
+    public JobApplicationDTO getJobApplication() {
+        return jobApplication;
     }
 
     @Override
