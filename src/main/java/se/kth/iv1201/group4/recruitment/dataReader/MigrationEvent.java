@@ -38,15 +38,12 @@ public class MigrationEvent {
 
     @EventListener
     public void onContextLoaded(ContextRefreshedEvent event){
-        System.out.println("MIGRATION START");
-        System.out.println("MIGRATION START");
-        System.out.println("MIGRATION START");
-        System.out.println("MIGRATION START");
-        System.out.println("MIGRATION START");
         LOGGER.info("Migration starts");
-        Migration mig = new Migration();
-        mig.migrate();
-        migrate(mig);
+        if(false){
+            Migration mig = new Migration();
+            mig.migrate();
+            migrate(mig);
+        } else LOGGER.trace("Migration complete");
     }
 
     private void migrate(Migration mig){
