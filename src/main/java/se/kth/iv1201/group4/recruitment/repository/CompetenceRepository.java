@@ -12,6 +12,7 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
  * Contains all methods for accessing data in the database concerning
  * {@link se.kth.iv1201.group4.recruitment.domain.Competence}.
  * 
+ * @author Cactu5
  * @author Filip Garamvölgyi
  * @version %I%
  */
