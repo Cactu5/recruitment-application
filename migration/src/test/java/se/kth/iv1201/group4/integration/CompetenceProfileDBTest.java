@@ -26,6 +26,7 @@ class CompetenceProfileDBTest {
         }
     }
 
+    //assertEquals(true,true) to show why it's successful
     private void realPersonId(int pid){
         for (Person p : PersonDB.getSingleton().getAllPersons()[0]) {
            if(p.getPersonId() == pid){

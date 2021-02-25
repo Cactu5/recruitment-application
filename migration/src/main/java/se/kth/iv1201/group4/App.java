@@ -12,13 +12,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import se.kth.iv1201.group4.integration.*;
 
 /**
- * Hello world!
+ * Runs migration script
  *
+ * @author Filip Garamvölgyi
  */
 public class App {
     private static final String FOLDER = "data/";
     public static void main( String[] args ){
-        System.out.println( "Hello World!" );
         List<Person>[] persons =  PersonDB.getSingleton().getAllPersons();
         List<CompetenceProfile> competenceProfiles = CompetenceProfileDB.getSingleton().getAllCompetenceProfiles();
         List<Competence> competencies = CompetenceDB.getSingleton().getAllCompetencies();
