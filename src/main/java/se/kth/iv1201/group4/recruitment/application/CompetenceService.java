@@ -41,8 +41,8 @@ public class CompetenceService {
      */
     public void addCompetence(Competence c) {
         if (c != null) {
-            LOGGER.info(String.format("Trying to add %s as a competence.", c.getName()));
             competenceRepo.saveAndFlush(c);
+            LOGGER.info(String.format("Added %s as a competence.", c.getName()));
         }
     }
 
@@ -53,8 +53,8 @@ public class CompetenceService {
      */
     public void addCompetenceProfile(CompetenceProfile cp) {
         if (cp != null) {
-            LOGGER.info("Adding competence profile");
             competenceProfileRepo.saveAndFlush(cp);
+            LOGGER.info("Added competence profile");
         }
     }
 
