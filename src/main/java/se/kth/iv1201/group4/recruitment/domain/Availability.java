@@ -76,6 +76,15 @@ public class Availability implements AvailabilityDTO {
         this.jobApplication = jobApplication;
     }
 
+    /**
+     * Sets the <code>JobApplication</code> of the <code>Availability</code>.
+     * 
+     * @param jobApplication the <code>JobApplication</code>
+     */
+    public void setJobApplication(JobApplication jobApplication) {
+        this.jobApplication = jobApplication;
+    }
+
     @Override
     public LocalDate getFrom() {
         return fromDate;

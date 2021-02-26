@@ -78,6 +78,15 @@ public class CompetenceProfile implements CompetenceProfileDTO {
         this.jobApplication = jobApplication;
     }
 
+    /**
+     * Sets the <code>JobApplication</code> of the <code>CompetenceProfile</code>.
+     * 
+     * @param jobApplication the <code>JobApplication</code>
+     */
+    public void setJobApplication(JobApplication jobApplication) {
+        this.jobApplication = jobApplication;
+    }
+
     @Override
     public CompetenceDTO getCompetence() {
         return competence;
