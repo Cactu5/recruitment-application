@@ -18,6 +18,7 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
+import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 
 @DataJpaTest
@@ -39,8 +40,11 @@ public class JobApplicationRepositoryTest {
         JobStatus jobStatus = new JobStatus("test status");
         entityManager.persist(jobStatus);
 
-        Competence competence = new Competence("test competence1");
-        Competence competence2 = new Competence("test competence2");
+        Language lang = new Language("english");
+        entityManager.persist(lang);
+
+        Competence competence = new Competence("test competence1", lang);
+        Competence competence2 = new Competence("test competence2", lang);
         entityManager.persist(competence);
         entityManager.persist(competence2);
 

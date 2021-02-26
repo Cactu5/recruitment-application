@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
+import se.kth.iv1201.group4.recruitment.domain.Language;
 
 @DataJpaTest
 public class CompetenceProfileRepositoryTest {
@@ -23,7 +24,10 @@ public class CompetenceProfileRepositoryTest {
 
     @Test
     public void testCreateCompetenceProfile() {
-        Competence competence = new Competence("test competence1");
+        Language lang = new Language("english");
+        entityManager.persist(lang);
+        
+        Competence competence = new Competence("test competence1", lang);
         entityManager.persist(competence);
 
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, competence);

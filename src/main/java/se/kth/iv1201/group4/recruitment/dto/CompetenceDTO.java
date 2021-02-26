@@ -8,6 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * competence.
  * 
  * @author Cactu5
+ * @auther William Stackenäs
  * @version %I%
  */
 public interface CompetenceDTO {
@@ -17,4 +18,11 @@ public interface CompetenceDTO {
      * @return the name of the competence
      */
     public String getName();
+
+    /**
+     * Returns the langauge of name of the competence.
+     * 
+     * @return the language of the name of the compentence
+     */
+    public LanguageDTO getLanguage();
 }
