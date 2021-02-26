@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
@@ -38,6 +39,7 @@ public class Availability implements AvailabilityDTO {
     @Column(name = "to_date")
     private LocalDate toDate;
 
+    @NotNull(message = "{availability.jobApplication.missing}")
     @ManyToOne
     @JoinColumn(name = "job_application")
     private JobApplication jobApplication;

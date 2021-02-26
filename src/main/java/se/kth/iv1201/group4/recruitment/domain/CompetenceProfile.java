@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
@@ -32,13 +33,15 @@ public class CompetenceProfile implements CompetenceProfileDTO {
     private long id;
 
     @Column(name = "years_of_experience")
-    @Min(value = 0)
+    @Min(value = 0, message = "{competenceProfile.yearsOfExperience.lessThanZero}")
     private float yearsOfExperience;
 
+    @NotNull(message = "{competenceProfile.competence.missing}")
     @ManyToOne
     @JoinColumn(name = "competence")
     private Competence competence;
 
+    @NotNull(message = "{competenceProfile.jobApplication.missing}")
     @ManyToOne
     @JoinColumn(name = "job_application")
     private JobApplication jobApplication;

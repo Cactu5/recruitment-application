@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.ApplicantDTO;
@@ -34,6 +35,7 @@ public class Applicant implements ApplicantDTO {
     @Column(name = "id")
     private long id;
 
+    @NotNull(message = "{applicant.person.missing}")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person", referencedColumnName = "id")
     private Person person;
