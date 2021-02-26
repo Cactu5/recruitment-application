@@ -20,15 +20,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestExecutionListener;
 
-import se.kth.iv1201.group4.recruitment.repository.CompetenceProfileRepository;
-
 @DataJpaTest
 public class CompetenceProfileTest implements TestExecutionListener {
     @Autowired
     private TestEntityManager entityManager;
-
-    @Autowired
-    private CompetenceProfileRepository competenceProfileRepository;
 
     private JobApplication jobApplication;
 
