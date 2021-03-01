@@ -23,7 +23,7 @@ public class JobApplicationTest implements TestExecutionListener {
     private JobStatus jobStatus;
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         person = new Person("Ben", "Johnsson", "ben.johnsson@gmail.com", "190607071234", "benjo", "password");
         entityManager.persist(person);
 

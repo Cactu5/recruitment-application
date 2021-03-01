@@ -25,7 +25,7 @@ public class AvailabilityTest implements TestExecutionListener {
     private JobApplication jobApplication;
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         Person ben = new Person("Ben", "Johnsson", "ben.johnsson@gmail.com", "190607071234", "benjo", "password");
         entityManager.persist(ben);
 
