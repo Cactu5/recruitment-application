@@ -60,6 +60,7 @@ public class PersonService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
     static public final String ROLE_RECRUITER = "ROLE_RECRUITER";
+    static public final String ROLE_LEGACY_USER = "ROLE_LEGACY_USER";
 
     /**
      * Adds an applicant to the applicant repository
@@ -137,7 +138,10 @@ public class PersonService implements UserDetailsService {
         try {
             p = personRepo.findPersonByUsername(username);
 
-            if (applicantRepo.findApplicantByPerson(p) != null) {
+            if (legacyUserRepo.findLegacyUserByPerson(p) != null){
+                LOGGER.info("Person logged in as a legacy user");
+                role = ROLE_LEGACY_USER;
+            } else if (applicantRepo.findApplicantByPerson(p) != null) {
                 LOGGER.debug("Person logged in as an applicant.");
                 role = ROLE_APPLICANT;
             } else if (recruiterRepo.findRecruiterByPerson(p) != null) {

@@ -41,6 +41,7 @@ public class RegisterController {
     @GetMapping("/register")
     public String showRegisterView(RegisterForm registerForm) {
         LOGGER.trace("Get request for the register page.");
+        registerForm.setName("Filip");
 
         if (service.getLoggedInUser() != null) {
             LOGGER.trace("An authenticated user tried to use the register page.");

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import se.kth.iv1201.group4.recruitment.application.PersonService;
+import se.kth.iv1201.group4.recruitment.presentation.register.RegisterForm;
 
 /**
  * A controller for the success pages.
@@ -46,6 +47,17 @@ public class SuccessController {
     }
 
     /**
+     * This endpoint returns the success page for the legacy user role.
+     * 
+     * @return the success page for the legacy user role
+     */
+    @GetMapping("/success-legacy-user")
+    public String showSuccessLegacyUserView(RegisterForm registerForm) {
+        LOGGER.trace("Get request for /success-legacy-user.");
+        return "success-legacy-user";
+    }
+
+    /**
      * This enpoint routes the user to the appropriate sucess endpoint based on the
      * role.
      * 
@@ -62,6 +74,8 @@ public class SuccessController {
                 return "redirect:success-applicant";
             } else if (PersonService.authoritiesContains(user.getAuthorities(), PersonService.ROLE_RECRUITER)) {
                 return "redirect:success-recruiter";
+            } else if(PersonService.authoritiesContains(user.getAuthorities(), PersonService.ROLE_LEGACY_USER)){
+                return "redirect:success-legacy-user";
             } else {
                 LOGGER.error("Authenticated user with no role tried logging in.");
             }
