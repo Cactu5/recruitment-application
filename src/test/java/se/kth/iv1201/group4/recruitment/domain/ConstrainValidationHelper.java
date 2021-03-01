@@ -5,6 +5,10 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -34,6 +38,24 @@ public class ConstrainValidationHelper {
         assertThat(result.size(), is(expectedContraints.length));
         for (String expectedContraint : expectedContraints) {
             assertThat(result, hasItem(hasProperty("messageTemplate", equalTo(expectedContraint))));
+        }
+    }
+
+    /**
+     * This function is used to test <code>ConstraintViolationException</code>. It
+     * compares the exception messages against the expected messages.
+     * 
+     * @param <T>                the type of the entity
+     * @param em                 the test entity manager
+     * @param entity             the entity that's being tested
+     * @param expectedContraints the expected constraint violation messages
+     */
+    public static <T> void testConstraintViolation(TestEntityManager em, T entity, String... expectedContraints) {
+        try {
+            em.persistAndFlush(entity);
+            fail("ConstraintViolationException was not thrown.");
+        } catch (ConstraintViolationException e) {
+            validateConstraints(e, expectedContraints);
         }
     }
 }
