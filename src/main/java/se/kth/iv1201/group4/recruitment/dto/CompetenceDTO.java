@@ -12,17 +12,5 @@ package se.kth.iv1201.group4.recruitment.dto;
  * @version %I%
  */
 public interface CompetenceDTO {
-    /**
-     * Returns the name of the competence.
-     * 
-     * @return the name of the competence
-     */
-    public String getName();
-
-    /**
-     * Returns the langauge of name of the competence.
-     * 
-     * @return the language of the name of the compentence
-     */
-    public LanguageDTO getLanguage();
+    
 }

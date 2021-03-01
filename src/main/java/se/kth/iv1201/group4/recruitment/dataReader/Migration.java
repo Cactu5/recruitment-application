@@ -13,7 +13,9 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
+import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
+import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 
@@ -22,17 +24,21 @@ import se.kth.iv1201.group4.recruitment.domain.Recruiter;
  * and converts it to the corresponding entities in the new database.
  *
  * @author Filip Garamvölgyi
+ * @author William Stackenäs
  */
 public class Migration {
     private List<LegacyUser> lus;
     private List<Competence> cs;
+    private List<LocalCompetence> lcs;
     private List<Recruiter> rs;
     private List<Applicant> appls;
     private List<JobStatus> jsss;
+    private List<Language> ls;
     private List<Availability> avs;
     private List<CompetenceProfile> cps;
     private List<JobApplication> jas;
     private final String DEFAULT_STATUS = "unhandled";
+    private final String DEFAULT_LANGUAGE = "swedish";
     private Map<Integer, Applicant> oldPersonToNewPerson;
     private Map<Integer, Competence> oldCompetenceToNewCompetence;
     private final JsonToMapReader jsonReader;
@@ -58,6 +64,7 @@ public class Migration {
     public void migrate(){
         lus = new ArrayList<LegacyUser>();
         readData();
+        migrateLanguages();
         migrateCompetencies();
         migrateRecruiters();
         migrateApplicants();
@@ -69,6 +76,8 @@ public class Migration {
     public List<Recruiter> getRecruiters(){return rs;}
     public List<Applicant> getApplicants(){return appls;}
     public List<JobStatus> getJobStatus(){return jsss;}
+    public List<Language> getLanguages(){return ls;}
+    public List<LocalCompetence> getLocalCompetencies(){return lcs;}
     public List<Availability> getAvailabilities(){return avs;}
     public List<CompetenceProfile> getCompetenceProfiles(){return cps;}
     public List<JobApplication> getJobApplications(){return jas;}
@@ -116,8 +125,10 @@ public class Migration {
     private void migrateCompetencies(){
         cs = new ArrayList<Competence>();
         for(Map<String,Object> map : competencies){
-            Competence c = new Competence((String)map.get("name")); 
+            Competence c = new Competence();
             cs.add(c);
+            LocalCompetence lc = new LocalCompetence((String)map.get("name"), ls.get(0), c);
+            lcs.add(lc);
             oldCompetenceToNewCompetence.put((Integer)map.get("competenceId"), c);
         }
     }
@@ -125,6 +136,12 @@ public class Migration {
         jsss = new ArrayList<JobStatus>();
         jsss.add(new JobStatus(DEFAULT_STATUS));
     }
+
+    private void migrateLanguages(){
+        ls = new ArrayList<Language>();
+        ls.add(new Language(DEFAULT_LANGUAGE));
+    }
+
     private void migrateJobApplications(){
         for(Map<String, Object> map : applicants){
             int id = (Integer)map.get("personId");

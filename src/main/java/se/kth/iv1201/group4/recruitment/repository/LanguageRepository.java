@@ -25,13 +25,13 @@ public interface LanguageRepository extends JpaRepository<Language, Long> {
      * @param name  name used to find {@link Language}.
      * @return      {@link Language} returned by the given name.
      */
-    Language findJobStatusByName(String name);
+    Language findLanguageByName(String name);
 
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    Language save(Language jobStatus);
+    Language save(Language language);
 
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    void delete(Language jobStatus);
+    void delete(Language language);
 }

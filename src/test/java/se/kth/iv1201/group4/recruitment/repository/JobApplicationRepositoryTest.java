@@ -43,8 +43,8 @@ public class JobApplicationRepositoryTest {
         Language lang = new Language("english");
         entityManager.persist(lang);
 
-        Competence competence = new Competence("test competence1", lang);
-        Competence competence2 = new Competence("test competence2", lang);
+        Competence competence = new Competence();
+        Competence competence2 = new Competence();
         entityManager.persist(competence);
         entityManager.persist(competence2);
 

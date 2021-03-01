@@ -14,19 +14,12 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
  * 
  * @author Cactu5
  * @author Filip Garamvölgyi
+ * @author William Stackenäs
  * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public interface CompetenceRepository extends JpaRepository<Competence, Long> {
-    /**
-     * Returns Competence specified by the given name. 
-     *
-     * @param name  name of the given {@link Competence} to return
-     * @return      {@link Competence} found given the name.
-     */
-    Competence findCompetenceByName(String name);
-    
     /**
      * Returns Competence specified by the given id. 
      *
