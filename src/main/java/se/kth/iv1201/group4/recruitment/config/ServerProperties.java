@@ -27,7 +27,6 @@ public class ServerProperties {
      * @return The login URL
      */
     public String getLoginUrl() {
-        LOGGER.trace("Reading login URL {}.", loginUrl);
         return loginUrl;
     }
 
@@ -37,7 +36,6 @@ public class ServerProperties {
      * @return The register URL
      */
     public String getRegisterUrl() {
-        LOGGER.trace("Reading context root {}.", registerUrl);
         return registerUrl;
     }
 }

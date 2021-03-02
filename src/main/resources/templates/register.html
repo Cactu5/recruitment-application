@@ -45,6 +45,7 @@
                 SSN validation error
             </p>
 
+            <p th:if="${#messages.msgOrNull('__${error}__') != null}" th:text="#{'__${error}__'}">error message</p>
             <input type="submit" th:value="#{loginForm.text.register}" />
         </form>
         <p th:text="#{registerForm.text.alreadyHaveAnAccount}">Please visit:</p>
