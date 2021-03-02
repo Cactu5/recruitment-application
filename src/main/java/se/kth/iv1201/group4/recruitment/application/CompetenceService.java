@@ -1,5 +1,6 @@
 package se.kth.iv1201.group4.recruitment.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -92,6 +93,18 @@ public class CompetenceService {
     
     public List<CompetenceProfile> getAllCompetenceProfiles(){
         return competenceProfileRepo.findAll();
+    }
+
+    /**
+     * Returns all local competences given the language.
+     *
+     * @param l     language of the {@link LocalCompetence}s to return
+     * @return      returned list of local competences given the language.      
+     */
+    public List<LocalCompetence> getLocalCompetences(Language l){
+        if (l == null ) return new ArrayList<LocalCompetence>();
+
+        return localCompetenceRepo.getLocalCompetencebyLanguage(l);
     }
 
     /**

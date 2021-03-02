@@ -1,11 +1,15 @@
 package se.kth.iv1201.group4.recruitment.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.ToString;
@@ -14,19 +18,20 @@ import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
 import se.kth.iv1201.group4.recruitment.dto.LanguageDTO;
 
 /**
- * An entity representing a competence.
+ * An entity representing a local competence.
  * 
- * @author Cactu5
  * @author William Stackenäs
  * @version %I%
  */
 @ToString
 @Entity
-@Table(name = "competence")
+@Table(name = "local_competence")
+@IdClass(LocalCompetenceId.class)
 public class LocalCompetence implements LocalCompetenceDTO {
 
     @Column(name = "name")
     @Size(min = 2, max = 30, message = "{competence.name.length}")
+    @NotBlank
     private String name;
 
     @Id

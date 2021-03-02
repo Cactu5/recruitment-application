@@ -1,10 +1,14 @@
 package se.kth.iv1201.group4.recruitment.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.ToString;
@@ -26,6 +30,10 @@ public class Competence implements CompetenceDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
+
+    @OneToMany(mappedBy = "localCompetence")
+    private List<LocalCompetence> competenceProfiles = new ArrayList<LocalCompetence>();
+
 
     /**
      * Creates a new instance.
