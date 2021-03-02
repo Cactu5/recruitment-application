@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -63,7 +64,8 @@ public class SuccessController {
             } else if (PersonService.authoritiesContains(user.getAuthorities(), PersonService.ROLE_RECRUITER)) {
                 return "redirect:success-recruiter";
             } else {
-                LOGGER.error("Authenticated user with no role tried logging in.");
+                LOGGER.warn("Authenticated user with no role tried logging in.");
+                throw new UsernameNotFoundException("user has no role");
             }
         }
 

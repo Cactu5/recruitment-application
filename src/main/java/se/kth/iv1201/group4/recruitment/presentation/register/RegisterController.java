@@ -2,10 +2,11 @@ package se.kth.iv1201.group4.recruitment.presentation.register;
 
 import javax.validation.Valid;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -67,7 +68,7 @@ public class RegisterController {
         Person p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
-                LOGGER.debug(err.toString());
+                LOGGER.info(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
             return "register";
@@ -77,15 +78,16 @@ public class RegisterController {
         try {
             service.addApplicant(new Applicant(p));
             service.autoLogin(form.getUsername(), form.getPassword());
-        } catch (DataAccessException e) {
-            LOGGER.debug("Registration failure due to primary key conflict.");
-            model.addAttribute("error", "{register.fail}");
+        } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+            LOGGER.info("Registration failure due to primary key conflict.");
+            model.addAttribute("error", "register.fail");
             return "register";
         } catch (Exception e) {
             LOGGER.error("Could not add applicant to database.", e);
             model.addAttribute("error", "{error.gereric}");
             return "register";
         }
+        LOGGER.info("New user " + form.getUsername() + " registered successfully.");
         return "redirect:success";
     }
 }
