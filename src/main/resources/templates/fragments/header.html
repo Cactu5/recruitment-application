@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
 </head>
+
 <body>
-    <header th:fragment"header">
+    <header th:fragment="header">
         <h1 th:text="#{header.text.title}"></h1>
+        <span th:text="#{lang.change}"></span>:
+        <select id="locales">
+            <option value=""></option>
+            <option value="en" th:text="#{lang.en}"></option>
+            <option value="sv" th:text="#{lang.sv}"></option>
+        </select>
     </header>
 </body>
+
 </html>

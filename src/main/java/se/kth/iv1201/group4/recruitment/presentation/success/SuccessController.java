@@ -1,6 +1,5 @@
 package se.kth.iv1201.group4.recruitment.presentation.success;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,12 +13,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import se.kth.iv1201.group4.recruitment.application.CompetenceService;
 import se.kth.iv1201.group4.recruitment.application.LanguageService;
 import se.kth.iv1201.group4.recruitment.application.PersonService;
-import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 
@@ -52,13 +51,23 @@ public class SuccessController {
      * @param request The HTTP request from the client that may contain
      *                information about its prefered language
      * @param model  The model objects used in the register page
+     * @param lang   The lang query parameter from the URL contining the
+     *               language that should be used. If empty, the default
+     *               language will be used.
      * 
      * @return the success page for the applicant role
      */
     @GetMapping("/success-applicant")
-    public String showSuccessApplicantView(HttpServletRequest request, Model model) {
+    public String showSuccessApplicantView(HttpServletRequest request,
+            Model model, @RequestParam(name = "lang", required = false) String lang) {
         LOGGER.trace("Get request for /success-applicant.");
-        Language language = languageService.getLanguage(RequestContextUtils.getLocale(request));
+        Locale locale;
+        if (lang != null && !lang.isEmpty()) {
+            locale = new Locale(lang);
+        } else {
+            locale = RequestContextUtils.getLocale(request);
+        }
+        Language language = languageService.getLanguage(locale);
         List<LocalCompetence> comps = competenceService.getLocalCompetences(language);
 
         model.addAttribute("competencies", comps);

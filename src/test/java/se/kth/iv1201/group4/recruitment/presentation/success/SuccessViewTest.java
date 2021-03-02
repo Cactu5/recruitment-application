@@ -101,7 +101,24 @@ public class SuccessViewTest implements TestExecutionListener {
         }, new String[]{
             "löpning", "gång", "sömn", "titta på filmer"
         });
-        mockMvc.perform(get("/success-applicant").header("Accept-Language", "sv-se")).andExpect(status().isOk())
+        mockMvc.perform(get("/success-applicant?lang=sv").header("Accept-Language", "sv-se")).andExpect(status().isOk())
+            .andExpect(content().string(containsString("This is the success page for applicants.")))
+            .andExpect(content().string(containsString("<option>löpning</option>")))
+            .andExpect(content().string(containsString("<option>gång</option>")))
+            .andExpect(content().string(containsString("<option>sömn</option>")))
+            .andExpect(content().string(containsString("<option>titta på filmer</option>")));
+    }
+
+    @Test
+    void testIfViewSuccesApplicantRendersWithLanguageOverride() throws Exception {
+        addLocalCompetences(new String[]{
+            "en", "sv"
+        }, new String[]{
+            "running", "walking", "sleeping", "watching movies"
+        }, new String[]{
+            "löpning", "gång", "sömn", "titta på filmer"
+        });
+        mockMvc.perform(get("/success-applicant?lang=sv").header("Accept-Language", "en-gb")).andExpect(status().isOk())
             .andExpect(content().string(containsString("This is the success page for applicants.")))
             .andExpect(content().string(containsString("<option>löpning</option>")))
             .andExpect(content().string(containsString("<option>gång</option>")))
