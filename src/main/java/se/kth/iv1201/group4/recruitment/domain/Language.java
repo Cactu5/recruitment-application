@@ -30,12 +30,12 @@ public class Language implements LanguageDTO {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     @Size(min = 2, max = 30, message = "{langauge.name.length}")
     private String name;
 
-    @OneToMany(mappedBy = "localCompetence")
-    private List<LocalCompetence> competenceProfiles = new ArrayList<LocalCompetence>();
+    @OneToMany(mappedBy = "language")
+    private List<LocalCompetence> localCompetences = new ArrayList<LocalCompetence>();
 
     /**
      * Required by JPA

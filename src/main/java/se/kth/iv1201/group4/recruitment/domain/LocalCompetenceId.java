@@ -5,26 +5,26 @@ import java.io.Serializable;
 public class LocalCompetenceId implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Language language;
+    private long language;
 
-    private Competence competence;
+    private long competence;
 
     public LocalCompetenceId() {
     }
 
-    public Language getLanguage() {
+    public long getLanguage() {
         return language;
     }
 
-    public Competence getCompetence() {
+    public long getCompetence() {
         return competence;
     }
 
-    public void setLanguage(Language l){
+    public void setLanguage(long l){
         language = l;
     }
 
-    public void setCompetence(Competence c) {
+    public void setCompetence(long c) {
         competence = c;
     }
 }

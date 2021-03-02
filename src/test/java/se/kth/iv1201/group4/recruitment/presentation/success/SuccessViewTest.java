@@ -76,7 +76,7 @@ public class SuccessViewTest implements TestExecutionListener {
     }
 
     @Test
-    void testIfViewSuccesApplicantRenders() throws Exception {
+    void testIfViewSuccesApplicantRendersWithEnglish() throws Exception {
         addLocalCompetences(new String[]{
             "en", "sv"
         }, new String[]{
@@ -84,7 +84,41 @@ public class SuccessViewTest implements TestExecutionListener {
         }, new String[]{
             "löpning", "gång", "sömn", "titta på filmer"
         });
-        mockMvc.perform(get("/success-applicant")).andExpect(status().isOk())
+        mockMvc.perform(get("/success-applicant").header("Accept-Language", "en-us")).andExpect(status().isOk())
+            .andExpect(content().string(containsString("This is the success page for applicants.")))
+            .andExpect(content().string(containsString("<option>running</option>")))
+            .andExpect(content().string(containsString("<option>walking</option>")))
+            .andExpect(content().string(containsString("<option>sleeping</option>")))
+            .andExpect(content().string(containsString("<option>watching movies</option>")));
+    }
+
+    @Test
+    void testIfViewSuccesApplicantRendersWithSwedish() throws Exception {
+        addLocalCompetences(new String[]{
+            "en", "sv"
+        }, new String[]{
+            "running", "walking", "sleeping", "watching movies"
+        }, new String[]{
+            "löpning", "gång", "sömn", "titta på filmer"
+        });
+        mockMvc.perform(get("/success-applicant").header("Accept-Language", "sv-se")).andExpect(status().isOk())
+            .andExpect(content().string(containsString("This is the success page for applicants.")))
+            .andExpect(content().string(containsString("<option>löpning</option>")))
+            .andExpect(content().string(containsString("<option>gång</option>")))
+            .andExpect(content().string(containsString("<option>sömn</option>")))
+            .andExpect(content().string(containsString("<option>titta på filmer</option>")));
+    }
+
+    @Test
+    void testIfViewSuccesApplicantRendersWithDefault() throws Exception {
+        addLocalCompetences(new String[]{
+            "en", "sv"
+        }, new String[]{
+            "running", "walking", "sleeping", "watching movies"
+        }, new String[]{
+            "löpning", "gång", "sömn", "titta på filmer"
+        });
+        mockMvc.perform(get("/success-applicant").header("Accept-Language", "da-dk")).andExpect(status().isOk())
             .andExpect(content().string(containsString("This is the success page for applicants.")))
             .andExpect(content().string(containsString("<option>running</option>")))
             .andExpect(content().string(containsString("<option>walking</option>")))
@@ -123,6 +157,7 @@ public class SuccessViewTest implements TestExecutionListener {
                 compIndex++;
             }
             compIndex = 0;
+            langIndex++;
         }
     }
 }

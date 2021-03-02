@@ -2,7 +2,6 @@ package se.kth.iv1201.group4.recruitment.dataReader;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -17,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import se.kth.iv1201.group4.recruitment.dataReader.util.JsonToMapReader;
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Availability;
-import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
@@ -76,7 +74,7 @@ class MigrationTest {
     private Migration mig;
 
     @BeforeEach
-    void mirgrateData(){
+    void migrateData(){
         JsonToMapReader reader = new JsonToMapReader();
         mig = new Migration();
         mig.migrate();

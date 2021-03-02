@@ -58,6 +58,8 @@ public class LocalCompetence implements LocalCompetenceDTO {
      */
     public LocalCompetence(String name, Language language, Competence competence) {
         this.name = name;
+        this.language = language;
+        this.competence = competence;
     }
 
     @Override

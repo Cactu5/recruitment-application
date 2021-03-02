@@ -23,7 +23,7 @@ public class LocalCompetenceRepositoryTest {
     private LocalCompetenceRepository localCompetenceRepository;
 
     @Test
-    public void testCreateCompetence() {
+    public void testCreateLocalCompetence() {
         Language lang = new Language("english");
         entityManager.persist(lang);
 

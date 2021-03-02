@@ -38,7 +38,7 @@ public class Migration {
     private List<CompetenceProfile> cps;
     private List<JobApplication> jas;
     private final String DEFAULT_STATUS = "unhandled";
-    private final String DEFAULT_LANGUAGE = "swedish";
+    private final String DEFAULT_LANGUAGE = "sv";
     private Map<Integer, Applicant> oldPersonToNewPerson;
     private Map<Integer, Competence> oldCompetenceToNewCompetence;
     private final JsonToMapReader jsonReader;
@@ -124,6 +124,7 @@ public class Migration {
     }
     private void migrateCompetencies(){
         cs = new ArrayList<Competence>();
+        lcs = new ArrayList<LocalCompetence>();
         for(Map<String,Object> map : competencies){
             Competence c = new Competence();
             cs.add(c);

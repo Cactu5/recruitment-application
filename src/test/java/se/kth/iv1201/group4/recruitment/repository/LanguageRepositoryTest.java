@@ -21,7 +21,7 @@ public class LanguageRepositoryTest {
     private LanguageRepository languageRepository;
 
     @Test
-    public void testCreateJobStatus() {
+    public void testCreateLanguage() {
         Language lang = new Language("swedish");
         entityManager.persist(lang);
         entityManager.flush();

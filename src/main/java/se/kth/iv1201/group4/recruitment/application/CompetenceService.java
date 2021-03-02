@@ -72,8 +72,8 @@ public class CompetenceService {
      */
     public void addCompetenceProfile(CompetenceProfile cp) {
         if (cp != null) {
-            LOGGER.info("Adding competence profile");
             competenceProfileRepo.saveAndFlush(cp);
+            LOGGER.info("Added competence profile");
         }
     }
 
@@ -104,7 +104,7 @@ public class CompetenceService {
     public List<LocalCompetence> getLocalCompetences(Language l){
         if (l == null ) return new ArrayList<LocalCompetence>();
 
-        return localCompetenceRepo.getLocalCompetencebyLanguage(l);
+        return localCompetenceRepo.getLocalCompetenceByLanguage(l);
     }
 
     /**

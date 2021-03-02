@@ -31,8 +31,8 @@ public class Competence implements CompetenceDTO {
     @Column(name = "id")
     private long id;
 
-    @OneToMany(mappedBy = "localCompetence")
-    private List<LocalCompetence> competenceProfiles = new ArrayList<LocalCompetence>();
+    @OneToMany(mappedBy = "competence")
+    private List<LocalCompetence> localCompetences = new ArrayList<LocalCompetence>();
 
 
     /**
