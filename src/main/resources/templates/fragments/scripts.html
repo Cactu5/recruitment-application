@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+</body>
+<th:block th:fragment="scripts">
+    <script async type="text/javascript">
+        window.onload = function changeLocale(params) {
+            document.getElementById('locales').addEventListener('change', function () {
+                const selectedOption = this.value;
+                if (selectedOption != '') {
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            });
+        }
+    </script>
+</th:block>
+
+</html>

@@ -21,10 +21,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 @SpringJUnitWebConfig(initializers = ConfigDataApplicationContextInitializer.class)
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"se.kth.iv1201.group4.recruitment"})
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, LoginViewTest.class  })
-class LoginViewTest implements TestExecutionListener{
-    @Autowired 
+@ComponentScan(basePackages = { "se.kth.iv1201.group4.recruitment" })
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class, LoginViewTest.class })
+class LoginViewTest implements TestExecutionListener {
+    @Autowired
     private WebApplicationContext context;
 
     private MockMvc mockMvc;
@@ -33,29 +33,35 @@ class LoginViewTest implements TestExecutionListener{
     void setup() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
-    
+
     @Test
-    void testIfViewRendersTheRequiredInputs() throws Exception{
-        mockMvc.perform(get("/login"))
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("<input id=\"username\" name=\"username\" type=\"text\"/>")))
-        .andExpect(content().string(containsString("<input id=\"password\" name=\"password\" type=\"password\"/>")));
+    void testIfViewRendersTheRequiredInputs() throws Exception {
+        mockMvc.perform(get("/login")).andExpect(status().isOk())
+                .andExpect(
+                        content().string(containsString("<input id=\"username\" name=\"username\" type=\"text\" />")))
+                .andExpect(content()
+                        .string(containsString("<input id=\"password\" name=\"password\" type=\"password\" />")));
     }
 
     @Test
-    void testIfViewRendersTextFromMessageProperties() throws Exception{
-        mockMvc.perform(get("/login"))
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("användarnamn")))
-        .andExpect(content().string(containsString("lösenord")));
+    void testIfViewRendersInSwedish() throws Exception {
+        mockMvc.perform(get("/login?lang=sv")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("användarnamn")))
+                .andExpect(content().string(containsString("lösenord")));
     }
 
     @Test
-    void testIfViewIsUsingThymeleafDecoration() throws Exception{
-        mockMvc.perform(get("/login"))
-        .andExpect(status().isOk())
-        .andExpect(content().string(containsString("| Login")))
-        .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
-        .andExpect(content().string(containsString("<footer>")));
+    void testIfViewRendersInEnglish() throws Exception {
+        mockMvc.perform(get("/login?lang=en")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Username")))
+                .andExpect(content().string(containsString("Password")));
+    }
+
+    @Test
+    void testIfViewIsUsingThymeleafDecoration() throws Exception {
+        mockMvc.perform(get("/login?lang=sv")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("| Login")))
+                .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
+                .andExpect(content().string(containsString("<footer>")));
     }
 }
