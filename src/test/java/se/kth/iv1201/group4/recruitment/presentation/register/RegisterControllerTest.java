@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.addParam;
+import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.containsElements;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendGetRequest;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendPostRequest;
 
@@ -51,32 +52,28 @@ public class RegisterControllerTest implements TestExecutionListener {
     @Test
     public void canRegisterAndLogin() throws Exception {
         Person p = new Person("Ben", "Johnsson", "ben.bensson@gmail.com", "190507071234", "benjo2", "abc123##");
-        registerPerson(p, "abc123##").andExpect(status().is3xxRedirection())
-            .andExpect(header().exists("Location"))
-            .andExpect(header().string("Location", "success"));
+        registerPerson(p, "abc123##").andExpect(status().is3xxRedirection()).andExpect(header().exists("Location"))
+                .andExpect(header().string("Location", "success"));
         sendGetRequest(mockMvc, "/logout").andExpect(status().is3xxRedirection());
         sendPostRequest(mockMvc, "/login", addParam(addParam("username", "KarlJohan"), "password", "abc123##"))
-            .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
     public void displaysErrorOnDuplicateRegister() throws Exception {
         Person p = new Person("Ben", "Johnsson", "ben.johnsson@gmail.com", "190607071234", "benjo", "abc123##");
-        registerPerson(p, "abc123##").andExpect(status().is3xxRedirection())
-            .andExpect(header().exists("Location"))
-            .andExpect(header().string("Location", "success"));
+        registerPerson(p, "abc123##").andExpect(status().is3xxRedirection()).andExpect(header().exists("Location"))
+                .andExpect(header().string("Location", "success"));
         sendGetRequest(mockMvc, "/logout").andExpect(status().is3xxRedirection());
-        registerPerson(p, "abc123##").andExpect(status().isOk())
-             .andExpect(registrationFailure());
+        registerPerson(p, "abc123##").andExpect(status().isOk()).andExpect(registrationFailure());
     }
 
     private ResultActions registerPerson(Person p, String pass) throws Exception {
-        return sendPostRequest(mockMvc, "/register", addParam(
-            addParam(addParam(
-                addParam(addParam(addParam("username", p.getUsername()), "name", p.getName()),
-                    "surname", p.getSurname()),
-                        "email", p.getEmail()), "SSN", p.getSSN()),
-                    "password", pass));
+        return sendPostRequest(mockMvc, "/register",
+                addParam(
+                        addParam(addParam(addParam(addParam(addParam("username", p.getUsername()), "name", p.getName()),
+                                "surname", p.getSurname()), "email", p.getEmail()), "SSN", p.getSSN()),
+                        "password", pass));
     }
 
     private ResultMatcher registrationFailure() {
