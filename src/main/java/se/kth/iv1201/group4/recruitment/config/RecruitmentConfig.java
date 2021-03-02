@@ -132,7 +132,7 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(new Locale("sv", "SE"));
+        slr.setDefaultLocale(Locale.ENGLISH);
         return slr;
     }
 
