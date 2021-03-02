@@ -17,7 +17,7 @@
             </p>
 
             <label for="name" th:text="#{registerForm.label.name}">Name:</label>
-            <input id="name" type="text" th:field="*{name}"/><br>
+            <input id="name" type="text" th:field="*{name}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('name')}" th:text="${error}">
                 Name validation error
             </p>
@@ -46,7 +46,7 @@
                 SSN validation error
             </p>
 
-            <input type="submit" value="Register"/>
+            <input type="submit" th:value="#{registerForm.value.updateButton}"/>
         </form>
     </main>
 </body>

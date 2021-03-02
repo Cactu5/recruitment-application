@@ -18,16 +18,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.transaction.annotation.Transactional;
+
+import se.kth.iv1201.group4.recruitment.application.error.UpdatedPersonContainsTemporaryDataException;
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
+import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
 
 /**
  * A service for accessing or adding persons from and to the preson
@@ -82,6 +85,41 @@ public class PersonService implements UserDetailsService {
         if (r != null) {
             recruiterRepo.saveAndFlush(r);
         }
+    }
+
+    private void removeLegacyUserByPersonDTO(PersonDTO person){
+        LegacyUser lu = legacyUserRepo.findLegacyUserByPerson((Person)person);
+        legacyUserRepo.delete(lu);
+    }
+
+    private PersonDTO updatePersonWithContentsOfDTO(PersonDTO dto, String username){
+        Person p = personRepo.findPersonByUsername(username);
+        p.updateWithContentsOfDTO(dto);
+        return personRepo.save(p);
+    }
+    
+    /**
+     * Updates a {@link Person} migrated from the old database. It's required for the 
+     * dto to not contain any temporary data. If successful the {@link Person} is updated
+     * and removed as a {@link LegacyUser}.
+     *
+     * @param   dto         contains the updated data to make sure the {@link Person} follows
+     *                      the rules of the database schema.
+     * @param   username    the username of the {@link LegacyUser} to update.
+     * @throws  UpdatedPersonContainsTemporaryDataException if dto still contains temporary
+     *                                                      data this exception is thrown.
+     */
+    public void updatePersonByDTOAndRemoveFromLegacyUsers(PersonDTO dto, String username)
+        throws UpdatedPersonContainsTemporaryDataException {
+        if (TemporaryDataMatcher.isTemporaryEmail(dto.getEmail())) {
+            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary email");
+        }
+        if(TemporaryDataMatcher.isTemporarySSN(dto.getSSN())){
+            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
+        }
+        dto = updatePersonWithContentsOfDTO(dto, username);
+        removeLegacyUserByPersonDTO(dto);
+        legacyUserRepo.flush();
     }
 
     /**

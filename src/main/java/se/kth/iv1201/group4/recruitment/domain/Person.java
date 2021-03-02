@@ -101,6 +101,21 @@ public class Person implements PersonDTO {
         this.password = PASSWORD_ENCODER.encode(pass);
     }
 
+    public void updateWithContentsOfDTO(PersonDTO dto){
+        if(dto.getSSN() != null)
+            this.ssn = dto.getSSN();
+        if(dto.getName() != null)
+            this.name = dto.getName();
+        if(dto.getEmail() != null)
+            this.email = dto.getEmail();
+        if(dto.getSurname() != null)
+            this.surname = dto.getSurname();
+        if(dto.getUsername() != null)
+            this.username = dto.getUsername();
+        if(dto.getPassword() != null)
+           this.password = dto.getPassword();
+    }
+
     @Override
     public String getName() {
         return name;

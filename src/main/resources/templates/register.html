@@ -46,10 +46,10 @@
                 SSN validation error
             </p>
 
-            <input type="submit" value="Register"/>
+            <input type="submit" th:value="#{registerForm.value.registerButton}"/>
         </form>
         <p th:text="#{registerForm.text.alreadyHaveAnAccount}">Please visit:</p>
-        <a href="/login">Log in</a>
+        <a th:text="#{registerForm.text.goToLoginLink}" href="/login">Log in</a>
     </main>
 </body>
 </html>

@@ -16,10 +16,10 @@
             <input id="username" name="username" type="text"/><br>
             <label for="password" th:text="#{loginForm.label.password}">Password:</label>
             <input id="password" name="password" type="password"/><br>
-            <input type="submit" value="Log in"/>
+            <input type="submit" th:value="#{loginForm.value.loginButton}"/>
         </form>
         <p th:text="#{loginForm.text.dontHaveAnAccount}">Please visit</p>
-        <a href="/register">Sign up</a>
+        <a th:text="#{loginForm.text.goToRegisterLink}"href="/register">Sign up</a>
     </main>
 </body>
 </html>
