@@ -1,56 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragments/layout}"
-    th:with="title=#{pages.register.name}"
-    th:lang="${lang}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragments/layout}" th:with="title=#{pages.register.name}" th:lang="${lang}">
+
 <head>
     <title>Register</title>
 </head>
+
 <body>
     <main layout:fragment="content">
         <form th:action="@{/register}" th:object="${registerForm}" method="POST">
             <label for="email" th:text="#{registerForm.label.email}">Email:</label>
-            <input id="email" type="text" th:field="*{email}"/><br>
+            <input id="email" type="text" th:field="*{email}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('email')}" th:text="${error}">
                 Email validation error
             </p>
 
             <label for="name" th:text="#{registerForm.label.name}">Name:</label>
-            <input id="name" type="text" th:field="*{name}"/><br>
+            <input id="name" type="text" th:field="*{name}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('name')}" th:text="${error}">
                 Name validation error
             </p>
 
             <label for="surname" th:text="#{registerForm.label.surname}">Surname:</label>
-            <input id="surname" type="text" th:field="*{surname}"/><br>
+            <input id="surname" type="text" th:field="*{surname}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('surname')}" th:text="${error}">
                 Surname validation error
             </p>
-       
+
             <label for="username" th:text="#{registerForm.label.username}">Username:</label>
-            <input id="username" type="text" th:field="*{username}"/><br>
+            <input id="username" type="text" th:field="*{username}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('username')}" th:text="${error}">
                 Username validation error
             </p>
 
             <label for="password" th:text="#{registerForm.label.password}">Password:</label>
-            <input id="password" type="password" th:field="*{password}"/><br>
+            <input id="password" type="password" th:field="*{password}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('password')}" th:text="${error}">
                 Password validation error
             </p>
 
             <label for="ssn" th:text="#{registerForm.label.ssn}">SSN:</label>
-            <input id="ssn" type="text" th:field="*{SSN}"/><br>
+            <input id="ssn" type="text" th:field="*{SSN}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('SSN')}" th:text="${error}">
                 SSN validation error
             </p>
 
             <p th:if="${#messages.msgOrNull('__${error}__') != null}" th:text="#{'__${error}__'}">error message</p>
-            <input type="submit" value="Register"/>
+            <input type="submit" th:value="#{loginForm.text.register}" />
         </form>
         <p th:text="#{registerForm.text.alreadyHaveAnAccount}">Please visit:</p>
-        <a href="/login">Log in</a>
+        <a href="/login" th:text="#{loginForm.text.login}">Log in</a>
     </main>
 </body>
+
 </html>

@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:fragment="heading">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="#{heading.text.applicationName} + ' | ' + ${title}">Rekrytering</title>
     <style>
-        .form-error {color: red;}
+        .form-error {
+            color: red;
+        }
     </style>
+    <th:block th:include="~{fragments/scripts::scripts}"></th:block>
 </head>
+
 <body>
 </body>
+
 </html>
