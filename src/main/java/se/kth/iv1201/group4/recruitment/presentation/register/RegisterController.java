@@ -62,7 +62,7 @@ public class RegisterController {
      * 
      */
     @PostMapping("/register")
-    public String register(@Valid RegisterForm form, BindingResult result, Model model) {
+    public String register(@Valid RegisterForm form, BindingResult result, Model model) throws Exception {
         LOGGER.trace("Registration attempt.");
 
         Person p;
@@ -81,10 +81,6 @@ public class RegisterController {
         } catch (ConstraintViolationException | DataIntegrityViolationException e) {
             LOGGER.info("Registration failure due to primary key conflict.");
             model.addAttribute("error", "register.fail");
-            return "register";
-        } catch (Exception e) {
-            LOGGER.error("Could not add applicant to database.", e);
-            model.addAttribute("error", "{error.gereric}");
             return "register";
         }
         LOGGER.info("New user " + form.getUsername() + " registered successfully.");
