@@ -1,5 +1,8 @@
 package se.kth.iv1201.group4.recruitment.dataReader;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -150,10 +153,11 @@ class MigrationTest {
     void testIfCompetenciesMigrated(){
         assertTrue(competencies.size() > 0);
         for(Map<String, Object> map : competencies){
-            LocalCompetence c = localCompetenceRepo.findLocalCompetenceByName((String)map.get("name"));
+            List<LocalCompetence> c = localCompetenceRepo.findLocalCompetenceByName((String)map.get("name"));
 
             assertNotNull(c);
-            assertEquals(map.get("name"), c.getName());
+            assertThat(c.size(), is(1));
+            assertEquals(map.get("name"), c.get(0).getName());
         }
         assertEquals(competencies.size(), competenceRepo.findAll().size());
     }

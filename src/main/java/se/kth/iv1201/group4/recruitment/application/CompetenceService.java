@@ -78,17 +78,15 @@ public class CompetenceService {
     }
 
     /**
-     * Returns a local competence given the name.
+     * Returns local competences given the name.
      *
-     * @param name  name of the LocalCompetence to return.
-     * @return      returned local competence given the name.      
+     * @param name  name of the LocalCompetences to return.
+     * @return      returned local competences given the name.      
      */
-    public LocalCompetence getLocalCompetence(String name) {
+    public List<LocalCompetence> getLocalCompetence(String name) {
         if (name == null ) return null;
 
-        LocalCompetence c = localCompetenceRepo.findLocalCompetenceByName(name);
-
-        return c;
+        return localCompetenceRepo.findLocalCompetenceByName(name);
     }
     
     public List<CompetenceProfile> getAllCompetenceProfiles(){

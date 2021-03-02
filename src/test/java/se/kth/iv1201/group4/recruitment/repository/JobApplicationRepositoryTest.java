@@ -18,7 +18,6 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
-import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 
 @DataJpaTest
