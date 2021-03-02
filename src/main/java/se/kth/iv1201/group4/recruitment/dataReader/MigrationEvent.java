@@ -38,17 +38,17 @@ public class MigrationEvent {
 
     @EventListener
     public void onContextLoaded(ContextRefreshedEvent event){
-        LOGGER.info("Migration starts");
+        LOGGER.debug("Migration starts");
         if(false){
             Migration mig = new Migration();
             mig.migrate();
             migrate(mig);
-        } else LOGGER.trace("Migration complete");
+        } else LOGGER.info("Migration complete");
     }
 
     private void migrate(Migration mig){
         if(jobApplicationService.getJobStatus(mig.getJobStatus().get(0).getName()) == null){
-            LOGGER.info("Migration continues");
+            LOGGER.debug("Migration continues");
             migrateJobStatuses(mig.getJobStatus());
             migrateCompetencies(mig.getCompetencies());
             migrateRecruiters(mig.getRecruiters());
@@ -61,20 +61,20 @@ public class MigrationEvent {
 
     }
     private void migrateJobStatuses(List<JobStatus> jobStatuses){
-        LOGGER.info("Migrating job statuses");
         for(JobStatus js : jobStatuses){
             jobApplicationService.addJobStatus(js);
         }
+        LOGGER.info("Migrated job statuses");
     }
     private void migrateCompetencies(List<Competence> competencies){
-        LOGGER.info("Migrating competencies");
         for(Competence c : competencies)
             competenceService.addCompetence(c);
+        LOGGER.info("Migrated competencies");
     }
     private void migrateRecruiters(List<Recruiter> recruiters){
-        LOGGER.info("Migrating recruiters");
         for(Recruiter r : recruiters)
             personService.addRecruiter(r);
+        LOGGER.info("Migrated recruiters");
     }
     private void migrateApplicants(List<Applicant> applicants){
         LOGGER.info("Migrating applicants");
@@ -82,23 +82,23 @@ public class MigrationEvent {
             personService.addApplicant(a);
     }
     private void createLegacyUsers(List<LegacyUser> lus){
-        LOGGER.info("Creating legacy users");
         for(LegacyUser lu : lus)
             personService.addLegacyUser(lu);
+        LOGGER.info("Created legacy users");
     }
     private void migrateJobApplications(List<JobApplication> jas){
-        LOGGER.info("Migrating job applications");
         for(JobApplication ja : jas)
             jobApplicationService.addJobApplication(ja);
+        LOGGER.info("Migrated job applications");
     }
     private void migrateCompetenceProfiles(List<CompetenceProfile> cps){
-        LOGGER.info("Migrating competence profiles");
         for(CompetenceProfile cp : cps)
             competenceService.addCompetenceProfile(cp);
+        LOGGER.info("Migrated competence profiles");
     }
     private void migrateAvailabilities(List<Availability> avs){
-        LOGGER.info("Migrating availabilities");
         for(Availability a : avs)
             jobApplicationService.addAvailability(a);
+        LOGGER.info("Migrated availabilities");
     }
 }

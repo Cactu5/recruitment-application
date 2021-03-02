@@ -69,7 +69,7 @@ public class RegisterController {
         Person p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
-                LOGGER.debug(err.toString());
+                LOGGER.info(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
             return "register";
@@ -84,6 +84,7 @@ public class RegisterController {
             model.addAttribute("error", "register.fail");
             return "register";
         }
+        LOGGER.info("New user " + form.getUsername() + " registered successfully.");
         return "redirect:success";
     }
 }
