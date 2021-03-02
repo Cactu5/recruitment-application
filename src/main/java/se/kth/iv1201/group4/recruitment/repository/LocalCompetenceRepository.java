@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
+import se.kth.iv1201.group4.recruitment.domain.LocalCompetenceId;
 
 /**
  * Repository for {@link se.kth.iv1201.group4.recruitment.domain.LocalCompetence}.
@@ -21,14 +22,14 @@ import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
-public interface LocalCompetenceRepository extends JpaRepository<LocalCompetence, Long> {
+public interface LocalCompetenceRepository extends JpaRepository<LocalCompetence, LocalCompetenceId> {
     /**
      * Returns LocalCompetence specified by the given name. 
      *
      * @param name  name of the given {@link LocalCompetence} to return
-     * @return      {@link LocalCompetence} found given the name.
+     * @return      {@link LocalCompetence}s found given the name.
      */
-    LocalCompetence findLocalCompetenceByName(String name);
+    List<LocalCompetence> findLocalCompetenceByName(String name);
 
     /**
      * Returns LocalCompetence specified by the given name. 

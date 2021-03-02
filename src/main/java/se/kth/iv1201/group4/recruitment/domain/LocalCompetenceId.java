@@ -2,6 +2,12 @@ package se.kth.iv1201.group4.recruitment.domain;
 
 import java.io.Serializable;
 
+/**
+ * A class that represents the composite primary key of
+ * the LocalCompetence entity. JPA requires that the key fields
+ * are not objects of custom classes, which is why they are represented
+ * as longs here, i.e. their primary key datatype.
+ */
 public class LocalCompetenceId implements Serializable {
     private static final long serialVersionUID = 1L;
 

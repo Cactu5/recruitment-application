@@ -18,7 +18,7 @@ import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
 import se.kth.iv1201.group4.recruitment.dto.LanguageDTO;
 
 /**
- * An entity representing a local competence.
+ * An entity representing a competence in a certain language
  * 
  * @author William Stackenäs
  * @version %I%
@@ -52,9 +52,13 @@ public class LocalCompetence implements LocalCompetenceDTO {
     }
 
     /**
-     * Creates a new instance with the specified name.
+     * Creates a new instance with the specified name,
+     * the language of the name and the competence of the
+     * name
      * 
      * @param name the name.
+     * @param language the language.
+     * @param competence the competence.
      */
     public LocalCompetence(String name, Language language, Competence competence) {
         this.name = name;

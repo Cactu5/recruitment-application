@@ -1,15 +1,13 @@
 package se.kth.iv1201.group4.recruitment.dto;
 
-import java.io.Serializable;
-
 /**
  * This LocalCompetenceDTO is a DTO. It contains all of the expected getters for
  * this specific type.
  * 
- * The LocalCompetenceDTO interface provides a method to get the name of the
- * competence.
+ * The LocalCompetenceDTO interface provides a method to get the name, the language,
+ * and the competence of the local competence.
  * 
- * @auther William Stackenäs
+ * @author William Stackenäs
  * @version %I%
  */
 public interface LocalCompetenceDTO {

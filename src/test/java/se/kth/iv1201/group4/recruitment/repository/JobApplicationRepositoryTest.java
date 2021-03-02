@@ -40,9 +40,6 @@ public class JobApplicationRepositoryTest {
         JobStatus jobStatus = new JobStatus("test status");
         entityManager.persist(jobStatus);
 
-        Language lang = new Language("english");
-        entityManager.persist(lang);
-
         Competence competence = new Competence();
         Competence competence2 = new Competence();
         entityManager.persist(competence);

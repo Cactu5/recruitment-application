@@ -45,7 +45,13 @@ public class SuccessController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SuccessController.class);
 
     /**
-     * This endpoint returns the success page for the applicant role.
+     * This endpoint returns the success page for the applicant role,
+     * containing a dropdown meny of all competences in the database in
+     * the language requested by the client, if possible
+     * 
+     * @param request The HTTP request from the client that may contain
+     *                information about its prefered language
+     * @param model  The model objects used in the register page
      * 
      * @return the success page for the applicant role
      */
