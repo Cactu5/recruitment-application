@@ -1,5 +1,7 @@
 package se.kth.iv1201.group4.recruitment.config;
 
+import java.util.Locale;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -8,11 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -118,6 +122,18 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
         registry.addResourceHandler("/**").addResourceLocations(STATIC_RESOURCES_LOCATION)
                 .setCachePeriod(CHACHE_PERIOD_FOR_STATIC_FILES_SEC).resourceChain(true)
                 .addResolver(new PathResourceResolver());
+    }
+
+    /**
+     * Resolves the locale and sets the default locale to swedish.
+     * 
+     * @return the default locale
+     */
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(new Locale("sv", "SE"));
+        return slr;
     }
 
     /**
