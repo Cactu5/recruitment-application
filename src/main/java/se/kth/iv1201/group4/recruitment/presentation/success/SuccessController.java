@@ -6,6 +6,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -115,6 +116,10 @@ public class SuccessController {
             LOGGER.info("Legacy user converted to normal user.");
         } catch (ConstraintViolationException e) {
             LOGGER.debug("Registration failure due to primary key conflict.");
+            model.addAttribute("error", "{register.fail}");
+            return "success-legacy-user";
+        } catch(DataIntegrityViolationException e){
+            LOGGER.debug("Tried to use already existing unique value");
             model.addAttribute("error", "{register.fail}");
             return "success-legacy-user";
         }
