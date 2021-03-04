@@ -97,7 +97,6 @@ public class SuccessControllerTest {
     /**
      * Diffcult to test witout a real legacy user in the db. Was able to test it
      * locally but not sure how to do it in github actions
-     * @throws Exception
      */
     @Disabled
     @Test
