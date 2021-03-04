@@ -46,13 +46,13 @@ public class PersonService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    PersonRepository personRepo;
+    private PersonRepository personRepo;
 
     @Autowired
-    ApplicantRepository applicantRepo;
+    private ApplicantRepository applicantRepo;
 
     @Autowired
-    RecruiterRepository recruiterRepo;
+    private RecruiterRepository recruiterRepo;
 
     @Autowired
     private LegacyUserRepository legacyUserRepo;
