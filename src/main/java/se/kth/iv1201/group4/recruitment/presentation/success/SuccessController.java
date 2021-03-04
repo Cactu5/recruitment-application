@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -146,7 +147,8 @@ public class SuccessController {
             } else if(PersonService.authoritiesContains(user.getAuthorities(), PersonService.ROLE_LEGACY_USER)){
                 return "redirect:success-legacy-user";
             } else {
-                LOGGER.error("Authenticated user with no role tried logging in.");
+                LOGGER.warn("Authenticated user with no role tried logging in.");
+                throw new UsernameNotFoundException("user has no role");
             }
         }
 

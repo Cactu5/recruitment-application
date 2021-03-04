@@ -47,8 +47,8 @@ public class JobApplicationService {
      */
     public void addJobApplication(JobApplication jobApplication) {
         if (jobApplication != null) {
-            LOGGER.debug(String.format("%s creating a job application", "applicant"));
             jobApplicaitonRepo.saveAndFlush(jobApplication);
+            LOGGER.info(String.format("%s created a job application", "applicant"));
         }
     }
 
@@ -59,8 +59,8 @@ public class JobApplicationService {
      */
     public void addJobStatus(JobStatus jobStatus){
         if(jobStatus != null){
-            LOGGER.info(String.format("Adding %s as a job status", jobStatus.getName()));
             jobStatusRepo.saveAndFlush(jobStatus);
+            LOGGER.info(String.format("Added %s as a job status", jobStatus.getName()));
         }
     }
 
@@ -80,8 +80,8 @@ public class JobApplicationService {
      */
     public void addAvailability(Availability availability){
         if(availability != null){
-            LOGGER.debug("Adding availability");
             availabilityRepo.saveAndFlush(availability);
+            LOGGER.debug("Added availability");
         }
     }
 

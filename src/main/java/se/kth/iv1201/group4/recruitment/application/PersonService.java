@@ -188,10 +188,11 @@ public class PersonService implements UserDetailsService {
             } else {
                 // Should never end up here as all Persons are
                 // either applicants or recruiters
-                LOGGER.error("Person logged in as neither an applicant nor recruiter.");
+                LOGGER.warn("Person logged in as neither an applicant nor recruiter.");
                 throw new UsernameNotFoundException("user has no role");
             }
         } catch (Exception e) {
+            LOGGER.error("Database transaction failed.");
             throw new UsernameNotFoundException("database error");
         }
 
@@ -229,7 +230,7 @@ public class PersonService implements UserDetailsService {
                 && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             return (UserDetails) auth.getPrincipal();
         } else {
-            LOGGER.info("Tried getting a logged in user, but none was available.");
+            LOGGER.debug("Tried getting a logged in user, but none was available.");
             return null;
         }
     }
