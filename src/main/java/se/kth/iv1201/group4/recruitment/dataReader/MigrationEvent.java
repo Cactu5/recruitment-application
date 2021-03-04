@@ -39,11 +39,9 @@ public class MigrationEvent {
     @EventListener
     public void onContextLoaded(ContextRefreshedEvent event){
         LOGGER.info("Migration starts");
-        if(false){
-            Migration mig = new Migration();
-            mig.migrate();
-            migrate(mig);
-        } else LOGGER.trace("Migration complete");
+        Migration mig = new Migration();
+        mig.migrate();
+        migrate(mig);
     }
 
     private void migrate(Migration mig){
