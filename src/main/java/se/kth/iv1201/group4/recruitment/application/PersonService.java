@@ -152,7 +152,7 @@ public class PersonService implements UserDetailsService {
                     throw new UsernameNotFoundException("User has no role");
                 }
             } else {
-                LOGGER.warn("No person with the username " + username + " and password combination could be found.");
+                LOGGER.debug("No person with the username " + username + " and password combination could be found.");
                 throw new UsernameNotFoundException("Username not found.");
             }
         } catch (Exception e) {
