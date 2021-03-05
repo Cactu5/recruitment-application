@@ -38,27 +38,25 @@ class ForgotViewTest implements TestExecutionListener {
     void testIfViewRendersTheRequiredInputs() throws Exception {
         mockMvc.perform(get("/forgot")).andExpect(status().isOk())
                 .andExpect(
-                        content().string(containsString("<input id=\"email\" name=\"email\" type=\"text\" />")));
+                        content().string(containsString("<input id=\"email\" type=\"text\" name=\"email\"")));
     }
 
     @Test
     void testIfViewRendersInSwedish() throws Exception {
-        mockMvc.perform(get("/login?lang=sv")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("användarnamn")))
-                .andExpect(content().string(containsString("lösenord")));
+        mockMvc.perform(get("/forgot?lang=sv")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Skicka återställningslänk")));
     }
 
     @Test
     void testIfViewRendersInEnglish() throws Exception {
-        mockMvc.perform(get("/login?lang=en")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Username")))
-                .andExpect(content().string(containsString("Password")));
+        mockMvc.perform(get("/forgot?lang=en")).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Send reset link")));
     }
 
     @Test
     void testIfViewIsUsingThymeleafDecoration() throws Exception {
-        mockMvc.perform(get("/login?lang=sv")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("| Login")))
+        mockMvc.perform(get("/forgot?lang=sv")).andExpect(status().isOk())
+                .andExpect(content().string(containsString(" | Glömt")))
                 .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
                 .andExpect(content().string(containsString("<footer>")));
     }

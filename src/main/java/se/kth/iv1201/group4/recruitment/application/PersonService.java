@@ -70,8 +70,10 @@ public class PersonService implements UserDetailsService {
      * Adds a person to the list of persons that has requested a reset of their account
      * 
      * @param email The email of the person that requested an account reset
+     * 
+     * @return The UUID that was generated for the requested reset
      */
-    public void addPersonToResetAccountList(String email) throws IllegalArgumentException {
+    public UUID addPersonToResetAccountList(String email) throws IllegalArgumentException {
         UUID uuid;
         Person p;
         if (email == null)
@@ -88,6 +90,8 @@ public class PersonService implements UserDetailsService {
         LOGGER.warn("Person with email " + email + " requested a reset available at /reset/" + uuid.toString());
 
         // TODO: Send email with link here
+
+        return uuid;
     }
 
     /**
@@ -218,7 +222,7 @@ public class PersonService implements UserDetailsService {
                 }
             } else {
                 LOGGER.debug("No person with the username " + username + " and password combination could be found.");
-                throw new UsernameNotFoundException("Username not found.");
+                throw new UsernameNotFoundException("Username " + username + " not found.");
             }
         } catch (Exception e) {
             LOGGER.error("Database transaction failed.");

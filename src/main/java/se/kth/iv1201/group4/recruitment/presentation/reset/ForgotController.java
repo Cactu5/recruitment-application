@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,6 +19,7 @@ import se.kth.iv1201.group4.recruitment.application.PersonService;
  * 
  * @author William Stackenäs
  */
+@Controller
 public class ForgotController {
     
     @Autowired
@@ -31,8 +33,8 @@ public class ForgotController {
      * @return The URL to the forgot page
      */
     @GetMapping("/forgot")
-    public String showForgotView() {
-        LOGGER.trace("Get request for the forgot page.");
+    public String showForgotView(ForgotForm registerForm) {
+        LOGGER.info("Get request for the forgot page.");
 
         if (service.getLoggedInUser() != null) {
             LOGGER.trace("An authenticated user tried to use the forgot page.");
