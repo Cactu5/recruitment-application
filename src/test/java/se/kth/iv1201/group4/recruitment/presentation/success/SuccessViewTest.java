@@ -65,7 +65,6 @@ public class SuccessViewTest implements TestExecutionListener {
     @AfterEach
     void tearDown() throws Exception {
         localCompetenceRepo.deleteAll();
-        competenceRepo.deleteAll();
         languageRepo.deleteAll();
     }
 
@@ -129,13 +128,13 @@ public class SuccessViewTest implements TestExecutionListener {
     @Test
     void testIfViewSuccesApplicantRendersWithDefault() throws Exception {
         addLocalCompetences(new String[]{
-            "en", "sv"
+            "en", "dk"
         }, new String[]{
             "running", "walking", "sleeping", "watching movies"
         }, new String[]{
             "löpning", "gång", "sömn", "titta på filmer"
         });
-        mockMvc.perform(get("/success-applicant").header("Accept-Language", "da-dk")).andExpect(status().isOk())
+        mockMvc.perform(get("/success-applicant").header("Accept-Language", "qq-qq")).andExpect(status().isOk())
             .andExpect(content().string(containsString("This is the success page for applicants.")))
             .andExpect(content().string(containsString("<option>running</option>")))
             .andExpect(content().string(containsString("<option>walking</option>")))
