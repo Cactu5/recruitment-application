@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragments/layout}" th:with="title=#{pages.forgot.name}" th:lang="${lang}">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <main layout:fragment="content">
+        <form th:action="@{/forgot}" method="POST">
+            <label for="email" th:text="#{forgotForm.label.email}">Email:</label>
+            <input id="email" type="text" th:field="*{email}" /><br>
+            <p class="form-error" th:each="error : ${#fields.errors('email')}" th:text="${error}">
+                Email validation error
+            </p>
+            <input type="submit" th:value="#{forgotForm.text.submit}" />
+        </form>
+    </main>
+</body>
+
+</html>

@@ -1,6 +1,8 @@
 package se.kth.iv1201.group4.recruitment.application;
 
 import java.util.Collection;
+import java.util.Hashtable;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
@@ -57,9 +60,71 @@ public class PersonService implements UserDetailsService {
     @Autowired
     private LegacyUserRepository legacyUserRepo;
 
+    private Hashtable<UUID, String> personsToBeReset;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
     static public final String ROLE_RECRUITER = "ROLE_RECRUITER";
+
+    /**
+     * Adds a person to the list of persons that has requested a reset of their account
+     * 
+     * @param email The email of the person that requested an account reset
+     */
+    public void addPersonToResetAccountList(String email) throws IllegalArgumentException {
+        UUID uuid;
+        Person p;
+        if (email == null)
+            throw new IllegalArgumentException("Email must not be null");
+        if (personsToBeReset == null)
+            personsToBeReset = new Hashtable<UUID, String>();
+        
+        p = personRepo.findPersonByEmail(email);
+        if (p == null)
+            throw new IllegalArgumentException("No such email");
+        uuid = UUID.randomUUID();
+        personsToBeReset.put(uuid, email);
+
+        LOGGER.warn("Person with email " + email + " requested a reset available at /reset/" + uuid.toString());
+
+        // TODO: Send email with link here
+    }
+
+    /**
+     * Checks whether or not a person exists in the list of persons that has requested
+     * a reset of their account for the given UUID and returns their email
+     * 
+     * @param uuid The UUID to look for in the list
+     * @return The email of the given UUID or null if no such UUID existed
+     */
+    public String getEmailFromAccountList(UUID uuid) {
+        if (personsToBeReset == null)
+            personsToBeReset = new Hashtable<UUID, String>();
+        if (uuid == null)
+            return null;
+
+        return personsToBeReset.get(uuid);
+    }
+
+    /**
+     * Resets a person from the list of persons that has requested
+     * a reset of their account for the given UUID using the given
+     * information contained in the PersonDTO. They will then be removed
+     * from the list and also from their status as a legacy user, if applicable.
+     * 
+     * @param uuid The UUID in the list corresponding to the email of the person
+     *             whose account should be reset.
+     * @param p The person containing the updated data with which to reset
+     */
+    public void resetPersonFromResetAccountList(UUID uuid, PersonDTO p) {
+        String email = getEmailFromAccountList(uuid);
+        if (email == null || p == null)
+            throw new IllegalArgumentException("No such UUID or Person");
+        
+        personsToBeReset.remove(uuid);
+        // TODO: Replace person with email "email" with person "p"
+        // and remove them from legacy user if they are one
+    }
 
     /**
      * Adds an applicant to the applicant repository
