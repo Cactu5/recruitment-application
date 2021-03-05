@@ -6,7 +6,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +29,7 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
 public class RegisterController {
 
     @Autowired
-    PersonService service;
+    private PersonService service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
@@ -62,13 +62,13 @@ public class RegisterController {
      * 
      */
     @PostMapping("/register")
-    public String register(@Valid RegisterForm form, BindingResult result, Model model) {
+    public String register(@Valid RegisterForm form, BindingResult result, Model model) throws Exception {
         LOGGER.trace("Registration attempt.");
 
         Person p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
-                LOGGER.debug(err.toString());
+                LOGGER.info(err.toString());
                 model.addAttribute(err.getField(), err.getDefaultMessage());
             }
             return "register";
@@ -78,11 +78,12 @@ public class RegisterController {
         try {
             service.addApplicant(new Applicant(p));
             service.autoLogin(form.getUsername(), form.getPassword());
-        } catch (ConstraintViolationException e) {
-            LOGGER.debug("Registration failure due to primary key conflict.");
-            model.addAttribute("error", "{register.fail}");
+        } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+            LOGGER.info("Registration failure due to primary key conflict.");
+            model.addAttribute("error", "register.fail");
             return "register";
         }
+        LOGGER.info("New user " + form.getUsername() + " registered successfully.");
         return "redirect:success";
     }
 }

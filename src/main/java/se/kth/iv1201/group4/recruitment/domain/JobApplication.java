@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
@@ -24,6 +24,7 @@ import se.kth.iv1201.group4.recruitment.dto.JobStatusDTO;
  * An entity representing a job application.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @ToString
@@ -36,10 +37,12 @@ public class JobApplication implements JobApplicationDTO {
     @Column(name = "id")
     private long id;
 
+    @NotNull(message = "{jobApplication.applicant.missing}")
     @ManyToOne
     @JoinColumn(name = "applicant")
     private Applicant applicant;
 
+    @NotNull(message = "{jobApplication.jobStatus.missing}")
     @ManyToOne
     @JoinColumn(name = "job_status")
     private JobStatus jobStatus;
@@ -55,6 +58,17 @@ public class JobApplication implements JobApplicationDTO {
      */
     protected JobApplication() {
 
+    }
+
+    /**
+     * Creates a new instance with the specified applicant, job status
+     * 
+     * @param applicant owner of the job application
+     * @param jobStatus status of the job application
+     */
+    public JobApplication(Applicant applicant, JobStatus jobStatus) {
+        this.applicant = applicant;
+        this.jobStatus = jobStatus;
     }
 
     /**

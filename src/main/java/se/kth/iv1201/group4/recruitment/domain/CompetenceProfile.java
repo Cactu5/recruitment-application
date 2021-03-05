@@ -8,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceProfileDTO;
+import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
 
 /**
  * An entity representing a competence profile.
@@ -30,12 +33,15 @@ public class CompetenceProfile implements CompetenceProfileDTO {
     private long id;
 
     @Column(name = "years_of_experience")
+    @Min(value = 0, message = "{competenceProfile.yearsOfExperience.lessThanZero}")
     private float yearsOfExperience;
 
+    @NotNull(message = "{competenceProfile.competence.missing}")
     @ManyToOne
     @JoinColumn(name = "competence")
     private Competence competence;
 
+    @NotNull(message = "{competenceProfile.jobApplication.missing}")
     @ManyToOne
     @JoinColumn(name = "job_application")
     private JobApplication jobApplication;
@@ -72,6 +78,15 @@ public class CompetenceProfile implements CompetenceProfileDTO {
         this.jobApplication = jobApplication;
     }
 
+    /**
+     * Sets the <code>JobApplication</code> of the <code>CompetenceProfile</code>.
+     * 
+     * @param jobApplication the <code>JobApplication</code>
+     */
+    public void setJobApplication(JobApplication jobApplication) {
+        this.jobApplication = jobApplication;
+    }
+
     @Override
     public CompetenceDTO getCompetence() {
         return competence;
@@ -80,6 +95,11 @@ public class CompetenceProfile implements CompetenceProfileDTO {
     @Override
     public float getYearsOfExperience() {
         return yearsOfExperience;
+    }
+
+    @Override
+    public JobApplicationDTO getJobApplication() {
+        return jobApplication;
     }
 
     @Override

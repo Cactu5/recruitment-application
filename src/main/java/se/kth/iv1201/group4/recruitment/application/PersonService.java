@@ -2,7 +2,6 @@ package se.kth.iv1201.group4.recruitment.application;
 
 import java.util.Collection;
 
-import org.aspectj.apache.bcel.generic.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
+import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
+import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
+import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
@@ -33,6 +35,7 @@ import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
  * or creates a new if none exist.
  * 
  * @author William Stackenäs
+ * @author Filip Garamvölgyi
  * @author Cactu5
  * @version %I%
  */
@@ -43,13 +46,16 @@ public class PersonService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    PersonRepository personRepo;
+    private PersonRepository personRepo;
 
     @Autowired
-    ApplicantRepository applicantRepo;
+    private ApplicantRepository applicantRepo;
 
     @Autowired
-    RecruiterRepository recruiterRepo;
+    private RecruiterRepository recruiterRepo;
+
+    @Autowired
+    private LegacyUserRepository legacyUserRepo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
@@ -63,6 +69,29 @@ public class PersonService implements UserDetailsService {
     public void addApplicant(Applicant a) {
         if (a != null) {
             applicantRepo.saveAndFlush(a);
+        }
+    }
+
+    /**
+     * Adds a recruiter to the recruiter repository
+     * 
+     * @param r The recruiter to add
+     */
+    public void addRecruiter(Recruiter r) {
+        if (r != null) {
+            recruiterRepo.saveAndFlush(r);
+        }
+    }
+
+    /**
+     * Adds a legacy user to the legacy user repository
+     * 
+     * @param lu The legacy user to add
+     */
+    public void addLegacyUser(LegacyUser lu) {
+        if (lu != null) {
+            legacyUserRepo.saveAndFlush(lu);
+            LOGGER.info("Added legacy user");
         }
     }
 
@@ -86,6 +115,19 @@ public class PersonService implements UserDetailsService {
         return null;
     }
 
+    /**
+     * Fetches an applicant from the database with the given person.
+     *
+     * @param person person used to identify applicant
+     * @return {@link Applicant} identified by the person
+     */
+    public Applicant getApplicant(Person person) {
+        if (person == null)
+            return null;
+
+        return applicantRepo.findApplicantByPerson(person);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null)
@@ -96,20 +138,26 @@ public class PersonService implements UserDetailsService {
         try {
             p = personRepo.findPersonByUsername(username);
 
-            if (applicantRepo.findApplicantByPerson(p) != null) {
-                LOGGER.debug("Person logged in as an applicant.");
-                role = ROLE_APPLICANT;
-            } else if (recruiterRepo.findRecruiterByPerson(p) != null) {
-                LOGGER.info("Person logged in as a recruiter.");
-                role = ROLE_RECRUITER;
+            if (p != null) {
+                if (applicantRepo.findApplicantByPerson(p) != null) {
+                    LOGGER.debug("Person logged in as an applicant.");
+                    role = ROLE_APPLICANT;
+                } else if (recruiterRepo.findRecruiterByPerson(p) != null) {
+                    LOGGER.info("Person logged in as a recruiter.");
+                    role = ROLE_RECRUITER;
+                } else {
+                    // Should never end up here as all Persons are
+                    // either applicants or recruiters
+                    LOGGER.warn("Person logged in as neither an applicant nor recruiter.");
+                    throw new UsernameNotFoundException("User has no role");
+                }
             } else {
-                // Should never end up here as all Persons are
-                // either applicants or recruiters
-                LOGGER.error("Person logged in as neither an applicant nor recruiter.");
-                throw new UsernameNotFoundException("user has no role");
+                LOGGER.debug("No person with the username " + username + " and password combination could be found.");
+                throw new UsernameNotFoundException("Username not found.");
             }
         } catch (Exception e) {
-            throw new UsernameNotFoundException("database error");
+            LOGGER.error("Database transaction failed.");
+            throw new UsernameNotFoundException("Database error.");
         }
 
         return new User(username, p.getPassword(), AuthorityUtils.createAuthorityList(role));
@@ -146,7 +194,7 @@ public class PersonService implements UserDetailsService {
                 && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             return (UserDetails) auth.getPrincipal();
         } else {
-            LOGGER.info("Tried getting a logged in user, but none was available.");
+            LOGGER.debug("Tried getting a logged in user, but none was available.");
             return null;
         }
     }

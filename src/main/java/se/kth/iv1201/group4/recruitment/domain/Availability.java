@@ -10,14 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
+import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
 
 /**
  * An entity representing an availability.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @ToString
@@ -36,6 +39,7 @@ public class Availability implements AvailabilityDTO {
     @Column(name = "to_date")
     private LocalDate toDate;
 
+    @NotNull(message = "{availability.jobApplication.missing}")
     @ManyToOne
     @JoinColumn(name = "job_application")
     private JobApplication jobApplication;
@@ -72,6 +76,15 @@ public class Availability implements AvailabilityDTO {
         this.jobApplication = jobApplication;
     }
 
+    /**
+     * Sets the <code>JobApplication</code> of the <code>Availability</code>.
+     * 
+     * @param jobApplication the <code>JobApplication</code>
+     */
+    public void setJobApplication(JobApplication jobApplication) {
+        this.jobApplication = jobApplication;
+    }
+
     @Override
     public LocalDate getFrom() {
         return fromDate;
@@ -80,6 +93,11 @@ public class Availability implements AvailabilityDTO {
     @Override
     public LocalDate getTo() {
         return toDate;
+    }
+
+    @Override
+    public JobApplicationDTO getJobApplication() {
+        return jobApplication;
     }
 
     @Override

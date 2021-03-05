@@ -22,13 +22,12 @@ public class CompetenceRepositoryTest {
 
     @Test
     public void testCreateCompetence() {
-        Competence competence = new Competence("test competence1");
+        Competence competence = new Competence();
         entityManager.persist(competence);
         entityManager.flush();
 
         List<Competence> found = competenceRepository.findAll();
         assertThat(found.size(), is(1));
         assertThat(found.get(0), is(competence));
-        assertThat(competence.getName(), is(found.get(0).getName()));
     }
 }
