@@ -17,7 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestExecutionListener;
 
-import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
+import se.kth.iv1201.group4.recruitment.repository.LocalCompetenceRepository;
 
 @DataJpaTest
 public class CompetenceTest implements TestExecutionListener {
@@ -25,25 +25,38 @@ public class CompetenceTest implements TestExecutionListener {
     private TestEntityManager entityManager;
 
     @Autowired
-    private CompetenceRepository competenceRepository;
+    private LocalCompetenceRepository localCompetenceRepository;
 
     @Test
-    public void testCreateCompetence() {
-        Competence competence = new Competence("test competence1");
-        entityManager.persistAndFlush(competence);
+    public void testCreateLocalCompetence() {
+        Language lang = new Language("english");
+        entityManager.persist(lang);
 
-        List<Competence> found = competenceRepository.findAll();
+        Competence competence = new Competence();
+        entityManager.persist(competence);
+
+        LocalCompetence lCompetence = new LocalCompetence("competence", lang, competence);
+        entityManager.persistAndFlush(lCompetence);
+
+        List<LocalCompetence> found = localCompetenceRepository.findAll();
         assertThat(found.size(), is(1));
-        assertThat(found.get(0), is(competence));
-        assertThat(competence.getName(), is(found.get(0).getName()));
+        assertThat(found.get(0), is(lCompetence));
+        assertThat(lCompetence.getName(), is(found.get(0).getName()));
     }
 
     @Test
     public void testInvalidName() {
-        Competence competence = new Competence("!");
+        Language lang = new Language("english");
+        entityManager.persist(lang);
+
+        Competence competence = new Competence();
+        entityManager.persist(competence);
+
+        LocalCompetence lCompetence = new LocalCompetence("!", lang, competence);
+        entityManager.persistAndFlush(competence);
 
         try {
-            entityManager.persistAndFlush(competence);
+            entityManager.persistAndFlush(lCompetence);
             fail("ConstraintViolationException was not thrown.");
         } catch (ConstraintViolationException e) {
             validateConstraints(e, "{competence.name.length}");

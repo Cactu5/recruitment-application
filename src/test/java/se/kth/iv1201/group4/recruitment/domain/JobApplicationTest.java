@@ -39,8 +39,8 @@ public class JobApplicationTest implements TestExecutionListener {
     @Test
     public void testCreateJobApplication() {
         try {
-            Competence competence = new Competence("test competence1");
-            Competence competence2 = new Competence("test competence2");
+            Competence competence = new Competence();
+            Competence competence2 = new Competence();
             entityManager.persist(competence);
             entityManager.persist(competence2);
 

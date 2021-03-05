@@ -5,35 +5,33 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 
-import se.kth.iv1201.group4.recruitment.domain.Competence;
+import se.kth.iv1201.group4.recruitment.domain.Language;
 
 /**
- * Repository for {@link se.kth.iv1201.group4.recruitment.domain.Competence}.
+ * Repository for {@link se.kth.iv1201.group4.recruitment.domain.Language}.
  * Contains all methods for accessing data in the database concerning
- * {@link se.kth.iv1201.group4.recruitment.domain.Competence}.
+ * {@link se.kth.iv1201.group4.recruitment.domain.Language}.
  * 
- * @author Cactu5
- * @author Filip Garamvölgyi
  * @author William Stackenäs
  * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
-public interface CompetenceRepository extends JpaRepository<Competence, Long> {
+public interface LanguageRepository extends JpaRepository<Language, Long> {
+
     /**
-     * Returns Competence specified by the given id. 
+     * find a language by the given name.
      *
-     * @param id    id of the given {@link Competence} to return
-     * @return      {@link Competence} found given the id.
+     * @param name  name used to find {@link Language}.
+     * @return      {@link Language} returned by the given name.
      */
-    Competence findCompetenceById(long id);
-
-
-    @Transactional(propagation = Propagation.MANDATORY)
-    @Override
-    Competence save(Competence competence);
+    Language findLanguageByName(String name);
 
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    void delete(Competence competence);
+    Language save(Language language);
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    @Override
+    void delete(Language language);
 }

@@ -1,8 +1,10 @@
 package se.kth.iv1201.group4.recruitment.dataReader;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -17,9 +19,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import se.kth.iv1201.group4.recruitment.dataReader.util.JsonToMapReader;
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Availability;
-import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
+import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
@@ -28,7 +30,9 @@ import se.kth.iv1201.group4.recruitment.repository.CompetenceProfileRepository;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
 import se.kth.iv1201.group4.recruitment.repository.JobApplicationRepository;
 import se.kth.iv1201.group4.recruitment.repository.JobStatusRepository;
+import se.kth.iv1201.group4.recruitment.repository.LanguageRepository;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
+import se.kth.iv1201.group4.recruitment.repository.LocalCompetenceRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 
@@ -42,6 +46,12 @@ class MigrationTest {
 
     @Autowired
     private ApplicantRepository applicantRepo;
+
+    @Autowired
+    private LanguageRepository languageRepo;
+
+    @Autowired
+    private LocalCompetenceRepository localCompetenceRepo;
 
     @Autowired
     private CompetenceRepository competenceRepo;
@@ -67,12 +77,18 @@ class MigrationTest {
     private Migration mig;
 
     @BeforeEach
-    void mirgrateData(){
+    void migrateData(){
         JsonToMapReader reader = new JsonToMapReader();
         mig = new Migration();
         mig.migrate();
 
         competenceRepo.saveAll(mig.getCompetencies());
+        competenceRepo.flush();
+
+        languageRepo.saveAll(mig.getLanguages());
+        competenceRepo.flush();
+
+        localCompetenceRepo.saveAll(mig.getLocalCompetencies());
         competenceRepo.flush();
 
         jobStatusRepo.saveAll(mig.getJobStatus());
@@ -137,10 +153,11 @@ class MigrationTest {
     void testIfCompetenciesMigrated(){
         assertTrue(competencies.size() > 0);
         for(Map<String, Object> map : competencies){
-            Competence c = competenceRepo.findCompetenceByName((String)map.get("name"));
+            List<LocalCompetence> c = localCompetenceRepo.findLocalCompetenceByName((String)map.get("name"));
 
             assertNotNull(c);
-            assertEquals(map.get("name"), c.getName());
+            assertThat(c.size(), is(1));
+            assertEquals(map.get("name"), c.get(0).getName());
         }
         assertEquals(competencies.size(), competenceRepo.findAll().size());
     }

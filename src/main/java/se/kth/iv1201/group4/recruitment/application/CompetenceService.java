@@ -1,6 +1,6 @@
 package se.kth.iv1201.group4.recruitment.application;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,8 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
+import se.kth.iv1201.group4.recruitment.domain.Language;
+import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceProfileRepository;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
+import se.kth.iv1201.group4.recruitment.repository.LocalCompetenceRepository;
 
 /**
  * A service for accessing or adding competence from and to the competence
@@ -21,6 +24,7 @@ import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
  * or creates a new if none exist.
  * 
  * @author Filip Garamvölgyi
+ * @author William Stackenäs
  * @version %I%
  */
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -30,9 +34,12 @@ public class CompetenceService {
     private CompetenceRepository competenceRepo;
 
     @Autowired
+    private LocalCompetenceRepository localCompetenceRepo;
+
+    @Autowired
     private CompetenceProfileRepository competenceProfileRepo;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompetenceService.class);
 
     /**
      * Adds a competence to the competence repository
@@ -42,7 +49,19 @@ public class CompetenceService {
     public void addCompetence(Competence c) {
         if (c != null) {
             competenceRepo.saveAndFlush(c);
-            LOGGER.info(String.format("Added %s as a competence.", c.getName()));
+            LOGGER.info(String.format("Added competence."));
+        }
+    }
+
+    /**
+     * Adds a local competence to the competence repository
+     * 
+     * @param c The local comptence to add
+     */
+    public void addLocalCompetence(LocalCompetence c) {
+        if (c != null) {
+            localCompetenceRepo.saveAndFlush(c);
+            LOGGER.info(String.format("Added local competence."));
         }
     }
 
@@ -59,20 +78,45 @@ public class CompetenceService {
     }
 
     /**
-     * Returns a competence given the name.
+     * Returns local competences given the name.
      *
-     * @param name  name of the Competence to return.
-     * @return      returned competence given the name.      
+     * @param name  name of the LocalCompetences to return.
+     * @return      returned local competences given the name.      
      */
-    public Competence getCompetence(String name) {
+    public List<LocalCompetence> getLocalCompetence(String name) {
         if (name == null ) return null;
 
-        Competence c = competenceRepo.findCompetenceByName(name);
-
-        return c;
+        return localCompetenceRepo.findLocalCompetenceByName(name);
     }
     
     public List<CompetenceProfile> getAllCompetenceProfiles(){
         return competenceProfileRepo.findAll();
+    }
+
+    /**
+     * Returns all local competences given the language.
+     *
+     * @param l     language of the {@link LocalCompetence}s to return
+     * @return      returned list of local competences given the language.      
+     */
+    public List<LocalCompetence> getLocalCompetences(Language l){
+        if (l == null ) return new ArrayList<LocalCompetence>();
+
+        return localCompetenceRepo.getLocalCompetenceByLanguage(l);
+    }
+
+    /**
+     * Returns a local competence given the language and competence.
+     *
+     * @param l     language of the given {@link LocalCompetence} to return
+     * @param c     competence of the given {@link LocalCompetence} to return
+     * @return      returned local competence given the language and competence.      
+     */
+    public LocalCompetence getLocalCompetence(Language language, Competence competence) {
+        if (language == null || competence == null) return null;
+
+        LocalCompetence c = localCompetenceRepo.findLocalCompetenceByLanguageAndCompetence(language, competence);
+
+        return c;
     }
 }

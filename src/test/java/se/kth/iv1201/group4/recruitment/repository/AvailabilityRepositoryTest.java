@@ -39,8 +39,8 @@ public class AvailabilityRepositoryTest {
         JobStatus jobStatus = new JobStatus("test status");
         entityManager.persist(jobStatus);
 
-        Competence competence = new Competence("test competence1");
-        Competence competence2 = new Competence("test competence2");
+        Competence competence = new Competence();
+        Competence competence2 = new Competence();
         entityManager.persist(competence);
         entityManager.persist(competence2);
 
