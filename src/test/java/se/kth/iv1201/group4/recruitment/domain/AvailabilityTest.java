@@ -1,35 +1,31 @@
-package se.kth.iv1201.group4.recruitment.repository;
+package se.kth.iv1201.group4.recruitment.domain;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import static se.kth.iv1201.group4.recruitment.domain.ConstrainValidationHelper.testConstraintViolation;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
-import se.kth.iv1201.group4.recruitment.domain.Applicant;
-import se.kth.iv1201.group4.recruitment.domain.Availability;
-import se.kth.iv1201.group4.recruitment.domain.Competence;
-import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
-import se.kth.iv1201.group4.recruitment.domain.JobApplication;
-import se.kth.iv1201.group4.recruitment.domain.JobStatus;
-import se.kth.iv1201.group4.recruitment.domain.Person;
+import org.springframework.test.context.TestExecutionListener;
 
 @DataJpaTest
-public class CompetenceProfileRepositoryTest {
+public class AvailabilityTest implements TestExecutionListener {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Autowired
-    private CompetenceProfileRepository competenceProfileRepository;
+    private JobApplication jobApplication;
 
-    @Test
-    public void testCreateCompetenceProfile() {
+    @BeforeEach
+    public void setup() {
         Person ben = new Person("Ben", "Johnsson", "ben.johnsson@gmail.com", "190607071234", "benjo", "password");
         entityManager.persist(ben);
 
@@ -40,9 +36,7 @@ public class CompetenceProfileRepositoryTest {
         entityManager.persist(jobStatus);
 
         Competence competence = new Competence();
-        Competence competence2 = new Competence();
         entityManager.persist(competence);
-        entityManager.persist(competence2);
 
         Availability availability = new Availability(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 01, 15));
 
@@ -54,8 +48,8 @@ public class CompetenceProfileRepositoryTest {
         List<CompetenceProfile> competenceProfiles = new ArrayList<CompetenceProfile>();
         competenceProfiles.add(competenceProfile);
 
-        JobApplication jobApplication = new JobApplication(applicantBen, jobStatus, competenceProfiles, availabilites);
-        entityManager.persist(jobApplication);
+        jobApplication = new JobApplication(applicantBen, jobStatus, competenceProfiles, availabilites);
+        jobApplication = entityManager.persist(jobApplication);
 
         availability.setJobApplication(jobApplication);
         entityManager.persist(availability);
@@ -64,12 +58,23 @@ public class CompetenceProfileRepositoryTest {
         entityManager.persist(competenceProfile);
 
         entityManager.flush();
+    }
 
-        List<CompetenceProfile> found = competenceProfileRepository.findAll();
-        assertThat(found.size(), is(1));
-        assertThat(found.get(0), is(competenceProfile));
-        assertThat(competenceProfile.getYearsOfExperience(), is(found.get(0).getYearsOfExperience()));
-        assertThat(competenceProfile.getCompetence(), is(found.get(0).getCompetence()));
-        assertThat(jobApplication, is(found.get(0).getJobApplication()));
+    @Test
+    public void testCreateAvailability() {
+        Availability availability = new Availability(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 01, 15),
+                jobApplication);
+        Availability availabilityAfterPersist = entityManager.persistAndFlush(availability);
+
+        assertThat(availabilityAfterPersist, is(availability));
+        assertThat(availabilityAfterPersist.getFrom(), is(availability.getFrom()));
+        assertThat(availabilityAfterPersist.getTo(), is(availability.getTo()));
+        assertThat(availabilityAfterPersist.getJobApplication(), is(availability.getJobApplication()));
+    }
+
+    @Test
+    public void testMissingJobApplication() {
+        Availability availability = new Availability(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 01, 15));
+        testConstraintViolation(entityManager, availability, "{availability.jobApplication.missing}");
     }
 }

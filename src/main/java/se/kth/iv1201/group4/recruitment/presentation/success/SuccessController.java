@@ -33,7 +33,7 @@ import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 public class SuccessController {
 
     @Autowired
-    PersonService service;
+    private PersonService service;
 
     @Autowired
     CompetenceService competenceService;

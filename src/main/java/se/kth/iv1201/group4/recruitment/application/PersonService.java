@@ -46,13 +46,13 @@ public class PersonService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    PersonRepository personRepo;
+    private PersonRepository personRepo;
 
     @Autowired
-    ApplicantRepository applicantRepo;
+    private ApplicantRepository applicantRepo;
 
     @Autowired
-    RecruiterRepository recruiterRepo;
+    private RecruiterRepository recruiterRepo;
 
     @Autowired
     private LegacyUserRepository legacyUserRepo;
@@ -118,11 +118,12 @@ public class PersonService implements UserDetailsService {
     /**
      * Fetches an applicant from the database with the given person.
      *
-     * @param person    person used to identify applicant
-     * @return          {@link Applicant} identified by the person
+     * @param person person used to identify applicant
+     * @return {@link Applicant} identified by the person
      */
-    public Applicant getApplicant(Person person){
-        if(person == null) return null;
+    public Applicant getApplicant(Person person) {
+        if (person == null)
+            return null;
 
         return applicantRepo.findApplicantByPerson(person);
     }
@@ -137,21 +138,26 @@ public class PersonService implements UserDetailsService {
         try {
             p = personRepo.findPersonByUsername(username);
 
-            if (applicantRepo.findApplicantByPerson(p) != null) {
-                LOGGER.debug("Person logged in as an applicant.");
-                role = ROLE_APPLICANT;
-            } else if (recruiterRepo.findRecruiterByPerson(p) != null) {
-                LOGGER.info("Person logged in as a recruiter.");
-                role = ROLE_RECRUITER;
+            if (p != null) {
+                if (applicantRepo.findApplicantByPerson(p) != null) {
+                    LOGGER.debug("Person logged in as an applicant.");
+                    role = ROLE_APPLICANT;
+                } else if (recruiterRepo.findRecruiterByPerson(p) != null) {
+                    LOGGER.info("Person logged in as a recruiter.");
+                    role = ROLE_RECRUITER;
+                } else {
+                    // Should never end up here as all Persons are
+                    // either applicants or recruiters
+                    LOGGER.warn("Person logged in as neither an applicant nor recruiter.");
+                    throw new UsernameNotFoundException("User has no role");
+                }
             } else {
-                // Should never end up here as all Persons are
-                // either applicants or recruiters
-                LOGGER.warn("Person logged in as neither an applicant nor recruiter.");
-                throw new UsernameNotFoundException("user has no role");
+                LOGGER.debug("No person with the username " + username + " and password combination could be found.");
+                throw new UsernameNotFoundException("Username not found.");
             }
         } catch (Exception e) {
             LOGGER.error("Database transaction failed.");
-            throw new UsernameNotFoundException("database error");
+            throw new UsernameNotFoundException("Database error.");
         }
 
         return new User(username, p.getPassword(), AuthorityUtils.createAuthorityList(role));
