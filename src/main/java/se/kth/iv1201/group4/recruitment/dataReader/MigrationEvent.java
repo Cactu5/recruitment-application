@@ -44,7 +44,7 @@ public class MigrationEvent {
     @EventListener
     public void onContextLoaded(ContextRefreshedEvent event){
         LOGGER.debug("Migration starts");
-        if(false){
+        if(true){
             Migration mig = new Migration();
             mig.migrate();
             migrate(mig);
