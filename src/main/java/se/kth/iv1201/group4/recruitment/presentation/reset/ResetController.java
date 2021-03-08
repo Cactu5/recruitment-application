@@ -41,6 +41,7 @@ public class ResetController {
      * 
      * @param response  The response of the sent request
      * @param uuidStr   The UUID of the person that requested a reset of their account
+     * @param form      The registration form that should be sent in a post request
      * @param model     The model objects used in the reset page
      * @return The URL to the reset page
      */

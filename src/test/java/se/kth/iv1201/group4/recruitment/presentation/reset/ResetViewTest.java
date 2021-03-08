@@ -19,16 +19,12 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import se.kth.iv1201.group4.recruitment.application.PersonService;
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Person;
-
-import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.addParam;
-import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendPostRequest;
 
 @SpringJUnitWebConfig(initializers = ConfigDataApplicationContextInitializer.class)
 @EnableAutoConfiguration
@@ -101,13 +97,5 @@ class ResetViewTest implements TestExecutionListener {
         } catch (Exception e) { /* Do nothing if the applicant has already been added. */}
 
         return personService.addPersonToResetAccountList("ben.bensson@gmail.com");
-    }
-
-    private ResultActions registerPerson(Person p, String pass) throws Exception {
-        return sendPostRequest(mockMvc, "/register",
-                addParam(
-                        addParam(addParam(addParam(addParam(addParam("username", p.getUsername()), "name", p.getName()),
-                                "surname", p.getSurname()), "email", p.getEmail()), "SSN", p.getSSN()),
-                        "password", pass));
     }
 }

@@ -14,19 +14,16 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import se.kth.iv1201.group4.recruitment.application.PersonService;
 import se.kth.iv1201.group4.recruitment.domain.Person;
-import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.addParam;
-import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.containsElements;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendGetRequest;
 import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.sendPostRequest;
 

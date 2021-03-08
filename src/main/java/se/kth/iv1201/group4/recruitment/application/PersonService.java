@@ -126,8 +126,7 @@ public class PersonService implements UserDetailsService {
             throw new IllegalArgumentException("No such UUID or Person");
         
         personsToBeReset.remove(uuid);
-        // TODO: Replace person with email "email" with person "p"
-        // and remove them from legacy user if they are one
+        updatePersonWithEmail(p, email);
     }
 
     /**
@@ -284,5 +283,29 @@ public class PersonService implements UserDetailsService {
         }
 
         return false;
+    }
+
+    /**
+     * Updates a {@link Person} migrated from the old database. If successful the {@link Person}
+     * is updated and removed as a {@link LegacyUser} if it used to be one.
+     *
+     * @param   dto         contains the updated data to make sure the {@link Person} follows
+     *                      the rules of the database schema.
+     * @param   email       the email of the {@link Person} to update.
+     */
+    public void updatePersonWithEmail(PersonDTO dto, String email) {
+        /*if(dto.getEmail() != email &&
+                personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new DataIntegrityViolationException("Username is already in use.");
+        }
+        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new DataIntegrityViolationException("Email is already in use.");
+        }*/
+
+        Person p = personRepo.findPersonByEmail(email);
+        p.updateWithContentsOfDTO(dto);
+        dto = personRepo.save(p);
+        removeLegacyUserByPersonDTO(dto);
+        legacyUserRepo.flush();
     }
 }
