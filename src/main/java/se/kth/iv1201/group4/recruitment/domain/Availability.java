@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
@@ -38,6 +39,7 @@ public class Availability implements AvailabilityDTO {
     @Column(name = "to_date")
     private LocalDate toDate;
 
+    @NotNull(message = "{availability.jobApplication.missing}")
     @ManyToOne
     @JoinColumn(name = "job_application")
     private JobApplication jobApplication;
@@ -71,6 +73,15 @@ public class Availability implements AvailabilityDTO {
     public Availability(LocalDate fromDate, LocalDate toDate, JobApplication jobApplication) {
         this.fromDate = fromDate;
         this.toDate = toDate;
+        this.jobApplication = jobApplication;
+    }
+
+    /**
+     * Sets the <code>JobApplication</code> of the <code>Availability</code>.
+     * 
+     * @param jobApplication the <code>JobApplication</code>
+     */
+    public void setJobApplication(JobApplication jobApplication) {
         this.jobApplication = jobApplication;
     }
 

@@ -39,15 +39,13 @@ public class JobApplicationRepositoryTest {
         JobStatus jobStatus = new JobStatus("test status");
         entityManager.persist(jobStatus);
 
-        Competence competence = new Competence("test competence1");
-        Competence competence2 = new Competence("test competence2");
+        Competence competence = new Competence();
+        Competence competence2 = new Competence();
         entityManager.persist(competence);
         entityManager.persist(competence2);
 
         Availability availability = new Availability(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 01, 15));
         Availability availability2 = new Availability(LocalDate.of(2021, 02, 07), LocalDate.of(2021, 03, 20));
-        entityManager.persist(availability);
-        entityManager.persist(availability2);
 
         List<Availability> availabilites = new ArrayList<Availability>();
         availabilites.add(availability);
@@ -55,8 +53,6 @@ public class JobApplicationRepositoryTest {
 
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, competence);
         CompetenceProfile competenceProfile2 = new CompetenceProfile(2.5f, competence2);
-        entityManager.persist(competenceProfile);
-        entityManager.persist(competenceProfile2);
 
         List<CompetenceProfile> competenceProfiles = new ArrayList<CompetenceProfile>();
         competenceProfiles.add(competenceProfile);
@@ -64,6 +60,17 @@ public class JobApplicationRepositoryTest {
 
         JobApplication jobApplication = new JobApplication(applicantBen, jobStatus, competenceProfiles, availabilites);
         entityManager.persist(jobApplication);
+
+        availability.setJobApplication(jobApplication);
+        availability2.setJobApplication(jobApplication);
+        entityManager.persist(availability);
+        entityManager.persist(availability2);
+
+        competenceProfile.setJobApplication(jobApplication);
+        competenceProfile2.setJobApplication(jobApplication);
+        entityManager.persist(competenceProfile);
+        entityManager.persist(competenceProfile2);
+
         entityManager.flush();
 
         List<JobApplication> found = jobApplicationRepository.findAll();

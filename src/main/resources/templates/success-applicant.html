@@ -19,6 +19,9 @@
             </div>
             <p sec:authentication='principal.authorities'></p>
         </div>
+        <select name="competencies" id="competencies">
+            <option th:each="c : ${competencies}" th:text="${c.getName()}">competence name</option>
+        </select>
     </main>
 </body>
 

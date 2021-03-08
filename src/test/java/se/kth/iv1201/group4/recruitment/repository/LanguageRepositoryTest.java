@@ -10,24 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import se.kth.iv1201.group4.recruitment.domain.Competence;
+import se.kth.iv1201.group4.recruitment.domain.Language;
 
 @DataJpaTest
-public class CompetenceRepositoryTest {
+public class LanguageRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private CompetenceRepository competenceRepository;
+    private LanguageRepository languageRepository;
 
     @Test
-    public void testCreateCompetence() {
-        Competence competence = new Competence();
-        entityManager.persist(competence);
+    public void testCreateLanguage() {
+        Language lang = new Language("swedish");
+        entityManager.persist(lang);
         entityManager.flush();
 
-        List<Competence> found = competenceRepository.findAll();
+        List<Language> found = languageRepository.findAll();
         assertThat(found.size(), is(1));
-        assertThat(found.get(0), is(competence));
+        assertThat(found.get(0), is(lang));
+        assertThat(lang.getName(), is(found.get(0).getName()));
     }
 }

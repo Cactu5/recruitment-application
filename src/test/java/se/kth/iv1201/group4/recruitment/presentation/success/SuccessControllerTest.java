@@ -1,5 +1,7 @@
 package se.kth.iv1201.group4.recruitment.presentation.success;
 
+import javax.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -22,6 +25,7 @@ import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelp
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static se.kth.iv1201.group4.recruitment.presentation.PresentationTestHelper.containsElements;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -113,5 +117,61 @@ public class SuccessControllerTest {
         ).andExpect(status().is3xxRedirection())
         .andExpect(header().exists("Location"))
         .andExpect(header().string("Location", "logout"));
+    }
+    public void testIfRedirectToSuccessApplicant() throws Exception {
+        HttpSession session = createSessionApplicant();
+        sendGetRequest(mockMvc, "/success", session).andExpect(status().is3xxRedirection())
+                .andExpect(header().exists("Location")).andExpect(header().string("Location", "success-applicant"));
+    }
+
+    @Test
+    public void testApplicantCanAccessSuccessApplicant() throws Exception {
+        HttpSession session = createSessionApplicant();
+        sendGetRequest(mockMvc, "/success-applicant", session).andExpect(status().isOk())
+                .andExpect(isSuccessApplicantPage());
+    }
+
+    @Test
+    public void testApplicantCanNotAccessSuccessRecruiter() throws Exception {
+        HttpSession session = createSessionApplicant();
+        sendGetRequest(mockMvc, "/success-recruiter", session).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void testIfRedirectToSuccessRecruitert() throws Exception {
+        HttpSession session = createSessionRecruiter();
+        sendGetRequest(mockMvc, "/success", session).andExpect(status().is3xxRedirection())
+                .andExpect(header().exists("Location")).andExpect(header().string("Location", "success-recruiter"));
+    }
+
+    @Test
+    public void testRecruiterCanAccessSuccessRecruiter() throws Exception {
+        HttpSession session = createSessionRecruiter();
+        sendGetRequest(mockMvc, "/success-recruiter", session).andExpect(status().isOk())
+                .andExpect(isSuccessRecruiterPage());
+    }
+
+    @Test
+    public void testRecruiterCanNotAccessSuccessApplicant() throws Exception {
+        HttpSession session = createSessionRecruiter();
+        sendGetRequest(mockMvc, "/success-applicant", session).andExpect(status().isForbidden());
+    }
+
+    private HttpSession createSessionApplicant() throws Exception {
+        return sendPostRequest(mockMvc, "/login", addParam(addParam("password", "user1Pass"), "username", "user1"))
+                .andReturn().getRequest().getSession();
+    }
+
+    private HttpSession createSessionRecruiter() throws Exception {
+        return sendPostRequest(mockMvc, "/login", addParam(addParam("password", "adminPass"), "username", "admin"))
+                .andReturn().getRequest().getSession();
+    }
+
+    private ResultMatcher isSuccessApplicantPage() {
+        return containsElements("main:contains(applicant)");
+    }
+
+    private ResultMatcher isSuccessRecruiterPage() {
+        return containsElements("main:contains(recruiter)");
     }
 }

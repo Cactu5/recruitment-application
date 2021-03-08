@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import lombok.ToString;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
@@ -19,6 +18,7 @@ import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
  * An entity representing a competence.
  * 
  * @author Cactu5
+ * @author William Stackenäs
  * @version %I%
  */
 @ToString
@@ -31,29 +31,14 @@ public class Competence implements CompetenceDTO {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
-    @Size(min = 2, max = 30, message = "{competence.name.length}")
-    private String name;
+    @OneToMany(mappedBy = "competence")
+    private List<LocalCompetence> localCompetences = new ArrayList<LocalCompetence>();
+
 
     /**
-     * Required by JPA
+     * Creates a new instance.
      */
-    protected Competence() {
-
-    }
-
-    /**
-     * Creates a new instance with the specified name.
-     * 
-     * @param name the name.
-     */
-    public Competence(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getName() {
-        return name;
+    public Competence() {
     }
 
     @Override

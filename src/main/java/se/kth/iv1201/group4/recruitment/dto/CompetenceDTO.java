@@ -8,13 +8,9 @@ package se.kth.iv1201.group4.recruitment.dto;
  * competence.
  * 
  * @author Cactu5
+ * @auther William Stackenäs
  * @version %I%
  */
 public interface CompetenceDTO {
-    /**
-     * Returns the name of the competence.
-     * 
-     * @return the name of the competence
-     */
-    public String getName();
+    
 }

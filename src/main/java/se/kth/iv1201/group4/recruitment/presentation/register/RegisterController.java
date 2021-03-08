@@ -6,7 +6,6 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +29,7 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
 public class RegisterController {
 
     @Autowired
-    PersonService service;
+    private PersonService service;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
 
@@ -61,7 +60,7 @@ public class RegisterController {
      * 
      */
     @PostMapping("/register")
-    public String register(@Valid RegisterForm form, BindingResult result, Model model) {
+    public String register(@Valid RegisterForm form, BindingResult result, Model model) throws Exception {
         LOGGER.trace("Registration attempt.");
 
         Person p;
