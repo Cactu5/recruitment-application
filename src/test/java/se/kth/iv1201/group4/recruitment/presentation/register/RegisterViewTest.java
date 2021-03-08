@@ -36,6 +36,7 @@ class RegisterViewTest implements TestExecutionListener {
     private MessageSource messageSource;
 
     private MockMvc mockMvc;
+    private final Locale SWEDISH = new Locale("sv", "SE");
 
     @BeforeEach
     void setup() throws Exception {
@@ -57,23 +58,35 @@ class RegisterViewTest implements TestExecutionListener {
     @Test
     void testIfViewRendersInSwedish() throws Exception {
         mockMvc.perform(get("/register?lang=sv")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("email")))
-                .andExpect(content().string(containsString("namn")))
-                .andExpect(content().string(containsString("efternamn")))
-                .andExpect(content().string(containsString("användarnamn")))
-                .andExpect(content().string(containsString("lösenord")))
-                .andExpect(content().string(containsString("personnummer")));
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("registerForm.label.email", null, SWEDISH))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("registerForm.label.name", null, SWEDISH))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("registerForm.label.surname", null, SWEDISH))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("registerForm.label.username", null, SWEDISH))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("registerForm.label.password", null, SWEDISH))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("registerForm.label.ssn", null, SWEDISH))));
     }
 
     @Test
     void testIfViewRendersInEnglish() throws Exception {
         mockMvc.perform(get("/register?lang=en")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Email")))
-                .andExpect(content().string(containsString("First Name")))
-                .andExpect(content().string(containsString("Surname")))
-                .andExpect(content().string(containsString("Username")))
-                .andExpect(content().string(containsString("Password")))
-                .andExpect(content().string(containsString("Social Security Number")));
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("registerForm.label.email", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("registerForm.label.name", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("registerForm.label.surname", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("registerForm.label.username", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("registerForm.label.password", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("registerForm.label.ssn", null, Locale.ENGLISH))));
     }
 
     @Test
@@ -102,18 +115,16 @@ class RegisterViewTest implements TestExecutionListener {
 
     @Test
     void testIfValidationMessagesSwedish() throws Exception {
-        Locale swedish = new Locale("sv", "SE");
-
         mockMvc.perform(post("/register?lang=sv")).andExpect(status().isOk())
                 .andExpect(content()
-                        .string(containsString(messageSource.getMessage("register.email.missing", null, swedish))))
+                        .string(containsString(messageSource.getMessage("register.email.missing", null, SWEDISH))))
                 .andExpect(content()
-                        .string(containsString(messageSource.getMessage("register.username.missing", null, swedish))))
+                        .string(containsString(messageSource.getMessage("register.username.missing", null, SWEDISH))))
                 .andExpect(content()
-                        .string(containsString(messageSource.getMessage("register.password.missing", null, swedish))))
+                        .string(containsString(messageSource.getMessage("register.password.missing", null, SWEDISH))))
                 .andExpect(content()
-                        .string(containsString(messageSource.getMessage("register.name.missing", null, swedish))))
+                        .string(containsString(messageSource.getMessage("register.name.missing", null, SWEDISH))))
                 .andExpect(content()
-                        .string(containsString(messageSource.getMessage("register.ssn.missing", null, swedish))));
+                        .string(containsString(messageSource.getMessage("register.ssn.missing", null, SWEDISH))));
     }
 }
