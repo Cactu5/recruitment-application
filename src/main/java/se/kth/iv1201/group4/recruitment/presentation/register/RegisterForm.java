@@ -44,7 +44,7 @@ public class RegisterForm {
     @NotBlank(message = "{register.ssn.missing}")
     @Pattern(regexp = "^[0-9]+$", message = "{register.ssn.invalid-char}")
     @Size(min = 12, max = 12, message = "{register.ssn.length}")
-    private String ssn;
+    private String SSN;
 
     /**
      * Getter for the email
@@ -91,7 +91,7 @@ public class RegisterForm {
      * @return The SSN
      */
     public String getSSN() {
-        return ssn;
+        return SSN;
     }
 
     /**
@@ -139,6 +139,6 @@ public class RegisterForm {
      * @param ssn The new SSN
      */
     public void setSSN(String ssn) {
-        this.ssn = ssn;
+        this.SSN = ssn;
     }
 }
