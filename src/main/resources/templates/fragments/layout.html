@@ -7,6 +7,9 @@
 
 <body>
     <header th:replace="~{fragments/header::header}"></header>
+    <div sec:authorize="isAuthenticated()">
+        <nav th:replace="~{fragments/nav::nav}"></nav>
+    </div>
     <main layout:fragment="content"></main>
     <footer th:replace="~{fragments/footer::footer}"></footer>
 </body>

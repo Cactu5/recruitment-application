@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import se.kth.iv1201.group4.recruitment.application.error.UpdatedPersonContainsTemporaryDataException;
 
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
@@ -31,9 +32,16 @@ import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
+import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
+import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
 
 /**
- * A service for accessing or adding persons from and to the preson
+ * A service for accessing or adding persons from and to the preso
+
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+
+import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;n
  * repositories. Rolls back on all exceptions and supports current transactions,
  * or creates a new if none exist.
  * 
@@ -65,6 +73,7 @@ public class PersonService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
     static public final String ROLE_RECRUITER = "ROLE_RECRUITER";
+    static public final String ROLE_LEGACY_USER = "ROLE_LEGACY_USER";
 
     /**
      * Adds a person to the list of persons that has requested a reset of their account
@@ -151,6 +160,73 @@ public class PersonService implements UserDetailsService {
         }
     }
 
+    private void removeLegacyUserByPersonDTO(PersonDTO person){
+        LegacyUser lu = legacyUserRepo.findLegacyUserByPerson((Person)person);
+        legacyUserRepo.delete(lu);
+    }
+
+    private PersonDTO updatePersonWithContentsOfDTO(PersonDTO dto, String username){
+        Person p = personRepo.findPersonByUsername(username);
+        p.updateWithContentsOfDTO(dto);
+        return personRepo.save(p);
+    }
+
+    /**
+     * Updates a {@link Person} migrated from the old database. If successful the {@link Person}
+     * is updated and removed as a {@link LegacyUser} if it used to be one.
+     *
+     * @param   dto         contains the updated data to make sure the {@link Person} follows
+     *                      the rules of the database schema.
+     * @param   email       the email of the {@link Person} to update.
+     */
+    public void updatePersonWithEmail(PersonDTO dto, String email) {
+        /*if(dto.getEmail() != email &&
+                personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new DataIntegrityViolationException("Username is already in use.");
+        }
+        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new DataIntegrityViolationException("Email is already in use.");
+        }*/
+
+        Person p = personRepo.findPersonByEmail(email);
+        p.updateWithContentsOfDTO(dto);
+        dto = personRepo.save(p);
+        removeLegacyUserByPersonDTO(dto);
+        legacyUserRepo.flush();
+    }
+    
+    /**
+     * Updates a {@link Person} migrated from the old database. It's required for the 
+     * dto to not contain any temporary data. If successful the {@link Person} is updated
+     * and removed as a {@link LegacyUser}.
+     *
+     * @param   dto         contains the updated data to make sure the {@link Person} follows
+     *                      the rules of the database schema.
+     * @param   username    the username of the {@link LegacyUser} to update.
+     * @throws  UpdatedPersonContainsTemporaryDataException if dto still contains temporary
+     *                                                      data this exception is thrown.
+     */
+    public void updatePersonByDTOAndRemoveFromLegacyUsers(PersonDTO dto, String username)
+        throws UpdatedPersonContainsTemporaryDataException {
+        if (TemporaryDataMatcher.isTemporaryEmail(dto.getEmail())) {
+            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary email");
+        }
+        if(TemporaryDataMatcher.isTemporarySSN(dto.getSSN())){
+            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
+        }
+        if(dto.getUsername() !=username &&
+                loadUserByUsername(dto.getUsername()) != null){
+            throw new UsernameAlreadyExistsException("Username is already in use.");
+        }
+        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new EmailAlreadyExistsException("Email is already in use.");
+        }
+        
+        dto = updatePersonWithContentsOfDTO(dto, username);
+        removeLegacyUserByPersonDTO(dto);
+        legacyUserRepo.flush();
+    }
+
     /**
      * Adds a legacy user to the legacy user repository
      * 
@@ -207,12 +283,15 @@ public class PersonService implements UserDetailsService {
             p = personRepo.findPersonByUsername(username);
 
             if (p != null) {
-                if (applicantRepo.findApplicantByPerson(p) != null) {
+                if (legacyUserRepo.findLegacyUserByPerson(p) != null){
+                    LOGGER.info("Person logged in as a legacy user");
+                    role = ROLE_LEGACY_USER;
+                } else if (applicantRepo.findApplicantByPerson(p) != null) {
                     LOGGER.debug("Person logged in as an applicant.");
                     role = ROLE_APPLICANT;
                 } else if (recruiterRepo.findRecruiterByPerson(p) != null) {
                     LOGGER.info("Person logged in as a recruiter.");
-                    role = ROLE_RECRUITER;
+                    role = ROLE_RECRUITER; 
                 } else {
                     // Should never end up here as all Persons are
                     // either applicants or recruiters
@@ -283,29 +362,5 @@ public class PersonService implements UserDetailsService {
         }
 
         return false;
-    }
-
-    /**
-     * Updates a {@link Person} migrated from the old database. If successful the {@link Person}
-     * is updated and removed as a {@link LegacyUser} if it used to be one.
-     *
-     * @param   dto         contains the updated data to make sure the {@link Person} follows
-     *                      the rules of the database schema.
-     * @param   email       the email of the {@link Person} to update.
-     */
-    public void updatePersonWithEmail(PersonDTO dto, String email) {
-        /*if(dto.getEmail() != email &&
-                personRepo.findPersonByEmail(dto.getEmail()) != null){
-            throw new DataIntegrityViolationException("Username is already in use.");
-        }
-        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
-            throw new DataIntegrityViolationException("Email is already in use.");
-        }*/
-
-        Person p = personRepo.findPersonByEmail(email);
-        p.updateWithContentsOfDTO(dto);
-        dto = personRepo.save(p);
-        removeLegacyUserByPersonDTO(dto);
-        legacyUserRepo.flush();
     }
 }

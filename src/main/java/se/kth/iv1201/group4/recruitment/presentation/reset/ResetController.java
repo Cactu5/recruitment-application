@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import se.kth.iv1201.group4.recruitment.application.PersonService;
 import se.kth.iv1201.group4.recruitment.domain.Person;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.presentation.register.RegisterForm;
 
 /**
@@ -109,7 +110,7 @@ public class ResetController {
         p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
                 form.getPassword());
         try {
-            service.resetPersonFromResetAccountList(uuid, p);
+            service.resetPersonFromResetAccountList(uuid, (PersonDTO)p);
             service.autoLogin(form.getUsername(), form.getPassword());
         } catch (ConstraintViolationException | DataIntegrityViolationException e) {
             LOGGER.info("Reset failure due to primary key conflict.");

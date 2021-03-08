@@ -14,6 +14,7 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
  * 
  * @author Cactu5
  * @author William Stackenäs
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
