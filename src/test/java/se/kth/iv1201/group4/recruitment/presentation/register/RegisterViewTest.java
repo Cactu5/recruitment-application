@@ -1,7 +1,10 @@
 package se.kth.iv1201.group4.recruitment.presentation.register;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Locale;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -11,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
@@ -27,6 +31,9 @@ import org.springframework.web.context.WebApplicationContext;
 class RegisterViewTest implements TestExecutionListener {
     @Autowired
     private WebApplicationContext context;
+
+    @Autowired
+    private MessageSource messageSource;
 
     private MockMvc mockMvc;
 
@@ -75,5 +82,38 @@ class RegisterViewTest implements TestExecutionListener {
                 .andExpect(content().string(containsString("| Registrering")))
                 .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
                 .andExpect(content().string(containsString("<footer>")));
+    }
+
+    @Test
+    void testIfValidationMessagesEnglish() throws Exception {
+
+        mockMvc.perform(post("/register?lang=en")).andExpect(status().isOk())
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("register.email.missing", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("register.username.missing", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("register.password.missing", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("register.name.missing", null, Locale.ENGLISH))))
+                .andExpect(content().string(
+                        containsString(messageSource.getMessage("register.ssn.missing", null, Locale.ENGLISH))));
+    }
+
+    @Test
+    void testIfValidationMessagesSwedish() throws Exception {
+        Locale swedish = new Locale("sv", "SE");
+
+        mockMvc.perform(post("/register?lang=sv")).andExpect(status().isOk())
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("register.email.missing", null, swedish))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("register.username.missing", null, swedish))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("register.password.missing", null, swedish))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("register.name.missing", null, swedish))))
+                .andExpect(content()
+                        .string(containsString(messageSource.getMessage("register.ssn.missing", null, swedish))));
     }
 }
