@@ -18,8 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.transaction.annotation.Transactional;
 import se.kth.iv1201.group4.recruitment.application.error.UpdatedPersonContainsTemporaryDataException;
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
@@ -31,9 +30,13 @@ import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
+import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
 
 /**
- * A service for accessing or adding persons from and to the preson
+ * A service for accessing or adding persons from and to the preso
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;n
  * repositories. Rolls back on all exceptions and supports current transactions,
  * or creates a new if none exist.
  * 
@@ -117,6 +120,14 @@ public class PersonService implements UserDetailsService {
         if(TemporaryDataMatcher.isTemporarySSN(dto.getSSN())){
             throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
         }
+        if(dto.getUsername() !=username &&
+                loadUserByUsername(dto.getUsername()) != null){
+            throw new UsernameAlreadyExistsException("Username is already in use.");
+        }
+        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new EmailAlreadyExistsException("Email is already in use.");
+        }
+        
         dto = updatePersonWithContentsOfDTO(dto, username);
         removeLegacyUserByPersonDTO(dto);
         legacyUserRepo.flush();

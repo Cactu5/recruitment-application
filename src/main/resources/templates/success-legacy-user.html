@@ -15,6 +15,8 @@
             <p class="form-error" th:each="error : ${#fields.errors('email')}" th:text="${error}">
                 Email validation error
             </p>
+            <p class="form-error" th:if="${dbUniqueEmailError}" th:text="#{register.error.emailInUse}">
+            </p>
 
             <label for="name" th:text="#{registerForm.label.name}">Name:</label>
             <input id="name" type="text" th:field="*{name}" /><br>
@@ -33,12 +35,15 @@
             <p class="form-error" th:each="error : ${#fields.errors('username')}" th:text="${error}">
                 Username validation error
             </p>
+            <p class="form-error" th:if="${dbUniqueUsernameError}" th:text="#{register.error.usernameInUse}">
+            </p>
 
             <label for="password" th:text="#{registerForm.label.password}">Password:</label>
             <input id="password" type="password" th:field="*{password}"/><br>
             <p class="form-error" th:each="error : ${#fields.errors('password')}" th:text="${error}">
                 Password validation error
             </p>
+
 
             <label for="ssn" th:text="#{registerForm.label.ssn}">SSN:</label>
             <input id="ssn" type="text" th:field="*{SSN}"/><br>

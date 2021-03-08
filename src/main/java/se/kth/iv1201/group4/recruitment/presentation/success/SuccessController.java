@@ -23,6 +23,8 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.presentation.register.RegisterForm;
 import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
 
 /**
  * A controller for the success pages.
@@ -119,9 +121,14 @@ public class SuccessController {
             LOGGER.debug("Registration failure due to primary key conflict.");
             model.addAttribute("error", "{register.fail}");
             return "success-legacy-user";
-        } catch(DataIntegrityViolationException e){
-            LOGGER.debug("Tried to use already existing unique value");
-            model.addAttribute("error", "{register.fail}");
+        } catch(EmailAlreadyExistsException e){
+            LOGGER.debug("Tried to use already existing email");
+            model.addAttribute("dbUniqueEmailError", "");
+            return "success-legacy-user";
+        } catch(UsernameAlreadyExistsException e){
+            LOGGER.debug("Tried to use already existing username");
+            System.out.println("username exists...");
+            model.addAttribute("dbUniqueUsernameError","");
             return "success-legacy-user";
         }
         return "redirect:logout";
