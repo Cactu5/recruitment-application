@@ -38,8 +38,8 @@ public class CompetenceProfileTest implements TestExecutionListener {
         JobStatus jobStatus = new JobStatus("test status");
         entityManager.persist(jobStatus);
 
-        Competence competence = new Competence("test competence1");
-        Competence competence2 = new Competence("test competence2");
+        Competence competence = new Competence();
+        Competence competence2 = new Competence();
         entityManager.persist(competence);
         entityManager.persist(competence2);
 
@@ -67,7 +67,7 @@ public class CompetenceProfileTest implements TestExecutionListener {
 
     @Test
     public void testCreateCompetence() {
-        Competence competence = new Competence("test competence0");
+        Competence competence = new Competence();
         entityManager.persistAndFlush(competence);
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, competence, jobApplication);
         CompetenceProfile competenceProfileAfterPersist = entityManager.persistAndFlush(competenceProfile);
@@ -80,7 +80,7 @@ public class CompetenceProfileTest implements TestExecutionListener {
 
     @Test
     public void testInvalidYearsOfExperience() {
-        Competence competence = new Competence("test competence0");
+        Competence competence = new Competence();
         entityManager.persistAndFlush(competence);
         CompetenceProfile competenceProfile = new CompetenceProfile(-2.5f, competence, jobApplication);
 
@@ -95,7 +95,7 @@ public class CompetenceProfileTest implements TestExecutionListener {
 
     @Test
     public void testMissingJobApplication() {
-        Competence competence = new Competence("test competence0");
+        Competence competence = new Competence();
         entityManager.persistAndFlush(competence);
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, competence);
 
@@ -110,7 +110,7 @@ public class CompetenceProfileTest implements TestExecutionListener {
 
     @Test
     public void testMissingCompetence() {
-        Competence competence = new Competence("test competence0");
+        Competence competence = new Competence();
         entityManager.persistAndFlush(competence);
         CompetenceProfile competenceProfile = new CompetenceProfile(2.5f, null, jobApplication);
 

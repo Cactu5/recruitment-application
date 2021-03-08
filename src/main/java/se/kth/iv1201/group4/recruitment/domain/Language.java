@@ -10,35 +10,52 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import lombok.ToString;
-import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
+import se.kth.iv1201.group4.recruitment.dto.LanguageDTO;
 
 /**
- * An entity representing a competence.
+ * An entity representing a language.
  * 
- * @author Cactu5
  * @author William Stackenäs
- * @version %I%
  */
 @ToString
 @Entity
-@Table(name = "competence")
-public class Competence implements CompetenceDTO {
+@Table(name = "language")
+public class Language implements LanguageDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @OneToMany(mappedBy = "competence")
+    @Column(name = "name", unique = true)
+    @Size(min = 2, max = 30, message = "{langauge.name.length}")
+    private String name;
+
+    @OneToMany(mappedBy = "language")
     private List<LocalCompetence> localCompetences = new ArrayList<LocalCompetence>();
 
+    /**
+     * Required by JPA
+     */
+    protected Language() {
+
+    }
 
     /**
-     * Creates a new instance.
+     * Creates a new instance with the specified name.
+     * 
+     * @param name the name.
      */
-    public Competence() {
+    public Language(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -48,10 +65,10 @@ public class Competence implements CompetenceDTO {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Competence)) {
+        if (!(object instanceof Language)) {
             return false;
         }
-        Competence other = (Competence) object;
+        Language other = (Language) object;
         return this.id == other.id;
     }
 

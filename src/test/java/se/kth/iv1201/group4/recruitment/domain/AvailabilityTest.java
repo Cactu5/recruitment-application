@@ -35,7 +35,7 @@ public class AvailabilityTest implements TestExecutionListener {
         JobStatus jobStatus = new JobStatus("test status");
         entityManager.persist(jobStatus);
 
-        Competence competence = new Competence("test competence1");
+        Competence competence = new Competence();
         entityManager.persist(competence);
 
         Availability availability = new Availability(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 01, 15));
