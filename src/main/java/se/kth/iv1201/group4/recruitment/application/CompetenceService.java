@@ -15,6 +15,7 @@ import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
+import se.kth.iv1201.group4.recruitment.dto.CompetenceProfileDTO;
 import se.kth.iv1201.group4.recruitment.dto.LocalCompetenceDTO;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceProfileRepository;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
@@ -77,12 +78,15 @@ public class CompetenceService {
      * Adds a competence profile to the competence profile repository
      * 
      * @param cp The competence profile to add
+     * @return returns the {@link CompetenceProfileDTODTO} if successful otherwise null is returned.
      */
-    public void addCompetenceProfile(CompetenceProfile cp) {
+    public CompetenceProfileDTO addCompetenceProfile(CompetenceProfile cp) {
         if (cp != null) {
-            competenceProfileRepo.saveAndFlush(cp);
+            CompetenceProfileDTO dto = competenceProfileRepo.saveAndFlush(cp);
             LOGGER.info("Added competence profile");
+            return dto;
         }
+        return null;
     }
 
     /**
