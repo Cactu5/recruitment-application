@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +44,7 @@ import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 @Service
 public class PersonService implements UserDetailsService {
     @Autowired
+    @Qualifier("customAuthenticationManager")
     private AuthenticationManager authenticationManager;
 
     @Autowired
