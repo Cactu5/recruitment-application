@@ -118,7 +118,7 @@ public class ResetController {
             return "reset";
         }
         LOGGER.info("New user " + form.getUsername() + " reset their account successfully.");
-        return "redirect:success";
+        return "redirect:/success";
     }
 
     private UUID validateUUIDString(String uuidStr) throws IllegalArgumentException {

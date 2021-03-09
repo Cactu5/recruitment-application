@@ -85,10 +85,10 @@ public class PersonService implements UserDetailsService {
     public UUID addPersonToResetAccountList(String email) throws IllegalArgumentException {
         UUID uuid;
         Person p;
-        if (email == null)
-            throw new IllegalArgumentException("Email must not be null");
         if (personsToBeReset == null)
             personsToBeReset = new Hashtable<UUID, String>();
+        if (email == null || TemporaryDataMatcher.isTemporaryEmail(email))
+            throw new IllegalArgumentException("Email must not be null or temporary");
         
         p = personRepo.findPersonByEmail(email);
         if (p == null)
@@ -134,8 +134,8 @@ public class PersonService implements UserDetailsService {
         if (email == null || p == null)
             throw new IllegalArgumentException("No such UUID or Person");
         
-        personsToBeReset.remove(uuid);
         updatePersonWithEmail(p, email);
+        personsToBeReset.remove(uuid);
     }
 
     /**
@@ -162,7 +162,9 @@ public class PersonService implements UserDetailsService {
 
     private void removeLegacyUserByPersonDTO(PersonDTO person){
         LegacyUser lu = legacyUserRepo.findLegacyUserByPerson((Person)person);
-        legacyUserRepo.delete(lu);
+        if (lu != null) {
+            legacyUserRepo.delete(lu);
+        }
     }
 
     private PersonDTO updatePersonWithContentsOfDTO(PersonDTO dto, String username){
@@ -189,10 +191,12 @@ public class PersonService implements UserDetailsService {
         }*/
 
         Person p = personRepo.findPersonByEmail(email);
-        p.updateWithContentsOfDTO(dto);
-        dto = personRepo.save(p);
-        removeLegacyUserByPersonDTO(dto);
-        legacyUserRepo.flush();
+        if (p != null) {
+            p.updateWithContentsOfDTO(dto);
+            dto = personRepo.save(p);
+            removeLegacyUserByPersonDTO(dto);
+            legacyUserRepo.flush();
+        }
     }
     
     /**
