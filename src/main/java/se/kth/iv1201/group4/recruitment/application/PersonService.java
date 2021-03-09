@@ -27,9 +27,13 @@ import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
+
+import se.kth.iv1201.group4.recruitment.dto.ApplicantDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
+import se.kth.iv1201.group4.recruitment.dto.LegacyUserDTO;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
+import se.kth.iv1201.group4.recruitment.dto.RecruiterDTO;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
 import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
@@ -76,22 +80,29 @@ public class PersonService implements UserDetailsService {
      * Adds an applicant to the applicant repository
      * 
      * @param a The applicant to add
+     * @return returns the added {@link ApplicantDTO} if successful otherwise null is returned.
      */
-    public void addApplicant(Applicant a) {
+    public ApplicantDTO addApplicant(Applicant a) {
         if (a != null) {
-            applicantRepo.saveAndFlush(a);
+            ApplicantDTO  dto = applicantRepo.saveAndFlush(a);
+            return dto;
         }
+        return null;
     }
 
     /**
      * Adds a recruiter to the recruiter repository
      * 
      * @param r The recruiter to add
+     * @return returns the added {@link RecruiterDTO} if successful otherwise null is returned.
      */
-    public void addRecruiter(Recruiter r) {
+    public RecruiterDTO addRecruiter(Recruiter r) {
         if (r != null) {
+            RecruiterDTO dto = 
             recruiterRepo.saveAndFlush(r);
+            return dto;
         }
+        return null;
     }
 
     private void removeLegacyUserByPersonDTO(PersonDTO person){
@@ -125,7 +136,7 @@ public class PersonService implements UserDetailsService {
             throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
         }
         if(dto.getUsername() !=username &&
-                loadUserByUsername(dto.getUsername()) != null){
+                personRepo.findPersonByUsername(dto.getUsername()) != null){
             throw new UsernameAlreadyExistsException("Username is already in use.");
         }
         if(personRepo.findPersonByEmail(dto.getEmail()) != null){
@@ -141,19 +152,22 @@ public class PersonService implements UserDetailsService {
      * Adds a legacy user to the legacy user repository
      * 
      * @param lu The legacy user to add
+     * @return returns the added {@link LegacyUserDTO} if successful otherwise null is returned.
      */
-    public void addLegacyUser(LegacyUser lu) {
+    public LegacyUserDTO addLegacyUser(LegacyUser lu) {
         if (lu != null) {
-            legacyUserRepo.saveAndFlush(lu);
+            LegacyUserDTO dto = legacyUserRepo.saveAndFlush(lu);
             LOGGER.info("Added legacy user");
+            return dto;
         }
+        return null;
     }
 
     /**
      * Fetches a person from the database with the given username and password
      * 
      * @param username The username of the person to fetch
-     * @param password The password of the person to fetch
+     * @param password The hashed password of the person to fetch
      */
     public Person getPerson(String username, String password) {
         if (username == null || password == null)
@@ -165,7 +179,7 @@ public class PersonService implements UserDetailsService {
 
         if (password.equals(p.getPassword())) {
             return p;
-        }
+        } 
         return null;
     }
 
