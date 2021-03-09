@@ -75,7 +75,7 @@ public class ResetControllerTest implements TestExecutionListener {
         p = new Person(p.getName(), p.getSurname(), p.getEmail(), p.getSSN(), "benjo3", p.getPassword());
 
         resetPerson(p, "abc123##", uuid).andExpect(status().is3xxRedirection()).andExpect(header().exists("Location"))
-            .andExpect(header().string("Location", "success"));
+            .andExpect(header().string("Location", "/success"));
     }
 
     private ResultActions resetPerson(Person p, String pass, UUID uuid) throws Exception {
