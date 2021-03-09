@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.test.context.TestExecutionListener;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.concurrent.TimeUnit;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class SeleniumGitCI {
+public class SeleniumGitCITest {
   private WebDriver driver;
 
   @BeforeAll
