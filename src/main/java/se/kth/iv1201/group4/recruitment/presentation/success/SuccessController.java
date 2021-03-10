@@ -138,7 +138,7 @@ public class SuccessController {
     @PostMapping("/success-legacy-user")
     public String updatePerson(@Valid RegisterForm form, BindingResult result, Model model, 
             Authentication auth) throws UpdatedPersonContainsTemporaryDataException {
-        LOGGER.info("Put request for /success-legacy-user.");
+        LOGGER.info("Post request for /success-legacy-user.");
         PersonDTO p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
@@ -150,7 +150,7 @@ public class SuccessController {
         p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
                 form.getPassword());
         try {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p,
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p,
                 ((UserDetails)auth.getPrincipal()).getUsername());
             LOGGER.info("Legacy user converted to normal user.");
         } catch (ConstraintViolationException e) {
@@ -163,7 +163,6 @@ public class SuccessController {
             return "success-legacy-user";
         } catch(UsernameAlreadyExistsException e){
             LOGGER.debug("Tried to use already existing username");
-            System.out.println("username exists...");
             model.addAttribute("dbUniqueUsernameError","");
             return "success-legacy-user";
         }

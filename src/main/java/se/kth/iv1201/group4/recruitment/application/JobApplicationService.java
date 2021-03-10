@@ -1,6 +1,7 @@
 package se.kth.iv1201.group4.recruitment.application;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,6 +15,9 @@ import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.Availability;
 import se.kth.iv1201.group4.recruitment.domain.JobApplication;
 import se.kth.iv1201.group4.recruitment.domain.JobStatus;
+import se.kth.iv1201.group4.recruitment.dto.AvailabilityDTO;
+import se.kth.iv1201.group4.recruitment.dto.JobApplicationDTO;
+import se.kth.iv1201.group4.recruitment.dto.JobStatusDTO;
 import se.kth.iv1201.group4.recruitment.repository.AvailabilityRepository;
 import se.kth.iv1201.group4.recruitment.repository.JobApplicationRepository;
 import se.kth.iv1201.group4.recruitment.repository.JobStatusRepository;
@@ -44,45 +48,61 @@ public class JobApplicationService {
      * Adds an applicant to the applicant repository
      * 
      * @param a The applicant to add
+     * @return returns the {@link JobApplicationDTO} if successful otherwise null is returned.
      */
-    public void addJobApplication(JobApplication jobApplication) {
+    public JobApplicationDTO addJobApplication(JobApplication jobApplication) {
         if (jobApplication != null) {
-            jobApplicaitonRepo.saveAndFlush(jobApplication);
+            JobApplicationDTO dto = jobApplicaitonRepo.saveAndFlush(jobApplication);
             LOGGER.info(String.format("%s created a job application", "applicant"));
+            return dto;
         }
+        return null;
     }
 
     /**
      * Adds a job status to the {@link JobStatusRepository}.
      *
      * @param jobStatus     job status to add.
+     * @return returns the {@link JobStatusDTO} if successful otherwise null is returned.
      */
-    public void addJobStatus(JobStatus jobStatus){
+    public JobStatusDTO addJobStatus(JobStatus jobStatus){
         if(jobStatus != null){
-            jobStatusRepo.saveAndFlush(jobStatus);
+            JobStatusDTO dto = jobStatusRepo.saveAndFlush(jobStatus);
             LOGGER.info(String.format("Added %s as a job status", jobStatus.getName()));
+            return dto;
         }
+        return null;
     }
 
     /**
      * Adds a list of availabilites to the {@link AvailabilityRepository}.
      *
      * @param availabilities    list of availabilities to add.
+     * @return returns list of added {@link AvailabilityDTO} if successful otherwise an empty list 
+     * is returned.
      */
-    public void addAvailabilities(List<Availability> availabilities){
-        for(Availability a : availabilities) addAvailability(a);
+    public List<AvailabilityDTO> addAvailabilities(List<Availability> availabilities){
+        List<AvailabilityDTO> dtos = new ArrayList<AvailabilityDTO>(); 
+        for(Availability a : availabilityRepo.saveAll(availabilities)) {
+            dtos.add(a);
+        }
+        availabilityRepo.flush();
+        return dtos;
     }
 
     /**
      * Adds an availability to the {@link AvailabilityRepository}.
      *
      * @param availability  availability to add.
+     * @return returns the added {@link AvailabilityDTO} if successful otherwise null is returned.
      */
-    public void addAvailability(Availability availability){
+    public AvailabilityDTO addAvailability(Availability availability){
         if(availability != null){
-            availabilityRepo.saveAndFlush(availability);
+            AvailabilityDTO dto = availabilityRepo.saveAndFlush(availability);
             LOGGER.debug("Added availability");
+            return dto;
         }
+        return null;
     }
 
     /**

@@ -39,11 +39,11 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(service).passwordEncoder(Person.PASSWORD_ENCODER);
-        auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass"))
+        /*auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass"))
                 .roles("APPLICANT").and().withUser("user2").password(passwordEncoder().encode("user2Pass"))
                 .roles("APPLICANT").and().withUser("admin").password(passwordEncoder().encode("adminPass"))
                 .roles("RECRUITER").and().withUser("legacy").password(passwordEncoder().encode("legacyPass"))
-                .roles("LEGACY_USER");
+                .roles("LEGACY_USER");*/
     }
 
     @Bean
