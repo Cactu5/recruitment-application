@@ -1,8 +1,6 @@
 package se.kth.iv1201.group4.recruitment.acceptance;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -21,10 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import se.kth.iv1201.group4.recruitment.application.PersonService;
+import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
-import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
-import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,10 +39,7 @@ public class SeleniumAcceptanceTest {
   private MessageSource messageSource;
 
   @Autowired
-  private PersonRepository personRepo;
-
-  @Autowired
-  private LegacyUserRepository legacyUserRepo;
+  private PersonService service;
 
   private final Locale SWEDISH = new Locale("sv", "SE");
   private final Locale ENGLISH = Locale.ENGLISH;
@@ -59,10 +53,10 @@ public class SeleniumAcceptanceTest {
     options.addArguments("--headless");
 
     // For github actions
-    // driver = new ChromeDriver(options);
+    driver = new ChromeDriver(options);
 
     // For developing the tests
-    driver = new ChromeDriver();
+    // driver = new ChromeDriver();
   }
 
   @Test
@@ -187,12 +181,9 @@ public class SeleniumAcceptanceTest {
     String baseURL = "http://localhost:" + port + "/";
 
     // Add legacy user
-    Person p = new Person("name", "surname", "john.doe3@gmail.com", "196801085618", username, password);
-    personRepo.saveAndFlush(p);
-    LegacyUser lu1 = new LegacyUser(p);
-    legacyUserRepo.saveAndFlush(lu1);
-
-    // LegacyUser lu2 = (LegacyUser) service.addLegacyUser(lu1);
+    Person p = new Person("name", "surname", "john.doe3@gmail.com", "193801085618", username, password);
+    service.addApplicant(new Applicant(p));
+    service.addLegacyUser(new LegacyUser(p));
 
     driver.get(baseURL + "?lang=en");
 
@@ -219,8 +210,12 @@ public class SeleniumAcceptanceTest {
     assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.success.name", null, ENGLISH)));
 
     // Fill missing and incorrect data
-    driver.findElement(By.id("name")).sendKeys("John");
-    driver.findElement(By.id("surname")).sendKeys("Doe");
+    WebElement name = driver.findElement(By.id("name"));
+    name.clear();
+    name.sendKeys("John");
+    WebElement surname = driver.findElement(By.id("surname"));
+    surname.clear();
+    surname.sendKeys("Doe");
     driver.findElement(By.id("password")).sendKeys(password);
 
     WebElement updateBtn = driver.findElement(By.xpath("/html/body/main/form/input[7]"));
@@ -230,21 +225,55 @@ public class SeleniumAcceptanceTest {
         .equals(messageSource.getMessage("registerForm.value.updateButton", null, ENGLISH)));
 
     updateBtn.click();
-    // TODO
-    // waitFor(10);
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.login.name", null, ENGLISH)));
+
+    // Login
+    driver.findElement(By.id("username")).sendKeys(username);
+    driver.findElement(By.id("password")).sendKeys(password);
+
+    // Get login button
+    loginButton = driver.findElement(By.xpath("/html/body/main/form/input[3]"));
+
+    // Make sure it's the right button
+    assertTrue(
+        loginButton.getAttribute("value").equals(messageSource.getMessage("loginForm.text.login", null, ENGLISH)));
+
+    // Log in
+    loginButton.click();
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.success.name", null, ENGLISH)));
+
+    // Make sure the user got the successpage for the applicant
+    assertTrue(driver.getCurrentUrl().equals(baseURL + "success-applicant"));
+
+    // Log out
+    driver.findElement(By.linkText(messageSource.getMessage("success.text.logout", null, ENGLISH))).click();
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.login.name", null, ENGLISH)));
+
+    // Make sure the successful log out message is displayed
+    assertTrue(driver.findElement(By.xpath("/html/body/main/form/div")).getText()
+        .equals(messageSource.getMessage("loginForm.success.logout", null, ENGLISH)));
 
   }
 
   @Test
   public void testLegacyUserSendMail() {
     String baseURL = "http://localhost:" + port + "/";
+    String username = "assdfsdfsdfs";
+    String email = "john.doe7@gmail.com";
 
     // Add legacy user
-    Person p = new Person("name", "surname", "john.doe4@gmail.com", "196801085918", "assdfsdfsdfs",
-        "passw234!ordfsdfsdf");
-    personRepo.saveAndFlush(p);
-    LegacyUser lu1 = new LegacyUser(p);
-    legacyUserRepo.saveAndFlush(lu1);
+    Person p = new Person("name", "surname", "john.doe7@gmail.com", "193901087618", username, "passw234!ordfsdfsdf");
+    service.addApplicant(new Applicant(p));
+    service.addLegacyUser(new LegacyUser(p));
 
     driver.get(baseURL + "?lang=en");
 
@@ -256,7 +285,7 @@ public class SeleniumAcceptanceTest {
     driver.findElement(By.linkText(messageSource.getMessage("loginForm.text.forgot", null, ENGLISH))).click();
 
     // Fill in email
-    driver.findElement(By.id("email")).sendKeys("john.doe4@gmail.com");
+    driver.findElement(By.id("email")).sendKeys(email);
 
     WebElement sendResetLink = driver.findElement(By.xpath("/html/body/main/form/input[2]"));
 
