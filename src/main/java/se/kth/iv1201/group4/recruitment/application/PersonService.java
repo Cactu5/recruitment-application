@@ -187,6 +187,12 @@ public class PersonService implements UserDetailsService {
      */
     public void updatePersonWithUsernameAndRemoveFromLegacyUsers(PersonDTO dto, String username)
         throws UpdatedPersonContainsTemporaryDataException {
+        Person p = personRepo.findPersonByUsername(username);
+        if(p == null){
+            LOGGER.error(String.format("Legacy user %s not found in person table", username));
+            throw new UsernameNotFoundException(String.format("Legacy user %s not found in person table",
+                    username));
+        }
         if (TemporaryDataMatcher.isTemporaryEmail(dto.getEmail())) {
             throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary email");
         }
@@ -199,7 +205,8 @@ public class PersonService implements UserDetailsService {
                     dto.getUsername()));
             throw new UsernameAlreadyExistsException("Username is already in use.");
         }
-        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+        if(!p.getEmail().equals(dto.getEmail()) &&
+                personRepo.findPersonByEmail(dto.getEmail()) != null){
             LOGGER.info(String.format("Legacy user %s tried to use email %s", username,
                     dto.getEmail()));
 
