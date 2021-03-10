@@ -150,6 +150,8 @@ public class SuccessController {
         p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
                 form.getPassword());
         try {
+            LOGGER.info(String.format("Attempting to update legacy user: %s",
+                        ((UserDetails)auth.getPrincipal()).getUsername()));
             service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p,
                 ((UserDetails)auth.getPrincipal()).getUsername());
             LOGGER.info("Legacy user converted to normal user.");

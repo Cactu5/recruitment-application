@@ -193,11 +193,16 @@ public class PersonService implements UserDetailsService {
         if(TemporaryDataMatcher.isTemporarySSN(dto.getSSN())){
             throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
         }
-        if(dto.getUsername() !=username &&
+        if(!dto.getUsername().equals(username) &&
                 personRepo.findPersonByUsername(dto.getUsername()) != null){
+            LOGGER.info(String.format("Legacy user %s tried to use username %s", username,
+                    dto.getUsername()));
             throw new UsernameAlreadyExistsException("Username is already in use.");
         }
         if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+            LOGGER.info(String.format("Legacy user %s tried to use email %s", username,
+                    dto.getEmail()));
+
             throw new EmailAlreadyExistsException("Email is already in use.");
         }
         
@@ -238,38 +243,6 @@ public class PersonService implements UserDetailsService {
             removeLegacyUserByPersonDTO(dto);
             legacyUserRepo.flush();
         }
-    }
-    
-    /**
-     * Updates a {@link Person} migrated from the old database. It's required for the 
-     * dto to not contain any temporary data. If successful the {@link Person} is updated
-     * and removed as a {@link LegacyUser}.
-     *
-     * @param   dto         contains the updated data to make sure the {@link Person} follows
-     *                      the rules of the database schema.
-     * @param   username    the username of the {@link LegacyUser} to update.
-     * @throws  UpdatedPersonContainsTemporaryDataException if dto still contains temporary
-     *                                                      data this exception is thrown.
-     */
-    public void updatePersonByDTOAndRemoveFromLegacyUsers(PersonDTO dto, String username)
-        throws UpdatedPersonContainsTemporaryDataException {
-        if (TemporaryDataMatcher.isTemporaryEmail(dto.getEmail())) {
-            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary email");
-        }
-        if(TemporaryDataMatcher.isTemporarySSN(dto.getSSN())){
-            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
-        }
-        if(dto.getUsername() !=username &&
-                loadUserByUsername(dto.getUsername()) != null){
-            throw new UsernameAlreadyExistsException("Username is already in use.");
-        }
-        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
-            throw new EmailAlreadyExistsException("Email is already in use.");
-        }
-        
-        dto = updatePersonWithContentsOfDTO(dto, username);
-        removeLegacyUserByPersonDTO(dto);
-        legacyUserRepo.flush();
     }
 
     /**
