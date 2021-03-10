@@ -1,9 +1,11 @@
 package se.kth.iv1201.group4.recruitment.application;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import java.util.Random;
@@ -20,6 +22,7 @@ import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
@@ -147,9 +150,21 @@ public class PersonServiceTest {
         Person p1 = dummyPerson();
         doReturn(p1).when(personRepo).findPersonByEmail(p1.getEmail());
         Exception e = assertThrows(EmailAlreadyExistsException.class, () -> {
-            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, ""); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, p1.getUsername()); 
         });
         assertTrue(e.getMessage().contains("Email"));
+    }
+
+    @Test
+    void testThatUpdatedUserCanUseSameUsername(){
+        Person p1 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p1).when(personRepo).save(any());
+        try {            
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, p1.getUsername()); 
+        } catch (Exception e) {
+            fail("got error: " + e.getClass()); 
+        }
     }
 
     private void validationAssertions(Object expected, Object actual){

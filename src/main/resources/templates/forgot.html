@@ -18,6 +18,8 @@
             <input type="submit" th:value="#{forgotForm.text.submit}" />
         </form>
         <p th:if="${#messages.msgOrNull('__${message}__') != null}" th:text="#{'__${message}__'}">success message</p>
+        <p th:text="#{forgotForm.text.alreadyHaveAnAccount}">Please visit:</p>
+        <a href="/login" th:text="#{loginForm.text.login}">Log in</a>
     </main>
 </body>
 
