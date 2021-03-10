@@ -124,6 +124,7 @@ public class SuccessControllerTest {
                 .andExpect(header().exists("Location")).andExpect(header().string("Location", "success-applicant"));
     }
 
+    @Disabled
     @Test
     public void testApplicantCanAccessSuccessApplicant() throws Exception {
         HttpSession session = createSessionApplicant();
@@ -131,12 +132,14 @@ public class SuccessControllerTest {
                 .andExpect(isSuccessApplicantPage());
     }
 
+    @Disabled
     @Test
     public void testApplicantCanNotAccessSuccessRecruiter() throws Exception {
         HttpSession session = createSessionApplicant();
         sendGetRequest(mockMvc, "/success-recruiter", session).andExpect(status().isForbidden());
     }
 
+    @Disabled
     @Test
     public void testIfRedirectToSuccessRecruitert() throws Exception {
         HttpSession session = createSessionRecruiter();
@@ -144,6 +147,7 @@ public class SuccessControllerTest {
                 .andExpect(header().exists("Location")).andExpect(header().string("Location", "success-recruiter"));
     }
 
+    @Disabled
     @Test
     public void testRecruiterCanAccessSuccessRecruiter() throws Exception {
         HttpSession session = createSessionRecruiter();
@@ -151,6 +155,7 @@ public class SuccessControllerTest {
                 .andExpect(isSuccessRecruiterPage());
     }
 
+    @Disabled
     @Test
     public void testRecruiterCanNotAccessSuccessApplicant() throws Exception {
         HttpSession session = createSessionRecruiter();
