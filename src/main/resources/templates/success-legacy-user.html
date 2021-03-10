@@ -50,7 +50,8 @@
             <p class="form-error" th:each="error : ${#fields.errors('SSN')}" th:text="${error}">
                 SSN validation error
             </p>
-
+            <p class="form-error" th:if="${dbInvalidSsnError}" th:text="#{register.error.ssn}">
+            </p>
             <input type="submit" th:value="#{registerForm.value.updateButton}"/>
         </form>
     </main>

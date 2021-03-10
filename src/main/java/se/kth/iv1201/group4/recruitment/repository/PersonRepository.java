@@ -37,6 +37,14 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      */
     Person findPersonByUsername(String username);
 
+    /**
+     * Returns the person with the specified ssn.
+     * 
+     * @param ssn the email of the person searched for.
+     * @return the person with the specified ssn.
+     */
+    Person findPersonBySsn(String ssn);
+    
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
     Person save(Person person);
