@@ -163,7 +163,6 @@ public class SuccessController {
             return "success-legacy-user";
         } catch(UsernameAlreadyExistsException e){
             LOGGER.debug("Tried to use already existing username");
-            System.out.println("username exists...");
             model.addAttribute("dbUniqueUsernameError","");
             return "success-legacy-user";
         }
