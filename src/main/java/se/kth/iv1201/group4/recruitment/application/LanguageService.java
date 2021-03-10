@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.kth.iv1201.group4.recruitment.domain.Language;
+import se.kth.iv1201.group4.recruitment.dto.LanguageDTO;
 import se.kth.iv1201.group4.recruitment.repository.LanguageRepository;
 
 /**
@@ -19,6 +20,7 @@ import se.kth.iv1201.group4.recruitment.repository.LanguageRepository;
  * or creates a new if none exist.
  * 
  * @author William Stackenäs
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -35,12 +37,15 @@ public class LanguageService {
      * Adds a language to the language repository
      * 
      * @param l The language to add
+     * @return returns the added {@link LanguageDTO} if successful otherwise null is returned
      */
-    public void addLanguage(Language l) {
+    public LanguageDTO addLanguage(Language l) {
         if (l != null) {
-            languageRepo.saveAndFlush(l);
+            Language lang = languageRepo.saveAndFlush(l);
             LOGGER.info(String.format("Added %s as a language.", l.getName()));
+            return lang;
         }
+        return null;
     }
 
     /**
