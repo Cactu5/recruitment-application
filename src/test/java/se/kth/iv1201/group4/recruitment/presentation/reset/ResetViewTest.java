@@ -3,6 +3,7 @@ package se.kth.iv1201.group4.recruitment.presentation.reset;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
@@ -34,7 +36,12 @@ class ResetViewTest implements TestExecutionListener {
     @Autowired
     private WebApplicationContext context;
 
+    @Autowired
+    private MessageSource messageSource;
+
     private MockMvc mockMvc;
+    private final Locale ENGLISH = new Locale("en", "US");
+    private final Locale SWEDISH = new Locale("sv", "SE");
 
     @Autowired
     PersonService personService;
@@ -61,32 +68,32 @@ class ResetViewTest implements TestExecutionListener {
     void testIfViewRendersInSwedish() throws Exception {
         UUID uuid = createResetPage();
         mockMvc.perform(get("/reset/" + uuid.toString() + "?lang=sv")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("email")))
-                .andExpect(content().string(containsString("namn")))
-                .andExpect(content().string(containsString("efternamn")))
-                .andExpect(content().string(containsString("användarnamn")))
-                .andExpect(content().string(containsString("lösenord")))
-                .andExpect(content().string(containsString("personnummer")));
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.email", null, SWEDISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.name", null, SWEDISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.surname", null, SWEDISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.username", null, SWEDISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.password", null, SWEDISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.ssn", null, SWEDISH))));
     }
 
     @Test
     void testIfViewRendersInEnglish() throws Exception {
         UUID uuid = createResetPage();
         mockMvc.perform(get("/reset/" + uuid.toString() + "?lang=en")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Email")))
-                .andExpect(content().string(containsString("First Name")))
-                .andExpect(content().string(containsString("Surname")))
-                .andExpect(content().string(containsString("Username")))
-                .andExpect(content().string(containsString("Password")))
-                .andExpect(content().string(containsString("Social Security Number")));
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.email", null, ENGLISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.name", null, ENGLISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.surname", null, ENGLISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.username", null, ENGLISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.password", null, ENGLISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("registerForm.label.ssn", null, ENGLISH))));
     }
 
     @Test
     void testIfViewIsUsingThymeleafDecoration() throws Exception {
         UUID uuid = createResetPage();
         mockMvc.perform(get("/reset/" + uuid.toString() + "?lang=sv")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("| Återställ")))
-                .andExpect(content().string(containsString("<h1>Rekrytering</h1>")))
+        .andExpect(content().string(containsString("| " + messageSource.getMessage("pages.reset.name", null, SWEDISH))))
+        .andExpect(content().string(containsString("<h1>" + messageSource.getMessage("header.text.title", null, SWEDISH) + "</h1>")))
                 .andExpect(content().string(containsString("<footer>")));
     }
 

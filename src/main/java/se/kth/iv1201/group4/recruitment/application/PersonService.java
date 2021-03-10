@@ -182,14 +182,6 @@ public class PersonService implements UserDetailsService {
      * @param   email       the email of the {@link Person} to update.
      */
     public void updatePersonWithEmail(PersonDTO dto, String email) {
-        /*if(dto.getEmail() != email &&
-                personRepo.findPersonByEmail(dto.getEmail()) != null){
-            throw new DataIntegrityViolationException("Username is already in use.");
-        }
-        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
-            throw new DataIntegrityViolationException("Email is already in use.");
-        }*/
-
         Person p = personRepo.findPersonByEmail(email);
         if (p != null) {
             p.updateWithContentsOfDTO(dto);
