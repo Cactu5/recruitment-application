@@ -108,7 +108,7 @@ public class PersonServiceTest {
     void testThatTemporarySSNCantExistWhenUpdatingPerson(){
         Person p = dummyLegacyPerson(false, true);
         Exception e = assertThrows(UpdatedPersonContainsTemporaryDataException.class, () -> {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p, ""); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p, ""); 
         });
         assertTrue(e.getMessage().contains("SSN"));
     }
@@ -117,7 +117,7 @@ public class PersonServiceTest {
     void testThatTemporaryEmailCantExistWhenUpdatingPerson(){
         Person p = dummyLegacyPerson(true, false);
         Exception e = assertThrows(UpdatedPersonContainsTemporaryDataException.class, () -> {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p, ""); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p, ""); 
         });
         assertTrue(e.getMessage().contains("email"));
     }  
@@ -126,7 +126,7 @@ public class PersonServiceTest {
     void testThatExceptionIsThrownWhenTryingToUpdateLegacyUserThatHasAUsernameNotFoundInTheDatabase(){
         Person p = dummyPerson();
         Exception e = assertThrows(UsernameNotFoundException.class, () -> {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p, p.getUsername()); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p, p.getUsername()); 
         });
         assertTrue(e.getMessage().contains(p.getUsername()), "Contained: " + e.getMessage() + 
                 ", not " + p.getUsername());
@@ -137,7 +137,7 @@ public class PersonServiceTest {
         Person p1 = dummyPerson("iExist");
         doReturn(p1).when(personRepo).findPersonByUsername("iExist");
         Exception e = assertThrows(UsernameAlreadyExistsException.class, () -> {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p1, ""); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, ""); 
         });
         assertTrue(e.getMessage().contains("Username"));
     }
@@ -147,7 +147,7 @@ public class PersonServiceTest {
         Person p1 = dummyPerson();
         doReturn(p1).when(personRepo).findPersonByEmail(p1.getEmail());
         Exception e = assertThrows(EmailAlreadyExistsException.class, () -> {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p1, ""); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, ""); 
         });
         assertTrue(e.getMessage().contains("Email"));
     }

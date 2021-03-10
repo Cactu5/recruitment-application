@@ -128,7 +128,7 @@ public class PersonService implements UserDetailsService {
      * @throws  UpdatedPersonContainsTemporaryDataException if dto still contains temporary
      *                                                      data this exception is thrown.
      */
-    public void updatePersonByDTOAndRemoveFromLegacyUsers(PersonDTO dto, String username)
+    public void updatePersonWithUsernameAndRemoveFromLegacyUsers(PersonDTO dto, String username)
         throws UpdatedPersonContainsTemporaryDataException {
         if (TemporaryDataMatcher.isTemporaryEmail(dto.getEmail())) {
             throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary email");

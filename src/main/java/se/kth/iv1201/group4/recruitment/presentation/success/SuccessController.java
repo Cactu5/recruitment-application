@@ -150,7 +150,7 @@ public class SuccessController {
         p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
                 form.getPassword());
         try {
-            service.updatePersonByDTOAndRemoveFromLegacyUsers(p,
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p,
                 ((UserDetails)auth.getPrincipal()).getUsername());
             LOGGER.info("Legacy user converted to normal user.");
         } catch (ConstraintViolationException e) {
