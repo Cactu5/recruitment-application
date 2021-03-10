@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import se.kth.iv1201.group4.recruitment.application.error.UpdatedPersonContainsTemporaryDataException;
@@ -120,6 +121,16 @@ public class PersonServiceTest {
         });
         assertTrue(e.getMessage().contains("email"));
     }  
+
+    @Test
+    void testThatExceptionIsThrownWhenTryingToUpdateLegacyUserThatHasAUsernameNotFoundInTheDatabase(){
+        Person p = dummyPerson();
+        Exception e = assertThrows(UsernameNotFoundException.class, () -> {
+            service.updatePersonByDTOAndRemoveFromLegacyUsers(p, p.getUsername()); 
+        });
+        assertTrue(e.getMessage().contains(p.getUsername()), "Contained: " + e.getMessage() + 
+                ", not " + p.getUsername());
+    } 
 
     @Test
     void testThatUpdatedUserCantUseUsernameAlreadyInUse(){

@@ -27,7 +27,6 @@ import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
-
 import se.kth.iv1201.group4.recruitment.dto.ApplicantDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.dto.LegacyUserDTO;
@@ -40,9 +39,7 @@ import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsExceptio
 import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
 
 /**
- * A service for accessing or adding persons from and to the preso
-import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
-import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;n
+ * A service for accessing or adding persons from and to the preson
  * repositories. Rolls back on all exceptions and supports current transactions,
  * or creates a new if none exist.
  * 
@@ -112,6 +109,10 @@ public class PersonService implements UserDetailsService {
 
     private PersonDTO updatePersonWithContentsOfDTO(PersonDTO dto, String username){
         Person p = personRepo.findPersonByUsername(username);
+        if(p == null) {
+            LOGGER.error("Legacy user " + username + " was not found.");
+            throw new UsernameNotFoundException("Username " + username + " was not found in the database");
+        }
         p.updateWithContentsOfDTO(dto);
         return personRepo.save(p);
     }
