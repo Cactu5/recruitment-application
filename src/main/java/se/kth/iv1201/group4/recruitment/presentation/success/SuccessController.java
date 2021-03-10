@@ -138,7 +138,7 @@ public class SuccessController {
     @PostMapping("/success-legacy-user")
     public String updatePerson(@Valid RegisterForm form, BindingResult result, Model model, 
             Authentication auth) throws UpdatedPersonContainsTemporaryDataException {
-        LOGGER.info("Put request for /success-legacy-user.");
+        LOGGER.info("Post request for /success-legacy-user.");
         PersonDTO p;
         if (result.hasErrors()) {
             for (FieldError err : result.getFieldErrors()) {
