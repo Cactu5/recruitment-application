@@ -30,6 +30,7 @@ import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.SSNAlreadyExistsException;
 import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
 
 @SpringBootTest
@@ -161,7 +162,17 @@ public class PersonServiceTest {
         });
         assertTrue(e.getMessage().contains("Email"));
     }
-
+    @Test
+    void testThatUpdatedUserCantUseSSNAlreadyInUse(){
+        Person p1 = dummyPerson();
+        Person p2 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p2).when(personRepo).findPersonBySsn(p2.getSSN());
+        Exception e = assertThrows(SSNAlreadyExistsException.class, () -> {
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p2, p1.getUsername()); 
+        });
+        assertTrue(e.getMessage().contains("SSN"));
+    }
     @Test
     void testThatUpdatedUserCanUseSameUsername(){
         Person p1 = dummyPerson();
@@ -176,6 +187,17 @@ public class PersonServiceTest {
 
     @Test
     void testThatUpdatedUserCanUseSameEmail(){
+        Person p1 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p1).when(personRepo).save(any());
+        try {            
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, p1.getUsername()); 
+        } catch (Exception e) {
+            fail("got error: " + e.getClass()); 
+        }
+    }
+    @Test
+    void testThatUpdatedUserCanUseSameSSN(){
         Person p1 = dummyPerson();
         doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
         doReturn(p1).when(personRepo).save(any());

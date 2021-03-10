@@ -39,7 +39,8 @@ import se.kth.iv1201.group4.recruitment.dto.RecruiterDTO;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
 import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
-import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.SSNAlreadyExistsException;
 
 /**
  * A service for accessing or adding persons from and to the preso
@@ -209,10 +210,14 @@ public class PersonService implements UserDetailsService {
                 personRepo.findPersonByEmail(dto.getEmail()) != null){
             LOGGER.info(String.format("Legacy user %s tried to use email %s", username,
                     dto.getEmail()));
-
             throw new EmailAlreadyExistsException("Email is already in use.");
         }
-        
+        if(!p.getSSN().equals(dto.getSSN()) &&
+                personRepo.findPersonBySsn(dto.getSSN()) != null){
+            LOGGER.info(String.format("Legacy user %s tried to use ssn %s", username,
+                    dto.getSSN()));
+            throw new SSNAlreadyExistsException("SSN is already in use.");
+        }       
         dto = updatePersonWithContentsOfDTO(dto, username);
         removeLegacyUserByPersonDTO(dto);
         legacyUserRepo.flush();
