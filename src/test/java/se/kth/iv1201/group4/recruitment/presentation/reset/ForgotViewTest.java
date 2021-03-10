@@ -53,13 +53,15 @@ class ForgotViewTest implements TestExecutionListener {
     @Test
     void testIfViewRendersInSwedish() throws Exception {
         mockMvc.perform(get("/forgot?lang=sv")).andExpect(status().isOk())
-                .andExpect(content().string(containsString(messageSource.getMessage("forgotForm.text.submit", null, SWEDISH))));
+                .andExpect(content().string(containsString(messageSource.getMessage("forgotForm.text.submit", null, SWEDISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("forgotForm.text.alreadyHaveAnAccount", null, SWEDISH))));
     }
 
     @Test
     void testIfViewRendersInEnglish() throws Exception {
         mockMvc.perform(get("/forgot?lang=en")).andExpect(status().isOk())
-                .andExpect(content().string(containsString(messageSource.getMessage("forgotForm.text.submit", null, ENGLISH))));
+                .andExpect(content().string(containsString(messageSource.getMessage("forgotForm.text.submit", null, ENGLISH))))
+                .andExpect(content().string(containsString(messageSource.getMessage("forgotForm.text.alreadyHaveAnAccount", null, ENGLISH))));
     }
 
     @Test
