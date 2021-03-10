@@ -31,6 +31,7 @@ import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.presentation.register.RegisterForm;
 import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
 import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.SSNAlreadyExistsException;
 import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
 import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
@@ -150,6 +151,8 @@ public class SuccessController {
         p = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getSSN(), form.getUsername(),
                 form.getPassword());
         try {
+            LOGGER.info(String.format("Attempting to update legacy user: %s",
+                        ((UserDetails)auth.getPrincipal()).getUsername()));
             service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p,
                 ((UserDetails)auth.getPrincipal()).getUsername());
             LOGGER.info("Legacy user converted to normal user.");
@@ -165,7 +168,12 @@ public class SuccessController {
             LOGGER.debug("Tried to use already existing username");
             model.addAttribute("dbUniqueUsernameError","");
             return "success-legacy-user";
+        } catch(SSNAlreadyExistsException e){
+            LOGGER.debug("Tried to use already existing SSN");
+            model.addAttribute("dbInvalidSsnError","");
+            return "success-legacy-user";
         }
+
         return "redirect:logout";
     }
 

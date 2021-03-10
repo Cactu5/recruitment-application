@@ -1,11 +1,15 @@
 package se.kth.iv1201.group4.recruitment.application;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
@@ -20,11 +24,13 @@ import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.SSNAlreadyExistsException;
 import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
 
 @SpringBootTest
@@ -107,6 +113,7 @@ public class PersonServiceTest {
     @Test
     void testThatTemporarySSNCantExistWhenUpdatingPerson(){
         Person p = dummyLegacyPerson(false, true);
+        doReturn(p).when(personRepo).findPersonByUsername(any());
         Exception e = assertThrows(UpdatedPersonContainsTemporaryDataException.class, () -> {
             service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p, ""); 
         });
@@ -116,6 +123,7 @@ public class PersonServiceTest {
     @Test
     void testThatTemporaryEmailCantExistWhenUpdatingPerson(){
         Person p = dummyLegacyPerson(true, false);
+        doReturn(p).when(personRepo).findPersonByUsername(any());
         Exception e = assertThrows(UpdatedPersonContainsTemporaryDataException.class, () -> {
             service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p, ""); 
         });
@@ -135,7 +143,8 @@ public class PersonServiceTest {
     @Test
     void testThatUpdatedUserCantUseUsernameAlreadyInUse(){
         Person p1 = dummyPerson("iExist");
-        doReturn(p1).when(personRepo).findPersonByUsername("iExist");
+        LinkedList<Person> ps = new LinkedList<Person>(List.of(p1,p1));
+        doReturn(ps.removeFirst()).when(personRepo).findPersonByUsername(any());
         Exception e = assertThrows(UsernameAlreadyExistsException.class, () -> {
             service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, ""); 
         });
@@ -145,13 +154,59 @@ public class PersonServiceTest {
     @Test
     void testThatUpdatedUserCantUseEmailAlreadyInUse(){
         Person p1 = dummyPerson();
-        doReturn(p1).when(personRepo).findPersonByEmail(p1.getEmail());
+        Person p2 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p2).when(personRepo).findPersonByEmail(p2.getEmail());
         Exception e = assertThrows(EmailAlreadyExistsException.class, () -> {
-            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, ""); 
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p2, p1.getUsername()); 
         });
         assertTrue(e.getMessage().contains("Email"));
     }
+    @Test
+    void testThatUpdatedUserCantUseSSNAlreadyInUse(){
+        Person p1 = dummyPerson();
+        Person p2 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p2).when(personRepo).findPersonBySsn(p2.getSSN());
+        Exception e = assertThrows(SSNAlreadyExistsException.class, () -> {
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p2, p1.getUsername()); 
+        });
+        assertTrue(e.getMessage().contains("SSN"));
+    }
+    @Test
+    void testThatUpdatedUserCanUseSameUsername(){
+        Person p1 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p1).when(personRepo).save(any());
+        try {            
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, p1.getUsername()); 
+        } catch (Exception e) {
+            fail("got error: " + e.getClass()); 
+        }
+    }
 
+    @Test
+    void testThatUpdatedUserCanUseSameEmail(){
+        Person p1 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p1).when(personRepo).save(any());
+        try {            
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, p1.getUsername()); 
+        } catch (Exception e) {
+            fail("got error: " + e.getClass()); 
+        }
+    }
+    @Test
+    void testThatUpdatedUserCanUseSameSSN(){
+        Person p1 = dummyPerson();
+        doReturn(p1).when(personRepo).findPersonByUsername(p1.getUsername());
+        doReturn(p1).when(personRepo).save(any());
+        try {            
+            service.updatePersonWithUsernameAndRemoveFromLegacyUsers(p1, p1.getUsername()); 
+        } catch (Exception e) {
+            fail("got error: " + e.getClass()); 
+        }
+    }
     private void validationAssertions(Object expected, Object actual){
         assertFalse(actual == null);
         assertSame(expected,actual);
