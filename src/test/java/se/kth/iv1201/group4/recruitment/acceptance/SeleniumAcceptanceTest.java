@@ -265,6 +265,90 @@ public class SeleniumAcceptanceTest {
   }
 
   @Test
+  public void testInvalidLoginAcceptance() {
+    String username = "invalidUsr";
+    String password = "fgkfdok3@s";
+    String baseURL = "http://localhost:" + port + "/";
+
+    driver.get(baseURL + "?lang=en");
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.login.name", null, ENGLISH)));
+
+    // Log in
+    driver.findElement(By.id("password")).sendKeys(password);
+    driver.findElement(By.id("username")).sendKeys(username);
+
+    // Get login button
+    WebElement loginButton = driver.findElement(By.xpath("/html/body/main/form/input[3]"));
+
+    // Make sure it's the right button
+    assertTrue(
+        loginButton.getAttribute("value").equals(messageSource.getMessage("loginForm.text.login", null, ENGLISH)));
+
+    // Log in
+    loginButton.click();
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    System.out.println(driver.getTitle());
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.login.name", null, ENGLISH)));
+
+    assertTrue(driver.getCurrentUrl().contains("login?error"));
+
+    WebElement errorMsg = driver.findElement(By.xpath("/html/body/main/form/div"));
+
+    assertTrue(errorMsg.getText().equals(messageSource.getMessage("loginForm.error.invalidLogin", null, ENGLISH)));
+  }
+
+  @Test
+  public void testRegisterErrorAcceptance() {
+    String baseURL = "http://localhost:" + port + "/";
+
+    driver.get(baseURL + "?lang=en");
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.login.name", null, ENGLISH)));
+
+    // Go to register page
+    driver.findElement(By.linkText(messageSource.getMessage("loginForm.text.register", null, ENGLISH))).click();
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.register.name", null, ENGLISH)));
+
+    // Register user
+    driver.findElement(By.id("email")).sendKeys("jonas.com");
+    driver.findElement(By.id("name")).sendKeys("Jonas");
+    driver.findElement(By.id("surname")).sendKeys("Andersson");
+    driver.findElement(By.id("password")).sendKeys("lösen");
+    driver.findElement(By.id("username")).sendKeys("JonAn");
+    driver.findElement(By.id("ssn")).sendKeys("199101075634");
+
+    WebElement registerButton = driver.findElement(By.xpath("/html/body/main/form/input[7]"));
+
+    // Make sure it's the right button
+    assertTrue(registerButton.getAttribute("value")
+        .equals(messageSource.getMessage("loginForm.text.register", null, ENGLISH)));
+
+    registerButton.click();
+
+    assertTrue(driver.getCurrentUrl().equals(baseURL + "register"));
+
+    // Make sure the right page is displayed
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("heading.text.applicationName", null, ENGLISH)));
+    assertTrue(driver.getTitle().contains(messageSource.getMessage("pages.register.name", null, ENGLISH)));
+
+    String bodyText = driver.findElement(By.tagName("body")).getText();
+    assertTrue(bodyText.contains(messageSource.getMessage("register.password.length", null, ENGLISH)));
+    assertTrue(bodyText.contains(messageSource.getMessage("register.password.missing-char", null, ENGLISH)));
+    assertTrue(bodyText.contains(messageSource.getMessage("register.email.invalid", null, ENGLISH)));
+
+  }
+
+  @Test
   public void testLegacyUserSendMail() {
     String baseURL = "http://localhost:" + port + "/";
     String username = "assdfsdfsdfs";
