@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragments/layout}" th:with="title=#{pages.login.name}" th:lang="${lang}">
+    layout:decorate="~{fragments/layout}" th:with="title=#{pages.success.name}" th:lang="${lang}">
 
 <head>
     <meta charset="UTF-8">
@@ -22,8 +22,6 @@
         <select name="competencies" id="competencies">
             <option th:each="c : ${competencies}" th:text="${c.getName()}">competence name</option>
         </select>
-        <p th:text="#{success.text.pleaselogoutgoodsir}">Please visit</p>
-        <a href="/logout" th:text="#{success.text.logout}">Log out</a>
     </main>
 </body>
 

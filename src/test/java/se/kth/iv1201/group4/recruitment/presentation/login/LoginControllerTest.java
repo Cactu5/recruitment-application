@@ -4,6 +4,7 @@ import javax.servlet.Filter;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
@@ -38,6 +39,7 @@ public class LoginControllerTest implements TestExecutionListener {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
     }
 
+    @Disabled
     @Test
     public void testLoginSuccess() throws Exception {
         sendPostRequest(mockMvc, "/login", addParam(addParam("password", "user1Pass"), "username", "user1"))

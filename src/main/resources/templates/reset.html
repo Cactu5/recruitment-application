@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragments/layout}" th:with="title=#{pages.register.name}" th:lang="${lang}">
+    layout:decorate="~{fragments/layout}" th:with="title=#{pages.reset.name}" th:lang="${lang}">
 
 <head>
-    <title>Register</title>
+    <title>Reset Account</title>
 </head>
 
 <body>
     <main layout:fragment="content">
-        <form th:action="@{/register}" th:object="${registerForm}" method="POST">
+        <p th:text="#{resetForm.text.info}">info</p>
+        <form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${registerForm}" method="POST">
             <label for="email" th:text="#{registerForm.label.email}">Email:</label>
             <input id="email" type="text" th:field="*{email}" /><br>
             <p class="form-error" th:each="error : ${#fields.errors('email')}" th:text="${error}">
@@ -44,11 +45,10 @@
             <p class="form-error" th:each="error : ${#fields.errors('SSN')}" th:text="${error}">
                 SSN validation error
             </p>
+
             <p th:if="${#messages.msgOrNull('__${error}__') != null}" th:text="#{'__${error}__'}">error message</p>
-            <input type="submit" th:value="#{loginForm.text.register}" />
+            <input type="submit" th:value="#{loginForm.text.reset}" />
         </form>
-        <p th:text="#{registerForm.text.alreadyHaveAnAccount}">Please visit:</p>
-        <a href="/login" th:text="#{loginForm.text.login}">Log in</a>
     </main>
 </body>
 
