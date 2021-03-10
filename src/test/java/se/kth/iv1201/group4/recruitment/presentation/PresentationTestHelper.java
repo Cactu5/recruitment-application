@@ -211,4 +211,19 @@ public class PresentationTestHelper {
     public static MultiValueMap<String, String> addParam(String name, String value) {
         return addParam(new LinkedMultiValueMap<>(), name, value);
     }
+
+    /**
+     * Creates a map containing all the specified paramters. The paramters need to follow
+     * this convention: name0,val0,...,nameK,valK
+     *
+     * @param namesAndVals names and parameters to be added.
+     * @return a map with the specified parameter added
+     */
+    public static MultiValueMap<String, String> addParam(String...namesAndVals) {
+        MultiValueMap<String, String> t = new LinkedMultiValueMap<>();
+        for(int i = 0; i < namesAndVals.length; i+=2){
+            t = addParam(t,namesAndVals[i],namesAndVals[i+1]);
+        }
+        return t;
+    }
 }

@@ -14,6 +14,9 @@ import se.kth.iv1201.group4.recruitment.domain.Competence;
 import se.kth.iv1201.group4.recruitment.domain.CompetenceProfile;
 import se.kth.iv1201.group4.recruitment.domain.Language;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
+import se.kth.iv1201.group4.recruitment.dto.CompetenceDTO;
+import se.kth.iv1201.group4.recruitment.dto.CompetenceProfileDTO;
+import se.kth.iv1201.group4.recruitment.dto.LocalCompetenceDTO;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceProfileRepository;
 import se.kth.iv1201.group4.recruitment.repository.CompetenceRepository;
 import se.kth.iv1201.group4.recruitment.repository.LocalCompetenceRepository;
@@ -45,36 +48,45 @@ public class CompetenceService {
      * Adds a competence to the competence repository
      * 
      * @param c The comptence to add
+     * @return returns the {@link CompetenceDTO} if successful otherwise null is returned.
      */
-    public void addCompetence(Competence c) {
+    public CompetenceDTO addCompetence(Competence c) {
         if (c != null) {
-            competenceRepo.saveAndFlush(c);
+            CompetenceDTO dto = competenceRepo.saveAndFlush(c);
             LOGGER.info(String.format("Added competence."));
+            return dto;
         }
+        return null;
     }
 
     /**
      * Adds a local competence to the competence repository
      * 
      * @param c The local comptence to add
+     * @return returns the {@link LocalCompetenceDTO} if successful otherwise null is returned.
      */
-    public void addLocalCompetence(LocalCompetence c) {
+    public LocalCompetenceDTO addLocalCompetence(LocalCompetence c) {
         if (c != null) {
-            localCompetenceRepo.saveAndFlush(c);
+            LocalCompetenceDTO dto = localCompetenceRepo.saveAndFlush(c);
             LOGGER.info(String.format("Added local competence."));
+            return dto;
         }
+        return null;
     }
 
     /**
      * Adds a competence profile to the competence profile repository
      * 
      * @param cp The competence profile to add
+     * @return returns the {@link CompetenceProfileDTODTO} if successful otherwise null is returned.
      */
-    public void addCompetenceProfile(CompetenceProfile cp) {
+    public CompetenceProfileDTO addCompetenceProfile(CompetenceProfile cp) {
         if (cp != null) {
-            competenceProfileRepo.saveAndFlush(cp);
+            CompetenceProfileDTO dto = competenceProfileRepo.saveAndFlush(cp);
             LOGGER.info("Added competence profile");
+            return dto;
         }
+        return null;
     }
 
     /**

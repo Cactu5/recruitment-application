@@ -13,6 +13,7 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
  * {@link se.kth.iv1201.group4.recruitment.domain.Person}.
  * 
  * @author Cactu5
+ * @author Filip Garamvölgyi
  * @version %I%
  */
 @Transactional(propagation = Propagation.MANDATORY)
@@ -26,6 +27,14 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * @return the person with the specified username.
      */
     Person findPersonByUsername(String username);
+    
+    /**
+     * Returns the person with the specified email.
+     * 
+     * @param email the email of the person searched for.
+     * @return the person with the specified username.
+     */
+    Person findPersonByEmail(String email);
 
     @Transactional(propagation = Propagation.MANDATORY)
     @Override

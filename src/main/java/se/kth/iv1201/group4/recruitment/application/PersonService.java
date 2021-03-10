@@ -21,15 +21,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
+import se.kth.iv1201.group4.recruitment.application.error.UpdatedPersonContainsTemporaryDataException;
 import se.kth.iv1201.group4.recruitment.domain.Applicant;
 import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.Person;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
+import se.kth.iv1201.group4.recruitment.dto.PersonDTO;
+import se.kth.iv1201.group4.recruitment.dto.ApplicantDTO;
 import se.kth.iv1201.group4.recruitment.repository.ApplicantRepository;
+import se.kth.iv1201.group4.recruitment.dto.LegacyUserDTO;
 import se.kth.iv1201.group4.recruitment.repository.LegacyUserRepository;
 import se.kth.iv1201.group4.recruitment.repository.PersonRepository;
+import se.kth.iv1201.group4.recruitment.dto.RecruiterDTO;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
+import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
+import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
 
 /**
  * A service for accessing or adding persons from and to the preson
@@ -64,46 +71,104 @@ public class PersonService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     static public final String ROLE_APPLICANT = "ROLE_APPLICANT";
     static public final String ROLE_RECRUITER = "ROLE_RECRUITER";
+    static public final String ROLE_LEGACY_USER = "ROLE_LEGACY_USER";
 
     /**
      * Adds an applicant to the applicant repository
      * 
      * @param a The applicant to add
+     * @return returns the added {@link ApplicantDTO} if successful otherwise null is returned.
      */
-    public void addApplicant(Applicant a) {
+    public ApplicantDTO addApplicant(Applicant a) {
         if (a != null) {
-            applicantRepo.saveAndFlush(a);
+            ApplicantDTO  dto = applicantRepo.saveAndFlush(a);
+            return dto;
         }
+        return null;
     }
 
     /**
      * Adds a recruiter to the recruiter repository
      * 
      * @param r The recruiter to add
+     * @return returns the added {@link RecruiterDTO} if successful otherwise null is returned.
      */
-    public void addRecruiter(Recruiter r) {
+    public RecruiterDTO addRecruiter(Recruiter r) {
         if (r != null) {
+            RecruiterDTO dto = 
             recruiterRepo.saveAndFlush(r);
+            return dto;
         }
+        return null;
+    }
+
+    private void removeLegacyUserByPersonDTO(PersonDTO person){
+        LegacyUser lu = legacyUserRepo.findLegacyUserByPerson((Person)person);
+        legacyUserRepo.delete(lu);
+    }
+
+    private PersonDTO updatePersonWithContentsOfDTO(PersonDTO dto, String username){
+        Person p = personRepo.findPersonByUsername(username);
+        if(p == null) {
+            LOGGER.error("Legacy user " + username + " was not found.");
+            throw new UsernameNotFoundException("Username " + username + " was not found in the database");
+        }
+        p.updateWithContentsOfDTO(dto);
+        return personRepo.save(p);
+    }
+    
+    /**
+     * Updates a {@link Person} migrated from the old database. It's required for the 
+     * dto to not contain any temporary data. If successful the {@link Person} is updated
+     * and removed as a {@link LegacyUser}.
+     *
+     * @param   dto         contains the updated data to make sure the {@link Person} follows
+     *                      the rules of the database schema.
+     * @param   username    the username of the {@link LegacyUser} to update.
+     * @throws  UpdatedPersonContainsTemporaryDataException if dto still contains temporary
+     *                                                      data this exception is thrown.
+     */
+    public void updatePersonWithUsernameAndRemoveFromLegacyUsers(PersonDTO dto, String username)
+        throws UpdatedPersonContainsTemporaryDataException {
+        if (TemporaryDataMatcher.isTemporaryEmail(dto.getEmail())) {
+            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary email");
+        }
+        if(TemporaryDataMatcher.isTemporarySSN(dto.getSSN())){
+            throw new UpdatedPersonContainsTemporaryDataException("Still contains the temporary SSN");
+        }
+        if(dto.getUsername() !=username &&
+                personRepo.findPersonByUsername(dto.getUsername()) != null){
+            throw new UsernameAlreadyExistsException("Username is already in use.");
+        }
+        if(personRepo.findPersonByEmail(dto.getEmail()) != null){
+            throw new EmailAlreadyExistsException("Email is already in use.");
+        }
+        
+        dto = updatePersonWithContentsOfDTO(dto, username);
+        removeLegacyUserByPersonDTO(dto);
+        legacyUserRepo.flush();
     }
 
     /**
      * Adds a legacy user to the legacy user repository
      * 
      * @param lu The legacy user to add
+     * @return returns the added {@link LegacyUserDTO} if successful otherwise null is returned.
      */
-    public void addLegacyUser(LegacyUser lu) {
+    public LegacyUserDTO addLegacyUser(LegacyUser lu) {
         if (lu != null) {
-            legacyUserRepo.saveAndFlush(lu);
+            LegacyUserDTO dto = legacyUserRepo.saveAndFlush(lu);
             LOGGER.info("Added legacy user");
+            return dto;
         }
+        return null;
     }
 
     /**
      * Fetches a person from the database with the given username and password
      * 
      * @param username The username of the person to fetch
-     * @param password The password of the person to fetch
+     * @param password The hashed password of the person to fetch
      */
     public Person getPerson(String username, String password) {
         if (username == null || password == null)
@@ -115,7 +180,7 @@ public class PersonService implements UserDetailsService {
 
         if (password.equals(p.getPassword())) {
             return p;
-        }
+        } 
         return null;
     }
 
@@ -143,12 +208,15 @@ public class PersonService implements UserDetailsService {
             p = personRepo.findPersonByUsername(username);
 
             if (p != null) {
-                if (applicantRepo.findApplicantByPerson(p) != null) {
+                if (legacyUserRepo.findLegacyUserByPerson(p) != null){
+                    LOGGER.info("Person logged in as a legacy user");
+                    role = ROLE_LEGACY_USER;
+                } else if (applicantRepo.findApplicantByPerson(p) != null) {
                     LOGGER.debug("Person logged in as an applicant.");
                     role = ROLE_APPLICANT;
                 } else if (recruiterRepo.findRecruiterByPerson(p) != null) {
                     LOGGER.info("Person logged in as a recruiter.");
-                    role = ROLE_RECRUITER;
+                    role = ROLE_RECRUITER; 
                 } else {
                     // Should never end up here as all Persons are
                     // either applicants or recruiters
