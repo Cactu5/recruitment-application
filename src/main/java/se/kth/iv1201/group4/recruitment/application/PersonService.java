@@ -195,12 +195,12 @@ public class PersonService implements UserDetailsService {
         }
         if(!dto.getUsername().equals(username) &&
                 personRepo.findPersonByUsername(dto.getUsername()) != null){
-            LOGGER.error(String.format("Legacy user %s tried to use username %s", username,
+            LOGGER.info(String.format("Legacy user %s tried to use username %s", username,
                     dto.getUsername()));
             throw new UsernameAlreadyExistsException("Username is already in use.");
         }
         if(personRepo.findPersonByEmail(dto.getEmail()) != null){
-            LOGGER.error(String.format("Legacy user %s tried to use email %s", username,
+            LOGGER.info(String.format("Legacy user %s tried to use email %s", username,
                     dto.getEmail()));
 
             throw new EmailAlreadyExistsException("Email is already in use.");
