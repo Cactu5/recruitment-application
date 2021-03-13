@@ -21,6 +21,7 @@ import se.kth.iv1201.group4.recruitment.domain.Person;
  *
  * @author Filip Garamvölgyi
  * @author Cactu5
+ * @author William Stackenäs
  * @version %I%
  */
 @Configuration
@@ -33,17 +34,14 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
     private PersonService service;
 
     /**
-     * Currently used to configure in memeory test accounts
+     * Configure accounts that can be used to log in by specifying the
+     * service class acting as the user details service
      *
+     * @param auth The object used to build a manager object for authentication
      */
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(service).passwordEncoder(Person.PASSWORD_ENCODER);
-        /*auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("user1Pass"))
-                .roles("APPLICANT").and().withUser("user2").password(passwordEncoder().encode("user2Pass"))
-                .roles("APPLICANT").and().withUser("admin").password(passwordEncoder().encode("adminPass"))
-                .roles("RECRUITER").and().withUser("legacy").password(passwordEncoder().encode("legacyPass"))
-                .roles("LEGACY_USER");*/
     }
 
     @Bean
@@ -66,9 +64,9 @@ public class RecruitmentSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configure what content can be accessed based on authentication,
-     * authoriazation as well as other HTTP security settings
+     * authorization as well as other HTTP security settings
      *
-     * @param http used to set scurity settings for spring webserver
+     * @param http used to set security settings for spring webserver
      */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
