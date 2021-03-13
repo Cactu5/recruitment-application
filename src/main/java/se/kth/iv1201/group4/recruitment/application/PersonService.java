@@ -39,15 +39,12 @@ import se.kth.iv1201.group4.recruitment.dto.RecruiterDTO;
 import se.kth.iv1201.group4.recruitment.repository.RecruiterRepository;
 import se.kth.iv1201.group4.recruitment.util.TemporaryDataMatcher;
 import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;
-import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
+
 import se.kth.iv1201.group4.recruitment.util.error.SSNAlreadyExistsException;
 
 /**
- * A service for accessing or adding persons from and to the preso
-
-import se.kth.iv1201.group4.recruitment.util.error.EmailAlreadyExistsException;
-
-import se.kth.iv1201.group4.recruitment.util.error.UsernameAlreadyExistsException;n
+ * A service for accessing or adding persons from and to the person
  * repositories. Rolls back on all exceptions and supports current transactions,
  * or creates a new if none exist.
  * 
