@@ -302,6 +302,13 @@ public class PersonService implements UserDetailsService {
         return applicantRepo.findApplicantByPerson(person);
     }
 
+    /**
+     * Retrieves the Person object corresponding to the given username, and if it exists,
+     * returns it as an object implementing the UserDetails interface
+     * 
+     * @param username The username of the person to retrieve
+     * @return The details of the person, including its roles
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null)
