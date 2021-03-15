@@ -16,9 +16,10 @@ The following sections lists architectures of various components of the
 recruitment application.
 
 ## 1.1. Spring Boot Application
-The following architecture is a WIP. For more details related to a specific
-class or method, see the javadoc.
-<img src="img/backend.png" alt="Spring Boot Java architecture"/>
+The following is a domain model of the application. For more details related to a specific
+class or method, see the javadoc. It is available in GitHub actions as an artifact from the
+latest build job.
+<img src="img/model.png" alt="Domain model"/>
 
 These packages are located under [`src/main/java/se/kth/iv1201/group4/recruitment`](src/main/java/se/kth/iv1201/group4/recruitment).
  - **application**: Contains application-scope classes global to the recruitment application, mainly
