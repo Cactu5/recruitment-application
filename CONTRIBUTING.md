@@ -19,6 +19,7 @@ recruitment application.
 The following is a domain model of the application. For more details related to a specific
 class or method, see the javadoc. It is available in GitHub actions as an artifact from the
 latest build job.
+
 <img src="img/model.png" alt="Domain model"/>
 
 These packages are located under [`src/main/java/se/kth/iv1201/group4/recruitment`](src/main/java/se/kth/iv1201/group4/recruitment).
