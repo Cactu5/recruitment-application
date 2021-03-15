@@ -17,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -126,15 +125,15 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     }
 
     /**
-     * Resolves the locale and sets the default locale to swedish.
+     * Resolves the locale and sets the default locale to english.
      * 
      * @return the default locale
      */
     @Bean
     public LocaleResolver localeResolver() {
-        CookieLocaleResolver slr = new CookieLocaleResolver();
-        slr.setDefaultLocale(Locale.ENGLISH);
-        return slr;
+        CookieLocaleResolver clr = new CookieLocaleResolver();
+        clr.setDefaultLocale(Locale.ENGLISH);
+        return clr;
     }
 
     /**
@@ -148,7 +147,7 @@ public class RecruitmentConfig implements WebMvcConfigurer, ApplicationContextAw
     }
 
     /**
-     * Creates obejct used for locale management. For this server
+     * Creates object used for locale management. For this server
      * {@link LocaleChangeInterceptor} is used.
      *
      * @return {@link LocaleChangeInterceptor} returns containing configured

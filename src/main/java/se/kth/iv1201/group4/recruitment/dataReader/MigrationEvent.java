@@ -58,7 +58,7 @@ public class MigrationEvent {
     @EventListener
     public void onContextLoaded(ContextRefreshedEvent event){
         LOGGER.debug("Migration starts");
-        if(false){
+        if(false){ // Set to true to activate migration on startup
             Migration mig = new Migration();
             mig.migrate();
             migrate(mig);
