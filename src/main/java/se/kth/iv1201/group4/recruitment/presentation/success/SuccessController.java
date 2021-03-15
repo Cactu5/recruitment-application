@@ -64,7 +64,7 @@ public class SuccessController {
      * the language requested by the client, if possible
      * 
      * @param request The HTTP request from the client that may contain
-     *                information about its prefered language
+     *                information about its preferred language
      * @param model  The model objects used in the register page
      * @param lang   The lang query parameter from the URL contining the
      *               language that should be used. If empty, the default
