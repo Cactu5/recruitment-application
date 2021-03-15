@@ -36,7 +36,7 @@ public class RegisterController {
     /**
      * A get request for the register page
      * 
-     * @param form   The registration form that will be sent in the post request
+     * @param registerForm   The registration form that will be sent in the post request
      * 
      * @return The URL to the register page
      */

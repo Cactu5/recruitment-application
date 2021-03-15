@@ -103,7 +103,7 @@ public class SuccessController {
     /**
      * This endpoint returns the success page for the legacy user role.
      * 
-     * @param form   The registration form that should be sent in the post request
+     * @param registerForm   The registration form that should be sent in the post request
      * @param auth   The authentication of the currently logged in legacy user
      * 
      * @return the success page for the legacy user role
