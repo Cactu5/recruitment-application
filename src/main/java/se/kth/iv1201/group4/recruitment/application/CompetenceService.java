@@ -78,7 +78,7 @@ public class CompetenceService {
      * Adds a competence profile to the competence profile repository
      * 
      * @param cp The competence profile to add
-     * @return returns the {@link CompetenceProfileDTODTO} if successful otherwise null is returned.
+     * @return returns the {@link CompetenceProfileDTO} if successful otherwise null is returned.
      */
     public CompetenceProfileDTO addCompetenceProfile(CompetenceProfile cp) {
         if (cp != null) {
@@ -120,8 +120,8 @@ public class CompetenceService {
     /**
      * Returns a local competence given the language and competence.
      *
-     * @param l     language of the given {@link LocalCompetence} to return
-     * @param c     competence of the given {@link LocalCompetence} to return
+     * @param language     language of the given {@link LocalCompetence} to return
+     * @param competence     competence of the given {@link LocalCompetence} to return
      * @return      returned local competence given the language and competence.      
      */
     public LocalCompetence getLocalCompetence(Language language, Competence competence) {

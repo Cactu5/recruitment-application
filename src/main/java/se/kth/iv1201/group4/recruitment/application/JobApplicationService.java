@@ -45,9 +45,10 @@ public class JobApplicationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
 
     /**
-     * Adds an applicant to the applicant repository
+     * Adds a job application to the {@link JobStatusRepository}.
      * 
-     * @param a The applicant to add
+     * @param jobApplication The job application to add
+     * 
      * @return returns the {@link JobApplicationDTO} if successful otherwise null is returned.
      */
     public JobApplicationDTO addJobApplication(JobApplication jobApplication) {
