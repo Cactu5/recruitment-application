@@ -7,14 +7,7 @@ package se.kth.iv1201.group4.recruitment.util;
  * @author Filip Garamvölgyi
  */
 public class TemporaryDataMatcher {
-    /**
-     * The regex that matches temporary usernames
-     */
     public static final String regexUsernameMatcher = "badUserFakeUser\\d{5}";
-
-    /**
-     * The regex that matches temporary emails
-     */
     public static final String regexEmailMatcher = "fake\\d{5}@fakemegafake.email";
 
     public static boolean isTemporaryEmail(String email){return email.matches(regexEmailMatcher);}

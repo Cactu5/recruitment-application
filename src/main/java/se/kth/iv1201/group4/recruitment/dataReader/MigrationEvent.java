@@ -24,13 +24,6 @@ import se.kth.iv1201.group4.recruitment.domain.LegacyUser;
 import se.kth.iv1201.group4.recruitment.domain.LocalCompetence;
 import se.kth.iv1201.group4.recruitment.domain.Recruiter;
 
-/**
- * A migration component that will insert data in the JSON
- * files into the new database
- * 
- * @author Filip Garamvölgyi
- * @author William Stackenäs
- */
 @Component
 public class MigrationEvent {
 
@@ -48,13 +41,6 @@ public class MigrationEvent {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MigrationEvent.class);
 
-    /**
-     * Runs when the application starts up and migrates
-     * the data in the JSON files if activated using
-     * the conditional if check
-     * 
-     * @param event The event that was triggered
-     */
     @EventListener
     public void onContextLoaded(ContextRefreshedEvent event){
         LOGGER.debug("Migration starts");

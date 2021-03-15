@@ -75,10 +75,10 @@ public class JobApplication implements JobApplicationDTO {
      * Creates a new instance with the specified applicant, job status, competence
      * profiles and availabilites.
      * 
-     * @param applicant the applicant of the job application
-     * @param jobStatus the status of the job aplication
-     * @param competenceProfiles the competence profiles of the job application
-     * @param availabilites the periods at which the applicant can work
+     * @param applicant
+     * @param jobStatus
+     * @param competenceProfiles
+     * @param availabilites
      */
     public JobApplication(Applicant applicant, JobStatus jobStatus, List<CompetenceProfile> competenceProfiles,
             List<Availability> availabilites) {

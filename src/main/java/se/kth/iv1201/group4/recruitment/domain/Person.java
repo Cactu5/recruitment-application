@@ -60,9 +60,6 @@ public class Person implements PersonDTO {
     @Column(name = "username", unique = true)
     private String username;
 
-    /**
-     * The password encoder used to encode all passwords in the application
-     */
     public final static PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @JsonIgnore
@@ -100,12 +97,6 @@ public class Person implements PersonDTO {
         this.password = PASSWORD_ENCODER.encode(pass);
     }
 
-    /**
-     * Overwrites the fields of the person with the fields of the
-     * given PersonDTO, if they are not null
-     * 
-     * @param dto The dto that will be used to overwrite the fields
-     */
     public void updateWithContentsOfDTO(PersonDTO dto){
         if(dto.getSSN() != null)
             this.ssn = dto.getSSN();

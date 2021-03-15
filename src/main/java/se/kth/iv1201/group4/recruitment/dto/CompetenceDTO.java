@@ -8,7 +8,7 @@ package se.kth.iv1201.group4.recruitment.dto;
  * competence.
  * 
  * @author Cactu5
- * @author William Stackenäs
+ * @auther William Stackenäs
  * @version %I%
  */
 public interface CompetenceDTO {

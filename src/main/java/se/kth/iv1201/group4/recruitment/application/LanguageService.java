@@ -69,7 +69,7 @@ public class LanguageService {
     /**
      * Returns a language given a locale.
      *
-     * @param locale  locale of the Language to return.
+     * @param name  locale of the Language to return.
      * @return      returned language given the locale. If no
      *              such language exists, the default language
      *              will be returned if it exists.      
