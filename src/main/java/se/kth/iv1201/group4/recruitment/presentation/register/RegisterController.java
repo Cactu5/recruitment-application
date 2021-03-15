@@ -36,6 +36,8 @@ public class RegisterController {
     /**
      * A get request for the register page
      * 
+     * @param form   The registration form that will be sent in the post request
+     * 
      * @return The URL to the register page
      */
     @GetMapping("/register")
@@ -60,7 +62,7 @@ public class RegisterController {
      * 
      */
     @PostMapping("/register")
-    public String register(@Valid RegisterForm form, BindingResult result, Model model) throws Exception {
+    public String register(@Valid RegisterForm form, BindingResult result, Model model) {
         LOGGER.trace("Registration attempt.");
 
         Person p;

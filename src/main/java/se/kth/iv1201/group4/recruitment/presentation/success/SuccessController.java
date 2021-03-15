@@ -103,6 +103,9 @@ public class SuccessController {
     /**
      * This endpoint returns the success page for the legacy user role.
      * 
+     * @param form   The registration form that should be sent in the post request
+     * @param auth   The authentication of the currently logged in legacy user
+     * 
      * @return the success page for the legacy user role
      */
     @GetMapping("/success-legacy-user")
@@ -132,9 +135,14 @@ public class SuccessController {
 
     /**
      * This endpoint updates content of a Person.
+     * @param form   The registration form sent in the post request
+     * @param result The result when validating the form
+     * @param model  The model objects used in the success page
+     * @param auth   The authentication of the currently logged in legacy user
      * 
      * @return  if successful redirects to login page otherwise the
      *          same success page is returned.
+     * @throws UpdatedPersonContainsTemporaryDataException if temporary data was re-entered
      */
     @PostMapping("/success-legacy-user")
     public String updatePerson(@Valid RegisterForm form, BindingResult result, Model model, 
